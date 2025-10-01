@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kiran Official - </title>
+
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+    <style>
+        :root {
+            --primary-color: #007bff;
+            --secondary-color: #f8f9fa;
+            --text-color: #212529;
+            --tiktok-color: #ff3366; 
+            --highlight-color: #ffc107; /* Color for search highlighting */
+        }
+
+        body {
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--secondary-color);
+            color: var(--text-color);
+        }
+
+        .container {
+            width: 95%;
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 10px 0;
+        }
+
+        /* --- Banner Section --- */
+        .banner-wrapper {
+            position: relative;
+            width: 100%;
+            height: 200px; /* Original banner size */
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+            background-color: #e9ecef; /* Background color behind banners */
+        }
+
+        .banner-container {
+            display: flex;
+            width: 1000%; 
+            height: 100%;
+            transition: transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        .banner-item {
+            min-width: 10%; 
+            height: 100%;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .banner-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .banner-item:hover img {
+            transform: scale(1.05);
+        }
+        
+        /* Banner Navigation Buttons */
+        .banner-nav-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(0, 0, 0, 0.5);
+            color: white;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+            z-index: 10;
+            font-size: 1.5rem;
+            transition: all 0.3s ease;
+        }
+        .banner-nav-btn:hover {
+            background: rgba(0, 0, 0, 0.8);
+            transform: translateY(-50%) scale(1.1);
+        }
+        #prev-banner { left: 0; border-radius: 0 5px 5px 0; }
+        #next-banner { right: 0; border-radius: 5px 0 0 5px; }
+
+        /* Banner Indicators */
+        .banner-indicators {
+            position: absolute;
+            bottom: 15px;
+            left: 0;
+            right: 0;
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            z-index: 10;
+        }
+
+        .banner-indicator {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.5);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .banner-indicator.active {
+            background-color: white;
+            transform: scale(1.2);
+        }
+
+        /* --- Section Headers & Search --- */
+        .section-header {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin: 25px 0 15px;
+            padding-bottom: 5px;
+            border-bottom: 3px solid var(--primary-color);
+        }
+
+        .search-section {
+            margin-bottom: 30px;
+        }
+
+        .search-section input[type="text"] {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 1rem;
+            box-sizing: border-box;
+            transition: all 0.3s ease;
+        }
+
+        .search-section input[type="text"]:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25);
+            outline: none;
+        }
+
+        /* --- Social Media Links --- */
+        .social-media-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 40px;
+        }
+        
+        .social-link {
+            display: flex;
+            align-items: center;
+            padding: 10px 15px;
+            background-color: #fff;
+            border-radius: 6px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+            text-decoration: none;
+            color: var(--text-color);
+            transition: all 0.3s ease;
+        }
+
+        .social-link:hover {
+            background-color: #e9ecef;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .social-logo {
+            width: 30px;
+            height: 30px;
+            margin-right: 15px;
+            object-fit: contain;
+            border-radius: 4px;
+        }
+
+        .social-name {
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+        
+        /* --- TikTok Videos (Horizontal Scroll Layout) --- */
+        .tiktok-grid-wrapper {
+            overflow-x: auto;
+            padding-bottom: 15px;
+            margin-bottom: 40px;
+        }
+
+        .tiktok-grid {
+            display: flex;
+            gap: 15px;
+            padding: 5px 0;
+            width: fit-content; 
+        }
+
+        .tiktok-video-item {
+            flex-shrink: 0;
+            width: 200px; /* Original width */
+            background-color: #fff;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            border: 2px solid transparent; 
+            transition: all 0.3s ease;
+        }
+
+        .tiktok-video-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+        }
+
+        /* Highlight style for search results */
+        .tiktok-video-item.highlight {
+            border-color: var(--highlight-color);
+            box-shadow: 0 0 15px var(--highlight-color);
+            order: -1; /* Move highlighted items to the beginning */
+        }
+
+        .tiktok-video-item img {
+            width: 100%;
+            height: 250px; /* Original height */
+            object-fit: cover;
+            display: block;
+        }
+        
+        .tiktok-content {
+            padding: 10px; /* Original padding */
+        }
+
+        .tiktok-content p {
+            font-size: 0.9em; /* Original font size */
+            font-weight: 600;
+            margin: 0 0 10px;
+            height: 30px; /* Original height */
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-line-clamp: 2; 
+            -webkit-box-orient: vertical;
+            line-height: 1.4;
+            cursor: pointer;
+            transition: color 0.2s ease;
+        }
+
+        .tiktok-content p:hover {
+            color: var(--primary-color);
+        }
+
+        .tiktok-content a.watch-btn {
+            display: block; 
+            background-color: var(--tiktok-color); 
+            color: white;
+            padding: 8px 15px;
+            border-radius: 4px;
+            text-decoration: none;
+            margin-top: 5px;
+            font-size: 0.9em;
+            transition: all 0.3s ease;
+        }
+
+        .tiktok-content a.watch-btn:hover {
+            background-color: #e62e5c;
+            transform: scale(1.05);
+        }
+
+        /* Full Title Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .modal-content {
+            background-color: white;
+            padding: 25px;
+            border-radius: 8px;
+            max-width: 500px;
+            width: 90%;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            animation: slideUp 0.3s ease;
+        }
+
+        .modal-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: var(--text-color);
+        }
+
+        .modal-close {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: background-color 0.3s ease;
+        }
+
+        .modal-close:hover {
+            background-color: #0069d9;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideUp {
+            from { 
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to { 
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Footer Styles */
+        .footer {
+            text-align: center;
+            padding: 20px 0;
+            margin-top: 30px;
+            border-top: 1px solid #dee2e6;
+            color: #6c757d;
+            font-size: 0.9rem;
+        }
+
+        .footer-tags {
+            margin: 10px 0;
+            font-weight: 600;
+        }
+
+        .footer-copyright {
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="banner-wrapper">
+            <div class="banner-container" id="banner-slider">
+                <!-- Banners will be loaded here -->
+            </div>
+            <button id="prev-banner" class="banner-nav-btn" onclick="manualSlide(-1)">&#10094;</button>
+            <button id="next-banner" class="banner-nav-btn" onclick="manualSlide(1)">&#10095;</button>
+            <div class="banner-indicators" id="banner-indicators">
+                <!-- Banner indicators will be loaded here -->
+            </div>
+        </div>
+
+        <h2 class="section-header">SEARCH</h2>
+        <div class="search-section">
+            <input type="text" id="search-input" onkeyup="searchTikTokVideos()" placeholder="Search TikTok Video Title or Link...">
+        </div>
+
+        <h2 class="section-header">SOCIAL MEDIA LINKS</h2>
+        <div class="social-media-grid" id="social-media-links">
+            <!-- Social media links will be loaded here -->
+        </div>
+
+        <h2 class="section-header">RECENT TIKTOK VIDEOS</h2>
+        <div class="tiktok-grid-wrapper">
+            <div class="tiktok-grid" id="tiktok-videos-list">
+                <!-- TikTok videos will be loaded here -->
+            </div>
+        </div>
+
+        <!-- Footer Section -->
+        <div class="footer">
+            <div class="footer-tags">
+                #kiranoffical #GHANSHYAM
+            </div>
+            <div class="footer-copyright">
+                &copy; Copyright 2025 Kiran Official. All Rights Reserved.
+            </div>
+        </div>
+    </div>
+
+    <!-- Full Title Modal -->
+    <div class="modal" id="title-modal">
+        <div class="modal-content">
+            <div class="modal-title" id="modal-title-text"></div>
+            <button class="modal-close" onclick="closeModal()">Close</button>
+        </div>
+    </div>
+
+    <script>
+        // **REPLACE WITH YOUR ACTUAL FIREBASE CONFIGURATION**
+        const firebaseConfig = {  
+            apiKey: "AIzaSyA05yiB3GPh0e8VjiWacd1D1mXCFYNFvjs",  
+            authDomain: "earning-58441.firebaseapp.com",  
+            databaseURL: "https://earning-58441-default-rtdb.firebaseio.com",  
+            projectId: "earning-58441",  
+            storageBucket: "earning-58441.firebasestorage.app",  
+            messagingSenderId: "771237826936",  
+            appId: "1:771237826936:web:2489c2b4db2640638a388d",  
+            measurementId: "G-TRV6N5E1NY"  
+        };
+
+        // Initialize Firebase
+        const app = firebase.initializeApp(firebaseConfig);
+        const db = firebase.database();
+        
+        // Global variable to store all TikTok data for searching
+        let allTikTokVideos = [];
+
+        // --- BANNER SLIDER LOGIC (Automatic + Manual Control) ---
+        let currentBannerIndex = 0;
+        const bannerDuration = 5000; // 5 seconds automatic slide
+        let bannerInterval;
+        let bannerCount = 0;
+
+        function setBannerTransform(index) {
+            const offset = -index * 10;
+            document.getElementById('banner-slider').style.transform = `translateX(${offset}%)`;
+            
+            // Update active indicator
+            const indicators = document.querySelectorAll('.banner-indicator');
+            indicators.forEach((indicator, i) => {
+                if (i === index) {
+                    indicator.classList.add('active');
+                } else {
+                    indicator.classList.remove('active');
+                }
+            });
+        }
+
+        function createBannerIndicators(count) {
+            const indicatorsContainer = document.getElementById('banner-indicators');
+            indicatorsContainer.innerHTML = '';
+            
+            for (let i = 0; i < count; i++) {
+                const indicator = document.createElement('div');
+                indicator.className = 'banner-indicator';
+                if (i === 0) indicator.classList.add('active');
+                indicator.onclick = () => {
+                    currentBannerIndex = i;
+                    setBannerTransform(currentBannerIndex);
+                    resetBannerInterval();
+                };
+                indicatorsContainer.appendChild(indicator);
+            }
+        }
+
+        function loadBanners() {
+            const bannerSlider = document.getElementById('banner-slider');
+            db.ref('banners').orderByChild('timestamp').on('value', (snapshot) => {
+                const banners = snapshot.val();
+                bannerSlider.innerHTML = ''; 
+                
+                if (banners) {
+                    // Sort to show the newest banner first
+                    const bannerArray = Object.values(banners).sort((a, b) => b.timestamp - a.timestamp);
+                    bannerCount = bannerArray.length;
+                    
+                    bannerArray.forEach((data, index) => {
+                        const bannerItem = document.createElement('div');
+                        bannerItem.className = 'banner-item';
+                        bannerItem.onclick = () => window.open(data.clickerLink, '_blank'); 
+                        
+                        const img = document.createElement('img');
+                        img.src = data.bannerLink;
+                        img.alt = `Banner ${index + 1}`;
+                        
+                        bannerItem.appendChild(img);
+                        bannerSlider.appendChild(bannerItem);
+                    });
+
+                    if (bannerArray.length > 1) {
+                        currentBannerIndex = 0; 
+                        createBannerIndicators(bannerArray.length);
+                        startBannerSlider(bannerArray.length);
+                    } else {
+                         if (bannerInterval) clearInterval(bannerInterval);
+                         bannerSlider.style.width = '100%';
+                         if(bannerSlider.firstChild) bannerSlider.firstChild.style.minWidth = '100%';
+                    }
+                }
+            });
+        }
+
+        function startBannerSlider(bannerCount) {
+            if (bannerInterval) clearInterval(bannerInterval);
+
+            bannerInterval = setInterval(() => {
+                currentBannerIndex = (currentBannerIndex + 1) % bannerCount;
+                setBannerTransform(currentBannerIndex);
+            }, bannerDuration);
+        }
+        
+        function resetBannerInterval() {
+            if (bannerInterval) clearInterval(bannerInterval);
+            startBannerSlider(bannerCount);
+        }
+        
+        // Manual slide function for Prev/Next buttons
+        window.manualSlide = function(direction) {
+            // Stop automatic sliding temporarily
+            if (bannerInterval) clearInterval(bannerInterval);
+
+            currentBannerIndex += direction;
+
+            if (currentBannerIndex >= bannerCount) {
+                currentBannerIndex = 0;
+            } else if (currentBannerIndex < 0) {
+                currentBannerIndex = bannerCount - 1;
+            }
+            
+            setBannerTransform(currentBannerIndex);
+            
+            // Resume automatic sliding
+            startBannerSlider(bannerCount);
+        }
+
+        // --- SOCIAL MEDIA LOGIC ---
+        function loadSocialMedia() {
+            const socialLinksDiv = document.getElementById('social-media-links');
+            db.ref('socialMedia').on('value', (snapshot) => {
+                const socialMedia = snapshot.val();
+                socialLinksDiv.innerHTML = '';
+
+                if (socialMedia) {
+                    Object.values(socialMedia).forEach(data => {
+                        const link = document.createElement('a');
+                        link.className = 'social-link';
+                        link.href = data.clickerLink;
+                        link.target = '_blank';
+                        
+                        const logo = document.createElement('img');
+                        logo.className = 'social-logo';
+                        logo.src = data.logoLink;
+                        logo.alt = data.name;
+
+                        const name = document.createElement('span');
+                        name.className = 'social-name';
+                        name.textContent = data.name.toUpperCase();
+
+                        link.appendChild(logo);
+                        link.appendChild(name);
+                        socialLinksDiv.appendChild(link);
+                    });
+                }
+            });
+        }
+
+        // --- TIKTOK VIDEO LOGIC (Load and Search) ---
+        function loadTikTokVideos() {
+            db.ref('tiktokVideos').orderByChild('timestamp').on('value', (snapshot) => {
+                const videos = snapshot.val();
+                
+                if (videos) {
+                    // Store all videos globally, sorted by newest first
+                    allTikTokVideos = Object.values(videos).sort((a, b) => b.timestamp - a.timestamp);
+                } else {
+                    allTikTokVideos = [];
+                }
+                
+                // Initially display all videos
+                displayTikTokVideos(allTikTokVideos);
+            });
+        }
+        
+        function displayTikTokVideos(videoArray) {
+            const tiktokListDiv = document.getElementById('tiktok-videos-list');
+            tiktokListDiv.innerHTML = '';
+
+            videoArray.forEach(data => {
+                const item = document.createElement('div');
+                item.className = 'tiktok-video-item';
+                item.dataset.title = data.videoTitle.toLowerCase();
+                item.dataset.link = data.videoClickerLink.toLowerCase();
+                
+                item.innerHTML = `
+                    <img src="${data.thumbnailLink}" alt="${data.videoTitle} thumbnail">
+                    <div class="tiktok-content">
+                        <p title="${data.videoTitle}" onclick="showFullTitle('${data.videoTitle.replace(/'/g, "\\'")}')">${data.videoTitle}</p>
+                        <a href="${data.videoClickerLink}" target="_blank" class="watch-btn">
+                            ▶️ Watch TikTok
+                        </a>
+                    </div>
+                `;
+                tiktokListDiv.appendChild(item);
+            });
+        }
+
+        // Show full title in modal
+        window.showFullTitle = function(title) {
+            document.getElementById('modal-title-text').textContent = title;
+            document.getElementById('title-modal').style.display = 'flex';
+        }
+
+        // Close modal
+        window.closeModal = function() {
+            document.getElementById('title-modal').style.display = 'none';
+        }
+
+        // Close modal when clicking outside
+        document.getElementById('title-modal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeModal();
+            }
+        });
+
+        window.searchTikTokVideos = function() {
+            const searchTerm = document.getElementById('search-input').value.toLowerCase();
+            const items = document.querySelectorAll('.tiktok-video-item');
+            const results = [];
+            
+            items.forEach(item => {
+                const title = item.dataset.title;
+                const link = item.dataset.link;
+                
+                // Check if the title or the link includes the search term
+                if (title.includes(searchTerm) || link.includes(searchTerm)) {
+                    // Highlight the item and add it to the beginning of the list (using CSS order: -1)
+                    item.classList.add('highlight');
+                    results.push(item);
+                } else {
+                    // Un-highlight non-matching items
+                    item.classList.remove('highlight');
+                }
+            });
+
+            // The CSS property 'order: -1' on the 'highlight' class automatically moves 
+            // the matching items to the start of the flex container (the scrollable list).
+            // This achieves the "show on top" effect without re-rendering the whole list.
+            
+            if (searchTerm === '') {
+                 // Remove highlight and reset order when search box is cleared
+                 items.forEach(item => item.classList.remove('highlight'));
+            }
+        }
+
+        // Load all data when the page loads
+        document.addEventListener('DOMContentLoaded', () => {
+            loadBanners();
+            loadSocialMedia();
+            loadTikTokVideos(); // Load and populate allTikTokVideos array
+        });
+
+    </script>
+
+</body>
+</html>
