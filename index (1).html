@@ -1,0 +1,1479 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Kiran Chettri | Loan Management System</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <style>
+        :root {
+            --primary: #059669;
+            --primary-dark: #047857;
+            --primary-light: #d1fae5;
+            --secondary: #0ea5e9;
+            --bg: #f8fafc;
+            --card: #ffffff;
+            --text: #0f172a;
+            --text-muted: #64748b;
+            --danger: #ef4444;
+            --danger-light: #fee2e2;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+            --radius-lg: 24px;
+            --radius-md: 16px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Outfit', sans-serif;
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+            padding-bottom: 100px;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            color: white;
+            padding: 50px 20px 30px;
+            border-bottom-left-radius: 40px;
+            border-bottom-right-radius: 40px;
+            margin-bottom: 25px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -50px;
+            right: -50px;
+            width: 150px;
+            height: 150px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 50%;
+            opacity: 0.2;
+            filter: blur(30px);
+        }
+
+        .header-content {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header-title {
+            font-size: 28px;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+        }
+
+        .header-title span {
+            color: var(--primary);
+            font-weight: 300;
+        }
+
+        .header-date {
+            font-size: 14px;
+            opacity: 0.7;
+            font-weight: 500;
+            margin-top: 5px;
+        }
+
+        .analytics-scroll {
+            display: flex;
+            gap: 15px;
+            overflow-x: auto;
+            padding: 5px 0 20px 0;
+            margin: 0 -20px;
+            padding-inline: 20px;
+        }
+
+        .analytics-scroll::-webkit-scrollbar {
+            display: none;
+        }
+
+        .stat-card {
+            min-width: 200px;
+            padding: 20px;
+            border-radius: var(--radius-lg);
+            background: var(--card);
+            box-shadow: var(--shadow);
+        }
+
+        .stat-title {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .stat-value {
+            font-size: 24px;
+            font-weight: 800;
+            color: var(--text);
+        }
+
+        .search-container {
+            margin-bottom: 25px;
+            position: relative;
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 18px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+            font-size: 20px;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 18px 18px 18px 50px;
+            border-radius: var(--radius-lg);
+            border: none;
+            background: var(--card);
+            box-shadow: var(--shadow-sm);
+            font-size: 15px;
+            font-weight: 500;
+            outline: none;
+        }
+
+        .search-input:focus {
+            box-shadow: var(--shadow-lg), 0 0 0 3px var(--primary-light);
+        }
+
+        .page {
+            display: none;
+            opacity: 0;
+            transform: translateY(15px);
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .active-page {
+            display: block;
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .section-title {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .list-count {
+            font-size: 13px;
+            font-weight: 600;
+            background: var(--primary-light);
+            color: var(--primary-dark);
+            padding: 4px 10px;
+            border-radius: 20px;
+        }
+
+        .user-card {
+            background: var(--card);
+            border-radius: var(--radius-lg);
+            padding: 18px;
+            margin-bottom: 15px;
+            box-shadow: var(--shadow-sm);
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .user-card:active {
+            transform: scale(0.99);
+        }
+
+        .user-avatar {
+            width: 56px;
+            height: 56px;
+            border-radius: 18px;
+            object-fit: cover;
+            box-shadow: var(--shadow);
+            background: #e2e8f0;
+        }
+
+        .user-info {
+            flex: 1;
+        }
+
+        .user-name {
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        .status-badge.active {
+            background: var(--success-light);
+            color: var(--primary-dark);
+        }
+
+        .status-badge.paid {
+            background: #e0f2fe;
+            color: #0369a1;
+        }
+
+        .user-amounts {
+            text-align: right;
+        }
+
+        .user-principal {
+            font-size: 16px;
+            font-weight: 800;
+            color: var(--text);
+        }
+
+        .user-interest {
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--danger);
+            margin-top: 4px;
+        }
+
+        .form-card {
+            background: var(--card);
+            border-radius: var(--radius-lg);
+            padding: 25px;
+            box-shadow: var(--shadow);
+        }
+
+        .form-header {
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 20px;
+            font-weight: 700;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        .input-group label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+        }
+
+        .input-group input,
+        .input-group select {
+            width: 100%;
+            padding: 16px;
+            border-radius: var(--radius-md);
+            border: 1.5px solid #e2e8f0;
+            background: #f8fafc;
+            outline: none;
+            font-size: 15px;
+        }
+
+        .input-group input:focus,
+        .input-group select:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px var(--primary-light);
+        }
+
+        .btn {
+            width: 100%;
+            padding: 18px;
+            border: none;
+            border-radius: var(--radius-md);
+            font-weight: 700;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), #059669);
+            color: white;
+        }
+
+        .btn-secondary {
+            background: var(--text);
+            color: white;
+        }
+
+        .btn-danger-outline {
+            background: transparent;
+            border: 2px solid var(--danger);
+            color: var(--danger);
+            margin-top: 20px;
+        }
+
+        .nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(20px);
+            display: flex;
+            justify-content: space-between;
+            padding: 15px 20px 30px;
+            border-top: 1px solid rgba(0, 0, 0, 0.05);
+            z-index: 100;
+        }
+
+        .nav-item {
+            text-align: center;
+            color: var(--text-muted);
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            width: 60px;
+        }
+
+        .nav-item i {
+            font-size: 24px;
+        }
+
+        .nav-active {
+            color: var(--primary);
+        }
+
+        .fab-wrapper {
+            position: absolute;
+            top: -30px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .fab {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            box-shadow: 0 10px 25px rgba(5, 150, 105, 0.4);
+            cursor: pointer;
+            border: 4px solid white;
+        }
+
+        .back-btn {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: var(--card);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            box-shadow: var(--shadow-sm);
+            cursor: pointer;
+        }
+
+        .detail-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 25px;
+            padding-top: 20px;
+        }
+
+        .profile-hero {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .profile-hero-img {
+            width: 140px;
+            height: 140px;
+            border-radius: 40px;
+            object-fit: cover;
+            border: 6px solid var(--card);
+            box-shadow: var(--shadow-lg);
+            margin-bottom: 15px;
+            background: #e2e8f0;
+        }
+
+        .profile-name {
+            font-size: 26px;
+            font-weight: 800;
+        }
+
+        /* IMPROVED FINANCIAL CARDS - Better alignment for Outstanding Balance */
+        .financial-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-bottom: 25px;
+        }
+
+        .fin-card {
+            padding: 20px 16px;
+            border-radius: var(--radius-lg);
+            text-align: center;
+            background: var(--card);
+            box-shadow: var(--shadow);
+            transition: transform 0.2s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .fin-card.principal-card {
+            background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+            border: 1px solid #bbf7d0;
+        }
+
+        .fin-card.interest-card {
+            background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);
+            border: 1px solid #fecaca;
+        }
+
+        .fin-card::before {
+            content: '';
+            position: absolute;
+            top: -20px;
+            right: -20px;
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            opacity: 0.1;
+        }
+
+        .fin-card.principal-card::before {
+            background: var(--success);
+        }
+
+        .fin-card.interest-card::before {
+            background: var(--danger);
+        }
+
+        .fin-label {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        .fin-value {
+            font-size: 26px;
+            font-weight: 800;
+            line-height: 1.2;
+            margin-bottom: 6px;
+        }
+
+        .fin-card.principal-card .fin-value {
+            color: var(--success);
+        }
+
+        .fin-card.interest-card .fin-value {
+            color: var(--danger);
+        }
+
+        .fin-currency {
+            font-size: 14px;
+            font-weight: 600;
+            margin-right: 2px;
+            color: var(--text-muted);
+        }
+
+        .fin-sub {
+            font-size: 11px;
+            color: var(--text-muted);
+            margin-top: 6px;
+            font-weight: 500;
+            padding-top: 6px;
+            border-top: 1px dashed rgba(0, 0, 0, 0.05);
+        }
+
+        /* Interest Receipt History Section - New styled section */
+        .receipt-section {
+            background: var(--card);
+            border-radius: var(--radius-lg);
+            margin-bottom: 20px;
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .receipt-header {
+            padding: 18px 20px;
+            background: linear-gradient(135deg, #f8fafc, #f1f5f9);
+            border-bottom: 1px solid #e2e8f0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 700;
+            font-size: 15px;
+            color: var(--text);
+        }
+
+        .receipt-header i {
+            color: var(--primary);
+            font-size: 20px;
+        }
+
+        .receipt-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 14px 20px;
+            border-bottom: 1px solid #f1f5f9;
+            transition: background 0.2s;
+        }
+
+        .receipt-item:hover {
+            background: #fafcff;
+        }
+
+        .receipt-date {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text);
+        }
+
+        .receipt-type {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-top: 2px;
+        }
+
+        .receipt-amount {
+            font-size: 16px;
+            font-weight: 800;
+            color: var(--success);
+        }
+
+        .receipt-amount.interest-received {
+            color: var(--danger);
+        }
+
+        .badge-receipt {
+            background: var(--primary-light);
+            color: var(--primary-dark);
+            padding: 4px 8px;
+            border-radius: 20px;
+            font-size: 10px;
+            font-weight: 700;
+        }
+
+        .info-card {
+            background: var(--card);
+            border-radius: var(--radius-lg);
+            margin-bottom: 20px;
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .info-card-title {
+            padding: 20px 20px 10px;
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 16px 20px;
+            border-bottom: 1px solid #f1f5f9;
+        }
+
+        .history-item {
+            padding: 16px 20px;
+            border-bottom: 1px solid #f1f5f9;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .hist-amt {
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--success);
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--text-muted);
+        }
+
+        #toast {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%) translateY(-100px);
+            background: #1e293b;
+            color: white;
+            padding: 14px 24px;
+            border-radius: 100px;
+            font-weight: 500;
+            font-size: 14px;
+            transition: 0.4s;
+            z-index: 1000;
+            opacity: 0;
+        }
+
+        #toast.show {
+            transform: translateX(-50%) translateY(0);
+            opacity: 1;
+        }
+
+        .pin-dialog-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(5px);
+            z-index: 2000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .pin-dialog {
+            background: var(--card);
+            border-radius: var(--radius-lg);
+            padding: 28px;
+            width: 90%;
+            max-width: 340px;
+            text-align: center;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .pin-dialog h3 {
+            margin-bottom: 20px;
+            color: var(--danger);
+            font-size: 20px;
+        }
+
+        .pin-dialog input {
+            width: 100%;
+            padding: 14px;
+            font-size: 18px;
+            text-align: center;
+            letter-spacing: 4px;
+            border: 2px solid #e2e8f0;
+            border-radius: var(--radius-md);
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+
+        .pin-dialog button {
+            padding: 12px 20px;
+            margin: 5px;
+            border: none;
+            border-radius: 40px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .pin-dialog .btn-confirm {
+            background: var(--primary);
+            color: white;
+        }
+
+        .pin-dialog .btn-cancel {
+            background: #e2e8f0;
+            color: var(--text);
+        }
+
+        /* ===== MOBILE RESPONSIVE ===== */
+        @media (max-width: 480px) {
+            .header { padding: 44px 16px 24px; border-bottom-left-radius: 28px; border-bottom-right-radius: 28px; }
+            .header-title { font-size: 22px; }
+            .container { padding: 0 14px; }
+            .stat-card { min-width: 155px; padding: 14px; }
+            .stat-value { font-size: 18px; }
+            .stat-title { font-size: 12px; }
+            .user-card { padding: 13px; gap: 11px; }
+            .user-avatar { width: 46px; height: 46px; border-radius: 13px; }
+            .user-name { font-size: 14px; }
+            .user-principal { font-size: 14px; }
+            .user-interest { font-size: 12px; }
+            .financial-grid { gap: 10px; }
+            .fin-card { padding: 16px 10px; }
+            .fin-value { font-size: 20px; }
+            .fin-label { font-size: 11px; }
+            .btn { padding: 14px; font-size: 14px; }
+            .form-card { padding: 16px; }
+            .input-group input, .input-group select { padding: 13px; font-size: 14px; }
+            .nav { padding: 11px 14px 26px; }
+            .profile-hero-img { width: 100px; height: 100px; border-radius: 28px; }
+            .profile-name { font-size: 20px; }
+            .receipt-item { padding: 11px 14px; }
+            .receipt-amount { font-size: 14px; }
+            .receipt-date { font-size: 12px; }
+            .receipt-type { font-size: 11px; }
+            .info-row { padding: 13px 14px; font-size: 13px; }
+            .receipt-header { padding: 13px 14px; font-size: 13px; }
+            .detail-header { padding-top: 12px; margin-bottom: 16px; }
+            .section-title { font-size: 16px; }
+        }
+
+        /* Bottom Sheet Modal */
+        .bottom-sheet-overlay {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0,0,0,0.55);
+            backdrop-filter: blur(4px);
+            z-index: 2000;
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            animation: bsFadeIn 0.2s ease;
+        }
+        @keyframes bsFadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes bsSlideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
+
+        .bottom-sheet {
+            background: var(--card);
+            border-radius: 28px 28px 0 0;
+            padding: 24px 20px 40px;
+            width: 100%;
+            max-width: 600px;
+            animation: bsSlideUp 0.35s cubic-bezier(0.16,1,0.3,1);
+            box-shadow: 0 -10px 40px rgba(0,0,0,0.15);
+        }
+
+        .bottom-sheet-handle {
+            width: 40px; height: 4px;
+            background: #e2e8f0;
+            border-radius: 10px;
+            margin: 0 auto 20px;
+        }
+
+        .bottom-sheet h3 {
+            font-size: 20px;
+            font-weight: 800;
+            margin-bottom: 5px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .balance-chip {
+            display: inline-block;
+            background: var(--primary-light);
+            color: var(--primary-dark);
+            font-weight: 700;
+            font-size: 13px;
+            padding: 5px 12px;
+            border-radius: 20px;
+            margin-bottom: 20px;
+        }
+
+        .bs-label {
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--text-muted);
+            margin-bottom: 6px;
+            display: block;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .bs-input {
+            width: 100%;
+            padding: 15px;
+            border-radius: var(--radius-md);
+            border: 1.5px solid #e2e8f0;
+            background: #f8fafc;
+            font-size: 16px;
+            font-weight: 600;
+            outline: none;
+            margin-bottom: 14px;
+            font-family: 'Outfit', sans-serif;
+        }
+
+        .bs-input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px var(--primary-light);
+        }
+
+        .bs-actions { display: flex; gap: 12px; margin-top: 6px; }
+        .bs-cancel { background: #f1f5f9; color: var(--text); flex: 1; }
+        .bs-confirm { background: linear-gradient(135deg, var(--primary), #059669); color: white; flex: 2; }
+
+        .remarks-chip {
+            display: inline-block;
+            background: #f0fdf4;
+            color: #065f46;
+            font-size: 11px;
+            font-weight: 600;
+            padding: 3px 10px;
+            border-radius: 20px;
+            margin-top: 4px;
+            border: 1px solid #bbf7d0;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="header" id="mainHeader">
+        <div class="header-content">
+            <div>
+                <div class="header-title">Kiran<span> Chettri</span></div>
+                <div class="header-date" id="topDate"></div>
+            </div>
+            <div style="width: 48px; height: 48px; border-radius: 50%; background: rgba(255,255,255,0.2); display: flex; align-items: center; justify-content: center; font-size: 24px;"
+                onclick="showToast('Notification center')">
+                <i class="ph ph-bell"></i>
+            </div>
+        </div>
+    </div>
+
+    <!-- List Page -->
+    <div id="listPage" class="page active-page">
+        <div class="container">
+            <div class="analytics-scroll" id="statsDashboard">
+                <div class="stat-card">
+                    <div class="stat-title"><i class="ph-fill ph-money"></i> Total Principal</div>
+                    <div class="stat-value">Rs. <span id="totPrin">0</span></div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-title"><i class="ph-fill ph-chart-line-up"></i> Accrued Interest</div>
+                    <div class="stat-value">Rs. <span id="totInt">0</span></div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-title"><i class="ph-fill ph-users"></i> Active Customers</div>
+                    <div class="stat-value"><span id="totCust">0</span></div>
+                </div>
+            </div>
+            <div class="search-container"><i class="ph ph-magnifying-glass search-icon"></i><input type="text"
+                    id="searchInput" class="search-input" placeholder="Search name, phone or document..."
+                    oninput="filterLoans()"></div>
+            <div class="section-title"><span>Customer List</span><span class="list-count" id="listBadge">0</span></div>
+            <div id="loanList"></div>
+            <div id="emptyList" class="empty-state" style="display:none;"><i class="ph ph-users empty-icon"
+                    style="font-size: 64px;"></i>
+                <div class="empty-text">No customers found.</div><button class="btn btn-primary"
+                    onclick="showPage('addPage')" style="width: auto; padding: 12px 24px; margin-top: 20px;">Add
+                    Customer</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Page -->
+    <div id="addPage" class="page">
+        <div class="container">
+            <div class="form-card" style="margin-top:20px">
+                <div class="form-header"><i class="ph-fill ph-user-plus"></i><span>Register Customer</span></div>
+                <div class="input-group"><label>Full Name *</label><input type="text" id="name"
+                        placeholder="E.g. Ramesh Thapa"></div>
+                <div class="input-group"><label>Loan Principal (Rs.) *</label><input type="number" id="amount"
+                        placeholder="50000"></div>
+                <div style="display:flex;gap:15px">
+                    <div class="input-group" style="flex:1"><label>Interest Rate (%)</label><input type="number"
+                            id="rate" value="12"></div>
+                    <div class="input-group" style="flex:1"><label>Start Date</label><input type="date" id="sDate">
+                    </div>
+                </div>
+                <div class="input-group"><label>Mobile No.</label><input type="tel" id="phone" placeholder="98XXXXXXXX">
+                </div>
+                <div class="input-group"><label>Profile Photo URL</label><input type="url" id="pImg"
+                        placeholder="https://..."></div>
+                <div class="input-group"><label>Payment Mode</label><select id="pMethod">
+                        <option value="Offline">Offline / Cash</option>
+                        <option value="Online">Online / Bank</option>
+                    </select></div>
+                <div id="bankInfo"
+                    style="display:none; background:#f8fafc; padding:15px; border-radius:var(--radius-md); margin-bottom:20px">
+                    <div class="input-group"><label>Bank Name</label><input type="text" id="bank"></div>
+                    <div class="input-group"><label>Account Number</label><input type="text" id="acc"></div>
+                    <div class="input-group"><label>Initial TxID</label><input type="text" id="txid"></div>
+                </div>
+                <div class="input-group"><label style="display:flex; justify-content:space-between"><span>KYC
+                            Documents</span><span onclick="addDocRow()" style="color:var(--primary);cursor:pointer">+
+                            Add Doc</span></label>
+                    <div id="docList">
+                        <div style="display:flex;gap:10px;margin-bottom:10px"><input type="text"
+                                placeholder="Document Name" class="dName" style="flex:1"><input type="text"
+                                placeholder="URL" class="dUrl" style="flex:1.5"></div>
+                    </div>
+                </div>
+                <div class="input-group"><label style="color:var(--danger);">Authorization PIN *</label><input
+                        type="password" id="adminPin" placeholder="Enter admin PIN to register"></div>
+                <button class="btn btn-primary" onclick="saveLoan()"><i class="ph-bold ph-check"></i> Register
+                    User</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Detail Page -->
+    <div id="detailPage" class="page">
+        <div class="container">
+            <div class="detail-header">
+                <div class="back-btn" onclick="showPage('listPage')"><i class="ph ph-caret-left"></i></div>
+                <h2 style="font-size:20px;font-weight:700">Customer Detail</h2>
+            </div>
+            <div id="loanDetail"></div>
+        </div>
+    </div>
+
+    <!-- Settings Page -->
+    <div id="settingsPage" class="page">
+        <div class="container">
+            <div class="detail-header">
+                <div class="back-btn" onclick="showPage('listPage')"><i class="ph ph-caret-left"></i></div>
+                <h2 style="font-size:20px;font-weight:700">Settings</h2>
+            </div>
+            <div class="form-card">
+                <h4 style="margin-bottom:20px"><i class="ph-fill ph-database"></i> Data Management</h4>
+                <div style="display:flex;gap:10px;margin-bottom:20px"><button class="btn btn-primary"
+                        onclick="exportData()" style="flex:1"><i class="ph-bold ph-export"></i> Export</button>
+                    <div style="flex:1;position:relative"><button class="btn btn-primary"
+                            style="width:100%;background:var(--secondary)"><i class="ph-bold ph-download"></i>
+                            Import</button><input type="file" onchange="importData(event)" accept=".json"
+                            style="position:absolute;top:0;left:0;width:100%;height:100%;opacity:0;cursor:pointer">
+                    </div>
+                </div>
+                <button class="btn btn-danger-outline" onclick="openDeleteHistoryPanel()"><i
+                        class="ph-bold ph-clock-counter-clockwise"></i> Deletion History</button>
+                <button class="btn btn-danger-outline" onclick="promptClearAllData()" style="margin-top:15px"><i
+                        class="ph-bold ph-trash"></i> Delete All Data (PIN Required)</button>
+            </div>
+            <div id="historyPanel" style="display:none; margin-top:20px" class="form-card">
+                <h4><i class="ph-fill ph-trash"></i> Deleted Records History</h4>
+                <div id="deleteHistoryList" style="max-height:300px;overflow-y:auto;margin-top:15px"></div><button
+                    class="btn btn-primary" onclick="sendHistoryEmail()" style="margin-top:15px;background:#059669"><i
+                        class="ph-bold ph-envelope"></i> Email History to Admin</button><button class="btn"
+                    onclick="document.getElementById('historyPanel').style.display='none'"
+                    style="margin-top:10px;background:#e2e8f0">Close</button>
+            </div>
+            <div style="text-align:center;color:var(--text-muted);font-size:12px;margin-top:30px">Kiran Chettri v3.0 |
+                Secure Firebase</div>
+        </div>
+    </div>
+
+    <nav class="nav">
+        <div class="nav-item nav-active" onclick="showPage('listPage', this)"><i
+                class="ph-fill ph-house-line"></i><span>Home</span></div>
+        <div style="position:relative;width:60px">
+            <div class="fab-wrapper">
+                <div class="fab" onclick="showPage('addPage')"><i class="ph-bold ph-plus"></i></div>
+            </div>
+        </div>
+        <div class="nav-item" onclick="showPage('settingsPage', this)"><i
+                class="ph-fill ph-gear"></i><span>Settings</span></div>
+    </nav>
+
+    <div id="toast"><span id="toastMsg">Success</span></div>
+
+    <script src="https://www.gstatic.com/firebasejs/10.9.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.9.0/firebase-database-compat.js"></script>
+
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyByO6FVTicPpMdlc__c_5jF49XpIS6fX3Y",
+            authDomain: "kian-chettri.firebaseapp.com",
+            projectId: "kian-chettri",
+            storageBucket: "kian-chettri.firebasestorage.app",
+            messagingSenderId: "497527309169",
+            appId: "1:497527309169:web:eec49ae075de0258152cd0",
+            measurementId: "G-ZE70XYTD9X"
+        };
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.database();
+
+        const loansRef = db.ref('loans');
+        const deletedHistoryRef = db.ref('deletedHistory');
+
+        let loans = [];
+        let deletedHistory = [];
+
+        function formatCurrency(amount) {
+            return new Intl.NumberFormat('en-IN', {
+                minimumFractionDigits: 0,
+                maximumFractionDigits: 2
+            }).format(amount);
+        }
+
+        async function verifyPin(pin) {
+            if (!pin) return false;
+            const snapshot = await db.ref('admin/pins').once('value');
+            const validPins = snapshot.exists() ? snapshot.val() : ['9744556050', '976256912'];
+            return validPins.includes(pin);
+        }
+
+        function showPinDialog(title, onSuccess, onCancel) {
+            const overlay = document.createElement('div');
+            overlay.className = 'pin-dialog-overlay';
+            overlay.innerHTML = `
+            <div class="pin-dialog">
+                <h3><i class="ph ph-lock-simple"></i> ${title}</h3>
+                <input type="password" id="pinInput" placeholder="Enter Authorization PIN" autocomplete="off">
+                <div style="display:flex; gap:10px; justify-content:center;">
+                    <button class="btn-confirm" id="confirmPinBtn">Confirm</button>
+                    <button class="btn-cancel" id="cancelPinBtn">Cancel</button>
+                </div>
+            </div>
+        `;
+            document.body.appendChild(overlay);
+            const input = overlay.querySelector('#pinInput');
+            input.focus();
+            const confirmBtn = overlay.querySelector('#confirmPinBtn');
+            const cancelBtn = overlay.querySelector('#cancelPinBtn');
+            const cleanup = () => overlay.remove();
+            confirmBtn.onclick = async () => {
+                const pin = input.value;
+                const isValid = await verifyPin(pin);
+                if (isValid) { cleanup(); onSuccess(pin); }
+                else { showToast("❌ Wrong PIN! Access denied.", true); input.value = ''; input.focus(); }
+            };
+            cancelBtn.onclick = () => { cleanup(); if (onCancel) onCancel(); };
+            input.addEventListener('keypress', (e) => { if (e.key === 'Enter') confirmBtn.click(); });
+        }
+
+        function showToast(msg, isErr = false) {
+            const toast = document.getElementById('toast');
+            document.getElementById('toastMsg').innerHTML = msg;
+            toast.style.background = isErr ? '#b91c1c' : '#1e293b';
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 3000);
+        }
+
+        function showPage(id, el) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active-page'));
+            document.getElementById(id).classList.add('active-page');
+            document.getElementById('mainHeader').style.display = (id === 'detailPage' || id === 'settingsPage') ? 'none' : 'block';
+            if (id === 'listPage') renderList();
+            if (id === 'settingsPage') renderDeletedHistory();
+        }
+
+        function toggleBank() { document.getElementById('bankInfo').style.display = document.getElementById('pMethod').value === 'Online' ? 'block' : 'none'; }
+        document.getElementById('pMethod').addEventListener('change', toggleBank);
+        function addDocRow() {
+            const div = document.createElement('div');
+            div.style.display = "flex"; div.style.gap = "10px"; div.style.marginBottom = "10px";
+            div.innerHTML = `<input type="text" placeholder="Document Name" class="dName" style="flex:1"><input type="text" placeholder="URL" class="dUrl" style="flex:1.5">`;
+            document.getElementById('docList').appendChild(div);
+        }
+
+        async function saveLoan() {
+            const name = document.getElementById('name').value.trim();
+            const amount = parseFloat(document.getElementById('amount').value);
+            const pin = document.getElementById('adminPin').value;
+            if (!name || !amount) { showToast("Please fill Name and Amount", true); return; }
+            const isValid = await verifyPin(pin);
+            if (!isValid) { showToast("❌ Wrong PIN! Cannot register customer.", true); return; }
+
+            const docs = [];
+            document.querySelectorAll('#docList div').forEach(row => {
+                const n = row.querySelector('.dName')?.value;
+                const u = row.querySelector('.dUrl')?.value;
+                if (n) docs.push({ n, u: u || '#' });
+            });
+
+            const newLoan = {
+                id: Date.now(),
+                name: name,
+                amount: amount,
+                rate: parseFloat(document.getElementById('rate').value) || 12,
+                startDate: document.getElementById('sDate').value,
+                currentCycleDate: document.getElementById('sDate').value,
+                phone: document.getElementById('phone').value,
+                pImg: document.getElementById('pImg').value || `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=059669&color=fff&bold=true`,
+                method: document.getElementById('pMethod').value,
+                bank: document.getElementById('bank').value,
+                acc: document.getElementById('acc').value,
+                txid: document.getElementById('txid').value,
+                docs: docs,
+                paidHistory: [],
+                status: "Active",
+                finalInterest: 0
+            };
+            await loansRef.child(newLoan.id).set(newLoan);
+            showToast("Customer registered successfully!");
+            document.getElementById('name').value = '';
+            document.getElementById('amount').value = '';
+            document.getElementById('adminPin').value = '';
+            showPage('listPage');
+        }
+
+        function calc(l) {
+            if (l.status === 'Paid') return { days: 0, interest: l.finalInterest || 0 };
+            const start = new Date(l.currentCycleDate);
+            start.setHours(0, 0, 0, 0);
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+            const days = Math.max(0, Math.floor((today - start) / (1000 * 3600 * 24)));
+            const interest = (l.amount * l.rate * days) / 36500;
+            return { days, interest: Math.max(0, interest) };
+        }
+
+        function updateDashboardStats() {
+            let tp = 0, ti = 0, ac = 0;
+            loans.forEach(l => { if (l.status === 'Active') { tp += l.amount; ti += calc(l).interest; ac++; } });
+            document.getElementById('totPrin').innerText = formatCurrency(tp);
+            document.getElementById('totInt').innerText = formatCurrency(ti);
+            document.getElementById('totCust').innerText = ac;
+        }
+
+        function filterLoans() { renderList(document.getElementById('searchInput').value.toLowerCase()); }
+
+        function renderList(query = '') {
+            updateDashboardStats();
+            let filtered = loans.filter(l => {
+                const matchName = l.name.toLowerCase().includes(query);
+                const matchPhone = l.phone && l.phone.includes(query);
+                const matchDoc = l.docs && l.docs.some(d => d.n.toLowerCase().includes(query));
+                return matchName || matchPhone || matchDoc;
+            });
+            filtered.sort((a, b) => {
+                if (a.status === 'Active' && b.status !== 'Active') return -1;
+                if (a.status !== 'Active' && b.status === 'Active') return 1;
+                if (a.status === 'Active' && b.status === 'Active') return calc(b).days - calc(a).days;
+                return 0;
+            });
+            document.getElementById('listBadge').innerText = filtered.length;
+            const container = document.getElementById('loanList');
+            if (filtered.length === 0) { container.innerHTML = ''; document.getElementById('emptyList').style.display = 'block'; return; }
+            document.getElementById('emptyList').style.display = 'none';
+            container.innerHTML = filtered.map(l => {
+                const c = calc(l);
+                return `<div class="user-card" onclick="viewDetail(${l.id})">
+                <img src="${l.pImg}" class="user-avatar" onerror="this.src='https://ui-avatars.com/api/?name=${encodeURIComponent(l.name)}&background=059669&color=fff'">
+                <div class="user-info"><div class="user-name">${escapeHtml(l.name)}</div><div class="status-badge ${l.status === 'Active' ? 'active' : 'paid'}">${l.status === 'Active' ? '● Active' : '✓ Paid'}</div></div>
+                <div class="user-amounts"><div class="user-principal">Rs. ${formatCurrency(l.amount)}</div><div class="user-interest">+ Rs. ${formatCurrency(c.interest)}</div></div>
+            </div>`;
+            }).join('');
+        }
+
+        function escapeHtml(str) { return str?.replace(/[&<>]/g, function (m) { if (m === '&') return '&amp;'; if (m === '<') return '&lt;'; if (m === '>') return '&gt;'; return m; }); }
+
+        async function deleteLoanWithHistory(id, pin) {
+            const loan = loans.find(l => l.id === id);
+            if (!loan) return false;
+            await deletedHistoryRef.child(`${Date.now()}_${loan.id}`).set({
+                id: loan.id, name: loan.name, amount: loan.amount, phone: loan.phone, deletedAt: Date.now(), deletedByPin: "****"
+            });
+            await loansRef.child(id).remove();
+            showToast(`Customer ${loan.name} deleted.`);
+            return true;
+        }
+
+        function del(id) {
+            showPinDialog("Authorization Required to Delete", async (pin) => {
+                if (await verifyPin(pin)) {
+                    if (confirm("⚠️ Permanent deletion! This cannot be undone. Continue?")) {
+                        await deleteLoanWithHistory(id, pin);
+                        showPage('listPage');
+                    }
+                } else showToast("❌ Wrong PIN! Deletion cancelled.", true);
+            });
+        }
+
+        async function payInterest(id) {
+            const l = loans.find(x => x.id === id);
+            if (!l) return;
+            const c = calc(l);
+            if (c.interest <= 0) { showToast("No interest accrued yet.", true); return; }
+            if (confirm(`Confirm receipt of Rs. ${formatCurrency(c.interest)} for Interest Payment?`)) {
+                const today = new Date().toISOString().split('T')[0];
+                const newHistory = [...(l.paidHistory || []), { type: 'Interest', date: today, amt: c.interest, from: l.currentCycleDate, to: today }];
+                await loansRef.child(l.id).update({ paidHistory: newHistory, currentCycleDate: today, finalInterest: 0 });
+                showToast("Interest payment recorded!");
+                viewDetail(id);
+            }
+        }
+
+        function payPrincipal(id) {
+            const l = loans.find(x => x.id === id);
+            if (!l) return;
+
+            // Create bottom sheet modal
+            const overlay = document.createElement('div');
+            overlay.className = 'bottom-sheet-overlay';
+            const today = new Date().toISOString().split('T')[0];
+            overlay.innerHTML = `
+            <div class="bottom-sheet">
+                <div class="bottom-sheet-handle"></div>
+                <h3><i class="ph-fill ph-wallet" style="color:var(--primary)"></i> Principal Payment</h3>
+                <div class="balance-chip">Balance: Rs. ${formatCurrency(l.amount)}</div>
+
+                <label class="bs-label">Amount Received (Rs.) *</label>
+                <input type="number" id="bsAmt" class="bs-input" placeholder="Enter amount" inputmode="numeric">
+
+                <label class="bs-label">Received Date *</label>
+                <input type="date" id="bsDate" class="bs-input" value="${today}">
+
+                <label class="bs-label">Remarks (Optional)</label>
+                <input type="text" id="bsRemarks" class="bs-input" placeholder="e.g. Cash received, Bank transfer...">
+
+                <div class="bs-actions">
+                    <button class="btn bs-cancel" id="bsCancelBtn">Cancel</button>
+                    <button class="btn bs-confirm" id="bsConfirmBtn"><i class="ph-bold ph-check"></i> Confirm</button>
+                </div>
+            </div>`;
+            document.body.appendChild(overlay);
+            overlay.querySelector('#bsAmt').focus();
+
+            overlay.querySelector('#bsCancelBtn').onclick = () => overlay.remove();
+            overlay.onclick = (e) => { if (e.target === overlay) overlay.remove(); };
+
+            overlay.querySelector('#bsConfirmBtn').onclick = async () => {
+                let amt = parseFloat(overlay.querySelector('#bsAmt').value);
+                const recDate = overlay.querySelector('#bsDate').value || today;
+                const remarks = overlay.querySelector('#bsRemarks').value.trim();
+                if (!amt || isNaN(amt) || amt <= 0) { showToast('Please enter a valid amount', true); return; }
+                if (amt > l.amount) { showToast('Cannot exceed principal balance!', true); return; }
+                overlay.remove();
+                const histEntry = { type: 'Principal', date: recDate, amt: amt };
+                if (remarks) histEntry.remarks = remarks;
+                const newHistory = [...(l.paidHistory || []), histEntry];
+                const newAmount = l.amount - amt;
+                let newStatus = l.status, finalInt = l.finalInterest;
+                if (newAmount <= 0) { newStatus = 'Paid'; finalInt = calc(l).interest; }
+                await loansRef.child(l.id).update({ amount: newAmount, paidHistory: newHistory, status: newStatus, finalInterest: finalInt });
+                showToast(newAmount <= 0 ? '✅ Loan fully paid off!' : `Principal reduced by Rs. ${formatCurrency(amt)}`);
+                viewDetail(id);
+            };
+        }
+
+        async function updateStatus(id, stat, currentInt) {
+            const l = loans.find(x => x.id === id);
+            if (!l) return;
+            if (stat === 'Paid') {
+                if (!confirm("Freeze interest and mark as Paid?")) return;
+                await loansRef.child(l.id).update({ status: stat, finalInterest: currentInt });
+                showToast("Account frozen / Paid.");
+            } else {
+                if (!confirm("Resume to Active status?")) return;
+                await loansRef.child(l.id).update({ status: stat, finalInterest: 0 });
+                showToast("Account resumed to Active.");
+            }
+            viewDetail(id);
+        }
+
+        async function viewDetail(id) {
+            const l = loans.find(x => x.id === id);
+            if (!l) return;
+            const c = calc(l);
+            const isAct = l.status === 'Active';
+
+            // Separate payment history into Interest and Principal receipts
+            const interestReceipts = (l.paidHistory || []).filter(h => h.type === 'Interest');
+            const principalReceipts = (l.paidHistory || []).filter(h => h.type === 'Principal');
+
+            const dv = document.getElementById('loanDetail');
+            dv.innerHTML = `
+            <div class="profile-hero"><img src="${l.pImg}" class="profile-hero-img" onerror="this.src='https://ui-avatars.com/api/?name=${encodeURIComponent(l.name)}&background=059669&color=fff'"><div class="profile-name">${escapeHtml(l.name)}</div><div class="status-badge ${isAct ? 'active' : 'paid'}">${l.status}</div></div>
+            
+            <div class="financial-grid">
+                <div class="fin-card principal-card">
+                    <div class="fin-label"><i class="ph-bold ph-bank"></i> Loan Principal</div>
+                    <div class="fin-value">Rs. ${formatCurrency(l.amount)}</div>
+                    <div class="fin-sub">Outstanding Balance</div>
+                </div>
+                <div class="fin-card interest-card">
+                    <div class="fin-label"><i class="ph-bold ph-chart-line-up"></i> Accrued Interest</div>
+                    <div class="fin-value">Rs. ${formatCurrency(c.interest)}</div>
+                    <div class="fin-sub">Since ${l.currentCycleDate}</div>
+                </div>
+            </div>
+            
+            ${isAct ? `
+            <div style="display:flex;gap:10px;margin-bottom:12px">
+                <button class="btn btn-primary" style="flex:1" onclick="payPrincipal(${l.id})"><i class="ph-bold ph-wallet"></i> Pay Principal</button>
+                <button class="btn btn-primary" style="flex:1;background:var(--danger)" onclick="payInterest(${l.id})"><i class="ph-bold ph-hand-coins"></i> Pay Interest</button>
+            </div>
+            <div style="display:flex;gap:10px;margin-bottom:25px">
+                <button class="btn btn-secondary" style="flex:1;background:#25D366" onclick="window.open('https://wa.me/${l.phone?.replace(/[^0-9]/g, '')}?text=Dear%20${encodeURIComponent(l.name)},%20your%20loan%20interest%20is%20Rs.%20${c.interest.toFixed(2)}.%20Please%20contact%20Kiran%20Chettri', '_blank')"><i class="ph-bold ph-whatsapp-logo"></i> WhatsApp</button>
+                <button class="btn btn-secondary" style="flex:1" onclick="updateStatus(${l.id}, 'Paid', ${c.interest})"><i class="ph-bold ph-lock-key"></i> Mark Paid</button>
+            </div>` : `<button class="btn btn-primary" style="margin-bottom:25px" onclick="updateStatus(${l.id}, 'Active', 0)"><i class="ph-bold ph-play"></i> Resume Active</button>`}
+
+            <!-- Interest Receipt History -->
+            <div class="receipt-section">
+                <div class="receipt-header">
+                    <i class="ph-fill ph-hand-coins"></i> Interest Received History
+                    <span style="margin-left:auto" class="badge-receipt">${interestReceipts.length} receipts</span>
+                </div>
+                ${interestReceipts.length ? interestReceipts.slice().reverse().map(r => `
+                    <div class="receipt-item">
+                        <div>
+                            <div class="receipt-date">${r.date}</div>
+                            <div class="receipt-type">Interest (${r.from || ''} → ${r.to || r.date})</div>
+                        </div>
+                        <div class="receipt-amount interest-received">+ Rs. ${formatCurrency(r.amt)}</div>
+                    </div>`).join('') : '<div class="empty-state" style="padding:20px">No interest payments yet.</div>'}
+            </div>
+
+            <!-- Principal Receipt History -->
+            <div class="receipt-section">
+                <div class="receipt-header">
+                    <i class="ph-fill ph-wallet"></i> Principal Received History
+                    <span style="margin-left:auto" class="badge-receipt">${principalReceipts.length} receipts</span>
+                </div>
+                ${principalReceipts.length ? principalReceipts.slice().reverse().map(r => `
+                    <div class="receipt-item">
+                        <div>
+                            <div class="receipt-date">📅 ${r.date}</div>
+                            <div class="receipt-type">Principal Repayment${r.remarks ? '<br><span class="remarks-chip">💬 ' + r.remarks + '</span>' : ''}</div>
+                        </div>
+                        <div class="receipt-amount">+ Rs. ${formatCurrency(r.amt)}</div>
+                    </div>`).join('') : '<div class="empty-state" style="padding:20px">No principal received yet.</div>'}
+            </div>
+
+            <!-- KYC Details - Last -->
+            <div class="info-card">
+                <div class="info-card-title">📄 KYC Details</div>
+                <div class="info-row"><span>Mobile</span><span><a href="tel:${l.phone}" style="color:var(--primary)">${l.phone || 'N/A'}</a></span></div>
+                <div class="info-row"><span>Start Date</span><span>${l.startDate}</span></div>
+                <div class="info-row"><span>Days Elapsed</span><span><strong>${c.days} days</strong></span></div>
+                <div class="info-row"><span>Interest Rate</span><span>${l.rate}% p.a.</span></div>
+                <div class="info-row"><span>Payment Mode</span><span>${l.method}</span></div>
+                ${l.method === 'Online' ? `
+                    <div class="info-row"><span>Bank Name</span><span>${l.bank || 'N/A'}</span></div>
+                    <div class="info-row"><span>Account No</span><span>${l.acc || 'N/A'}</span></div>
+                    <div class="info-row"><span>Initial TxID</span><span>${l.txid || 'N/A'}</span></div>
+                ` : ''}
+            </div>
+
+            ${l.docs?.length ? `<div class="info-card"><div class="info-card-title">📁 Documents</div>${l.docs.map(d => `<a href="${d.u}" target="_blank" class="info-row" style="text-decoration:none;color:var(--text)"><span>📄 ${d.n}</span><span>🔗</span></a>`).join('')}</div>` : ''}
+
+            <button class="btn btn-danger-outline" onclick="del(${l.id})"><i class="ph-bold ph-trash"></i> Delete Customer (PIN Required)</button>
+            <div style="height:30px"></div>`;
+            showPage('detailPage');
+        }
+
+        function openDeleteHistoryPanel() {
+            const panel = document.getElementById('historyPanel');
+            panel.style.display = panel.style.display === 'none' ? 'block' : 'none';
+            renderDeletedHistory();
+        }
+
+        function renderDeletedHistory() {
+            const container = document.getElementById('deleteHistoryList');
+            if (!container) return;
+            if (!deletedHistory.length) { container.innerHTML = '<div class="empty-state"><div class="empty-text">No deletion history found.</div></div>'; return; }
+            container.innerHTML = deletedHistory.map(h => `<div style="padding:12px; border-bottom:1px solid #e2e8f0;"><strong>${escapeHtml(h.name)}</strong><br><span style="font-size:12px;">Principal: Rs. ${formatCurrency(h.amount)} | Deleted: ${new Date(h.deletedAt).toLocaleString()}</span></div>`).join('');
+        }
+
+        function sendHistoryEmail() {
+            if (deletedHistory.length === 0) { showToast("No history to send.", true); return; }
+            let body = "DELETED RECORDS REPORT\n\n";
+            deletedHistory.forEach(h => { body += `Name: ${h.name} | Amount: Rs. ${h.amount} | Deleted: ${new Date(h.deletedAt).toLocaleString()}\n`; });
+            window.location.href = `mailto:ghanshyamoli9745@gmail.com?subject=Loan%20Deletion%20History&body=${encodeURIComponent(body)}`;
+            showToast("Email client opened.");
+        }
+
+        function promptClearAllData() {
+            showPinDialog("Admin Authorization - Delete All Data", async (pin) => {
+                if (await verifyPin(pin)) {
+                    if (confirm("⚠️ FINAL WARNING: This will delete ALL customers and history. Cannot be undone. Continue?")) {
+                        await loansRef.remove();
+                        await deletedHistoryRef.remove();
+                        showToast("All data wiped successfully.");
+                        showPage('listPage');
+                    }
+                } else showToast("❌ Wrong PIN! Cannot delete all data.", true);
+            });
+        }
+
+        function exportData() {
+            if (!loans.length) { showToast("No data to export", true); return; }
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(loans));
+            const a = document.createElement('a');
+            a.href = dataStr;
+            a.download = `KiranChettri_Backup_${new Date().toISOString().split('T')[0]}.json`;
+            a.click();
+            showToast("Backup exported!");
+        }
+
+        async function importData(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = async function (evt) {
+                try {
+                    const imported = JSON.parse(evt.target.result);
+                    if (Array.isArray(imported) && confirm("Import will overwrite current data. Continue?")) {
+                        await loansRef.remove();
+                        for (const loan of imported) if (loan.id) await loansRef.child(loan.id).set(loan);
+                        showToast("Data imported successfully!");
+                        showPage('listPage');
+                    } else showToast("Invalid format", true);
+                } catch (err) { showToast("Error parsing file", true); }
+            };
+            reader.readAsText(file);
+            e.target.value = '';
+        }
+
+        function checkAlerts() {
+            loans.forEach(l => {
+                if (l.status === 'Active' && calc(l).days >= 365 && !window.alertTriggered) {
+                    window.alertTriggered = true;
+                    setTimeout(() => { alert(`⚠️ URGENT: ${l.name} has exceeded 365 days!`); window.alertTriggered = false; }, 300);
+                }
+            });
+        }
+
+        loansRef.on('value', (snap) => { loans = snap.val() ? Object.values(snap.val()) : []; renderList(); updateDashboardStats(); checkAlerts(); });
+        deletedHistoryRef.on('value', (snap) => { deletedHistory = snap.val() ? Object.values(snap.val()) : []; renderDeletedHistory(); });
+
+        document.getElementById('sDate').valueAsDate = new Date();
+        document.getElementById('topDate').innerText = new Date().toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+        toggleBank();
+        renderList();
+    </script>
+</body>
+
+</html>
