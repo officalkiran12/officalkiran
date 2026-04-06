@@ -41,6 +41,10 @@
             background: var(--bg);
             color: var(--text);
             padding-bottom: 100px;
+            overscroll-behavior-y: none;
+            -webkit-overflow-scrolling: touch;
+            min-height: 100vh;
+            width: 100%;
         }
 
         .container {
@@ -52,10 +56,10 @@
         .header {
             background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
             color: white;
-            padding: 50px 20px 30px;
-            border-bottom-left-radius: 40px;
-            border-bottom-right-radius: 40px;
-            margin-bottom: 25px;
+            padding: 30px 20px 20px;
+            border-bottom-left-radius: 28px;
+            border-bottom-right-radius: 28px;
+            margin-bottom: 20px;
             position: relative;
             overflow: hidden;
         }
@@ -169,8 +173,8 @@
         .page {
             display: none;
             opacity: 0;
-            transform: translateY(15px);
-            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            transform: translateY(10px);
+            transition: opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1), transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
         .active-page {
@@ -180,9 +184,9 @@
         }
 
         .section-title {
-            font-size: 18px;
+            font-size: 16px;
             font-weight: 700;
-            margin-bottom: 15px;
+            margin-bottom: 12px;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -413,15 +417,92 @@
             font-size: 24px;
             box-shadow: var(--shadow-sm);
             cursor: pointer;
+            transition: all 0.2s;
         }
 
-        .detail-header {
+        .back-btn:active {
+            transform: scale(0.9);
+            background: var(--primary-light);
+        }
+
+        .sub-header {
             display: flex;
             align-items: center;
             gap: 15px;
             margin-bottom: 25px;
             padding-top: 20px;
         }
+
+        .sub-header h2 {
+            font-size: 20px;
+            font-weight: 700;
+        }
+
+        /* User Management in Settings */
+        .mgmt-list {
+            margin-top: 15px;
+        }
+
+        .mgmt-item {
+            background: #f8fafc;
+            border-radius: var(--radius-md);
+            padding: 12px 15px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border: 1px solid #e2e8f0;
+        }
+
+        .mgmt-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .mgmt-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            object-fit: cover;
+        }
+
+        .mgmt-name {
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .mgmt-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .mgmt-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .mgmt-btn-edit {
+            background: var(--primary-light);
+            color: var(--primary-dark);
+        }
+
+        .mgmt-btn-del {
+            background: var(--danger-light);
+            color: var(--danger);
+        }
+
+        .mgmt-btn:active {
+            transform: scale(0.9);
+        }
+
 
         .profile-hero {
             text-align: center;
@@ -914,7 +995,11 @@
     <!-- Add Page -->
     <div id="addPage" class="page">
         <div class="container">
-            <div class="form-card" style="margin-top:20px">
+            <div class="sub-header">
+                <div class="back-btn" onclick="showPage('listPage')"><i class="ph ph-caret-left"></i></div>
+                <h2>Register Customer</h2>
+            </div>
+            <div class="form-card">
                 <div class="form-header"><i class="ph-fill ph-user-plus"></i><span>Register Customer</span></div>
                 <div class="input-group"><label>Full Name *</label><input type="text" id="name"
                         placeholder="E.g. Ramesh Thapa"></div>
@@ -960,20 +1045,71 @@
     <!-- Detail Page -->
     <div id="detailPage" class="page">
         <div class="container">
-            <div class="detail-header">
+            <div class="sub-header">
                 <div class="back-btn" onclick="showPage('listPage')"><i class="ph ph-caret-left"></i></div>
-                <h2 style="font-size:20px;font-weight:700">Customer Detail</h2>
+                <h2>Customer Detail</h2>
             </div>
             <div id="loanDetail"></div>
+        </div>
+    </div>
+
+    <!-- Edit Page -->
+    <div id="editPage" class="page">
+        <div class="container">
+            <div class="sub-header">
+                <div class="back-btn" onclick="showPage('settingsPage')"><i class="ph ph-caret-left"></i></div>
+                <h2>Edit Customer</h2>
+            </div>
+            <div class="form-card">
+                <div class="form-header"><i class="ph-fill ph-user-circle-gear"></i><span>Edit Customer Profile</span></div>
+                <input type="hidden" id="editId">
+                <div class="input-group"><label>Full Name *</label><input type="text" id="editName"></div>
+                <div class="input-group"><label>Loan Principal (Rs.) *</label><input type="number" id="editAmount"></div>
+                <div style="display:flex;gap:15px">
+                    <div class="input-group" style="flex:1"><label>Interest Rate (%)</label><input type="number" id="editRate"></div>
+                    <div class="input-group" style="flex:1"><label>Start Date</label><input type="date" id="editSDate"></div>
+                </div>
+                <div class="input-group"><label>Mobile No.</label><input type="tel" id="editPhone"></div>
+                <div class="input-group"><label>Profile Photo URL</label><input type="url" id="editPImg"></div>
+                <div class="input-group"><label>Payment Mode</label><select id="editPMethod" onchange="toggleEditBank()">
+                        <option value="Offline">Offline / Cash</option>
+                        <option value="Online">Online / Bank</option>
+                    </select></div>
+                <div id="editBankInfo" style="display:none; background:#f8fafc; padding:15px; border-radius:var(--radius-md); margin-bottom:20px">
+                    <div class="input-group"><label>Bank Name</label><input type="text" id="editBank"></div>
+                    <div class="input-group"><label>Account Number</label><input type="text" id="editAcc"></div>
+                    <div class="input-group"><label>Initial TxID</label><input type="text" id="editTxid"></div>
+                </div>
+                <div class="input-group"><label style="display:flex; justify-content:space-between"><span>KYC Documents</span><span onclick="addEditDocRow()" style="color:var(--primary);cursor:pointer">+ Add Doc</span></label>
+                    <div id="editDocList">
+                        <!-- Dynamic Doc Rows -->
+                    </div>
+                </div>
+                <div class="input-group"><label style="color:var(--danger);">Authorization PIN *</label><input type="password" id="editAdminPin" placeholder="Enter PIN to save changes"></div>
+                <button class="btn btn-primary" onclick="updateLoan()"><i class="ph-bold ph-floppy-disk"></i> Save Changes</button>
+            </div>
         </div>
     </div>
 
     <!-- Settings Page -->
     <div id="settingsPage" class="page">
         <div class="container">
-            <div class="detail-header">
+            <div class="sub-header">
                 <div class="back-btn" onclick="showPage('listPage')"><i class="ph ph-caret-left"></i></div>
-                <h2 style="font-size:20px;font-weight:700">Settings</h2>
+                <h2>Settings</h2>
+            </div>
+            
+            <div class="form-card" style="margin-bottom:20px">
+                <div style="display:flex; justify-content:space-between; align-items:center; cursor:pointer;" onclick="toggleMgmtList()">
+                    <h4 style="margin-bottom:0"><i class="ph-fill ph-users-three"></i> User Management</h4>
+                    <i class="ph ph-caret-down" id="mgmtCaret" style="transition:0.3s"></i>
+                </div>
+                <div id="mgmtContainer" style="display:none; margin-top:15px">
+                    <p style="font-size:13px; color:var(--text-muted); margin-bottom:15px;">Select a user to edit their details or remove them from the system.</p>
+                    <div class="mgmt-list" id="mgmtList">
+                        <!-- Dynamic User List for Edit/Delete -->
+                    </div>
+                </div>
             </div>
             <div class="form-card">
                 <h4 style="margin-bottom:20px"><i class="ph-fill ph-database"></i> Data Management</h4>
@@ -1019,6 +1155,7 @@
 
     <script src="https://www.gstatic.com/firebasejs/10.9.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.9.0/firebase-database-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.9.0/firebase-messaging-compat.js"></script>
 
     <script>
         const firebaseConfig = {
@@ -1032,6 +1169,76 @@
         };
         firebase.initializeApp(firebaseConfig);
         const db = firebase.database();
+        const messaging = firebase.messaging();
+
+        messaging.onMessage((payload) => {
+            console.log('Message received. ', payload);
+            showBrowserNotification(payload.notification.title, payload.notification.body);
+            playNotificationSound();
+        });
+
+        const vapidKey = "BGx9UKNzYNtu-y3BbzzaQRGln6ftVB1gAMgE7kFbHsx9VN-EIa3HSbfGWBir8tEm22-5Rqe1jfRdNvfhTsgvo3k";
+        
+        async function requestNotificationPermission() {
+            try {
+                const permission = await Notification.requestPermission();
+                if (permission === 'granted') {
+                    const token = await messaging.getToken({ vapidKey: vapidKey });
+                    console.log('Notification permission granted. Token:', token);
+                }
+            } catch (err) { console.error('An error occurred while retrieving token. ', err); }
+        }
+        
+        function showBrowserNotification(title, body) {
+            if (Notification.permission === 'granted') {
+                new Notification(title, { 
+                    body: body, 
+                    icon: 'https://ui-avatars.com/api/?name=K&background=059669&color=fff',
+                    vibrate: [200, 100, 200]
+                });
+            }
+        }
+
+        let audioCtx;
+        function playNotificationSound() {
+            try {
+                if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                if (audioCtx.state === 'suspended') audioCtx.resume();
+
+                // Advanced "Rising Arpeggio" - Longer and more attention-grabbing notification
+                const now = audioCtx.currentTime;
+                const tones = [523.25, 659.25, 783.99, 1046.50]; // C5, E5, G5, C6
+                
+                tones.forEach((freq, i) => {
+                    const time = now + (i * 0.15); // Staggered start times
+                    const osc = audioCtx.createOscillator();
+                    const gain = audioCtx.createGain();
+                    
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(freq, time);
+                    
+                    gain.gain.setValueAtTime(0, time);
+                    gain.gain.linearRampToValueAtTime(0.3, time + 0.05);
+                    gain.gain.exponentialRampToValueAtTime(0.01, time + 0.5);
+                    
+                    osc.connect(gain);
+                    gain.connect(audioCtx.destination);
+                    
+                    osc.start(time);
+                    osc.stop(time + 0.6);
+                });
+
+            } catch (e) {
+                console.warn("AudioContext failed, trying simple Audio fallback:", e);
+                const audio = new Audio('https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3');
+                audio.play().catch(err => console.error("Sound failed completely:", err));
+            }
+        }
+        
+        // Resume AudioContext on any user interaction to satisfy autoplay policy
+        document.body.addEventListener('click', () => {
+            if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
+        }, { once: true });
 
         const loansRef = db.ref('loans');
         const deletedHistoryRef = db.ref('deletedHistory');
@@ -1044,6 +1251,12 @@
                 minimumFractionDigits: 0,
                 maximumFractionDigits: 2
             }).format(amount);
+        }
+
+        function maskPhone(phone) {
+            if (!phone) return 'N/A';
+            if (phone.length < 5) return '****';
+            return phone.substring(0, 2) + '*'.repeat(phone.length - 4) + phone.substring(phone.length - 2);
         }
 
         async function verifyPin(pin) {
@@ -1093,18 +1306,45 @@
         function showPage(id, el) {
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active-page'));
             document.getElementById(id).classList.add('active-page');
-            document.getElementById('mainHeader').style.display = (id === 'detailPage' || id === 'settingsPage') ? 'none' : 'block';
+            document.getElementById('mainHeader').style.display = (id === 'detailPage' || id === 'settingsPage' || id === 'addPage' || id === 'editPage') ? 'none' : 'block';
             if (id === 'listPage') renderList();
-            if (id === 'settingsPage') renderDeletedHistory();
+            if (id === 'settingsPage') {
+                renderDeletedHistory();
+                renderMgmtList();
+                document.getElementById('mgmtContainer').style.display = 'none';
+                document.getElementById('mgmtCaret').style.transform = 'rotate(0deg)';
+            }
+        }
+
+        function toggleMgmtList() {
+            const cont = document.getElementById('mgmtContainer');
+            const caret = document.getElementById('mgmtCaret');
+            if (cont.style.display === 'none') {
+                cont.style.display = 'block';
+                caret.style.transform = 'rotate(180deg)';
+            } else {
+                cont.style.display = 'none';
+                caret.style.transform = 'rotate(0deg)';
+            }
         }
 
         function toggleBank() { document.getElementById('bankInfo').style.display = document.getElementById('pMethod').value === 'Online' ? 'block' : 'none'; }
+        function toggleEditBank() { document.getElementById('editBankInfo').style.display = document.getElementById('editPMethod').value === 'Online' ? 'block' : 'none'; }
+        
         document.getElementById('pMethod').addEventListener('change', toggleBank);
+        
         function addDocRow() {
             const div = document.createElement('div');
             div.style.display = "flex"; div.style.gap = "10px"; div.style.marginBottom = "10px";
             div.innerHTML = `<input type="text" placeholder="Document Name" class="dName" style="flex:1"><input type="text" placeholder="URL" class="dUrl" style="flex:1.5">`;
             document.getElementById('docList').appendChild(div);
+        }
+
+        function addEditDocRow(n = '', u = '') {
+            const div = document.createElement('div');
+            div.style.display = "flex"; div.style.gap = "10px"; div.style.marginBottom = "10px";
+            div.innerHTML = `<input type="text" placeholder="Document Name" class="editDName" value="${n}" style="flex:1"><input type="text" placeholder="URL" class="editDUrl" value="${u}" style="flex:1.5">`;
+            document.getElementById('editDocList').appendChild(div);
         }
 
         async function saveLoan() {
@@ -1191,7 +1431,7 @@
                 const c = calc(l);
                 return `<div class="user-card" onclick="viewDetail(${l.id})">
                 <img src="${l.pImg}" class="user-avatar" onerror="this.src='https://ui-avatars.com/api/?name=${encodeURIComponent(l.name)}&background=059669&color=fff'">
-                <div class="user-info"><div class="user-name">${escapeHtml(l.name)}</div><div class="status-badge ${l.status === 'Active' ? 'active' : 'paid'}">${l.status === 'Active' ? '● Active' : '✓ Paid'}</div></div>
+                <div class="user-info"><div class="user-name">${escapeHtml(l.name)}</div><div class="status-badge ${l.status === 'Active' ? 'active' : 'paid'}">${l.status === 'Active' ? '● Active' : '✓ Paid'}</div><div style="font-size:11px;color:var(--text-muted);margin-top:2px">${maskPhone(l.phone)}</div></div>
                 <div class="user-amounts"><div class="user-principal">Rs. ${formatCurrency(l.amount)}</div><div class="user-interest">+ Rs. ${formatCurrency(c.interest)}</div></div>
             </div>`;
             }).join('');
@@ -1207,7 +1447,95 @@
             });
             await loansRef.child(id).remove();
             showToast(`Customer ${loan.name} deleted.`);
+            if (document.getElementById('settingsPage').classList.contains('active-page')) renderMgmtList();
             return true;
+        }
+
+        function editUser(id) {
+            const l = loans.find(x => x.id === id);
+            if (!l) return;
+            document.getElementById('editId').value = l.id;
+            document.getElementById('editName').value = l.name;
+            document.getElementById('editAmount').value = l.amount;
+            document.getElementById('editRate').value = l.rate;
+            document.getElementById('editSDate').value = l.startDate;
+            document.getElementById('editPhone').value = l.phone || '';
+            document.getElementById('editPImg').value = l.pImg || '';
+            document.getElementById('editPMethod').value = l.method || 'Offline';
+            document.getElementById('editBank').value = l.bank || '';
+            document.getElementById('editAcc').value = l.acc || '';
+            document.getElementById('editTxid').value = l.txid || '';
+            
+            const docList = document.getElementById('editDocList');
+            docList.innerHTML = '';
+            if (l.docs && l.docs.length > 0) {
+                l.docs.forEach(d => addEditDocRow(d.n, d.u));
+            } else {
+                addEditDocRow();
+            }
+            
+            toggleEditBank();
+            document.getElementById('editAdminPin').value = '';
+            showPage('editPage');
+        }
+
+        async function updateLoan() {
+            const id = document.getElementById('editId').value;
+            const name = document.getElementById('editName').value.trim();
+            const amount = parseFloat(document.getElementById('editAmount').value);
+            const pin = document.getElementById('editAdminPin').value;
+
+            if (!name || isNaN(amount)) { showToast("Please fill Name and Amount", true); return; }
+            if (!(await verifyPin(pin))) { showToast("❌ Incorrect PIN", true); return; }
+
+            const docs = [];
+            document.querySelectorAll('#editDocList div').forEach(row => {
+                const n = row.querySelector('.editDName')?.value.trim();
+                const u = row.querySelector('.editDUrl')?.value.trim();
+                if (n) docs.push({ n, u: u || '#' });
+            });
+
+            const updates = {
+                name: name,
+                amount: amount,
+                rate: parseFloat(document.getElementById('editRate').value) || 12,
+                startDate: document.getElementById('editSDate').value,
+                phone: document.getElementById('editPhone').value,
+                pImg: document.getElementById('editPImg').value,
+                method: document.getElementById('editPMethod').value,
+                bank: document.getElementById('editBank').value,
+                acc: document.getElementById('editAcc').value,
+                txid: document.getElementById('editTxid').value,
+                docs: docs
+            };
+
+            await loansRef.child(id).update(updates);
+            showToast("Customer updated successfully!");
+            showPage('settingsPage');
+        }
+
+        function renderMgmtList() {
+            const container = document.getElementById('mgmtList');
+            if (!container) return;
+            if (loans.length === 0) {
+                container.innerHTML = '<div style="text-align:center; padding:20px; color:var(--text-muted);">No users to manage.</div>';
+                return;
+            }
+            container.innerHTML = loans.map(l => `
+                <div class="mgmt-item">
+                    <div class="mgmt-info">
+                        <img src="${l.pImg}" class="mgmt-avatar" onerror="this.src='https://ui-avatars.com/api/?name=${encodeURIComponent(l.name)}&background=059669&color=fff'">
+                        <div>
+                            <div class="mgmt-name">${escapeHtml(l.name)}</div>
+                            <div style="font-size:11px;color:var(--text-muted)">${maskPhone(l.phone)}</div>
+                        </div>
+                    </div>
+                    <div class="mgmt-actions">
+                        <div class="mgmt-btn mgmt-btn-edit" onclick="editUser(${l.id})"><i class="ph-bold ph-pencil-simple"></i></div>
+                        <div class="mgmt-btn mgmt-btn-del" onclick="del(${l.id})"><i class="ph-bold ph-trash"></i></div>
+                    </div>
+                </div>
+            `).join('');
         }
 
         function del(id) {
@@ -1458,10 +1786,19 @@
         }
 
         function checkAlerts() {
+            let triggeredCount = 0;
             loans.forEach(l => {
-                if (l.status === 'Active' && calc(l).days >= 365 && !window.alertTriggered) {
-                    window.alertTriggered = true;
-                    setTimeout(() => { alert(`⚠️ URGENT: ${l.name} has exceeded 365 days!`); window.alertTriggered = false; }, 300);
+                if (l.status === 'Active' && calc(l).days >= 365) {
+                    triggeredCount++;
+                    // Trigger alert logic every time a data update happens IF it meets the 365 days criteria
+                    // but stagger them so they don't all pop at once
+                    setTimeout(() => { 
+                        const msg = `⚠️ URGENT: ${l.name}\nThe repayment date has arrived. Please collect principal or interest.`;
+                        showBrowserNotification("Repayment Required", msg);
+                        playNotificationSound();
+                        // Optional: only alert() once to prevent blocking the UI too much
+                        if (triggeredCount === 1) alert(msg); 
+                    }, triggeredCount * 800); 
                 }
             });
         }
@@ -1473,6 +1810,7 @@
         document.getElementById('topDate').innerText = new Date().toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
         toggleBank();
         renderList();
+        requestNotificationPermission();
     </script>
 </body>
 
