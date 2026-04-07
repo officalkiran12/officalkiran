@@ -9,6 +9,13 @@
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap"
         rel="stylesheet">
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    
+    <!-- PWA & Mobile Meta Tags -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Kiran Loan">
+    <link rel="apple-touch-icon" href="https://ui-avatars.com/api/?name=K&background=059669&color=fff&size=192">
+    <link rel="manifest" href='data:application/manifest+json,{"name":"Kiran Chettri Loan Manager","short_name":"LoanTrack","start_url":".","display":"standalone","background_color":"#f8fafc","theme_color":"#0f172a","icons":[{"src":"https://ui-avatars.com/api/?name=K&background=059669&color=fff&size=192","sizes":"192x192","type":"image/png"},{"src":"https://ui-avatars.com/api/?name=K&background=059669&color=fff&size=512","sizes":"512x512","type":"image/png"}]}'>
     <style>
         :root {
             --primary: #059669;
@@ -816,43 +823,145 @@
 
         /* ===== MOBILE RESPONSIVE ===== */
         @media (max-width: 480px) {
-            .header { padding: 44px 16px 24px; border-bottom-left-radius: 28px; border-bottom-right-radius: 28px; }
-            .header-title { font-size: 22px; }
-            .container { padding: 0 14px; }
-            .stat-card { min-width: 155px; padding: 14px; }
-            .stat-value { font-size: 18px; }
-            .stat-title { font-size: 12px; }
-            .user-card { padding: 13px; gap: 11px; }
-            .user-avatar { width: 46px; height: 46px; border-radius: 13px; }
-            .user-name { font-size: 14px; }
-            .user-principal { font-size: 14px; }
-            .user-interest { font-size: 12px; }
-            .financial-grid { gap: 10px; }
-            .fin-card { padding: 16px 10px; }
-            .fin-value { font-size: 20px; }
-            .fin-label { font-size: 11px; }
-            .btn { padding: 14px; font-size: 14px; }
-            .form-card { padding: 16px; }
-            .input-group input, .input-group select { padding: 13px; font-size: 14px; }
-            .nav { padding: 11px 14px 26px; }
-            .profile-hero-img { width: 100px; height: 100px; border-radius: 28px; }
-            .profile-name { font-size: 20px; }
-            .receipt-item { padding: 11px 14px; }
-            .receipt-amount { font-size: 14px; }
-            .receipt-date { font-size: 12px; }
-            .receipt-type { font-size: 11px; }
-            .info-row { padding: 13px 14px; font-size: 13px; }
-            .receipt-header { padding: 13px 14px; font-size: 13px; }
-            .detail-header { padding-top: 12px; margin-bottom: 16px; }
-            .section-title { font-size: 16px; }
+            .header {
+                padding: 44px 16px 24px;
+                border-bottom-left-radius: 28px;
+                border-bottom-right-radius: 28px;
+            }
+
+            .header-title {
+                font-size: 22px;
+            }
+
+            .container {
+                padding: 0 14px;
+            }
+
+            .stat-card {
+                min-width: 155px;
+                padding: 14px;
+            }
+
+            .stat-value {
+                font-size: 18px;
+            }
+
+            .stat-title {
+                font-size: 12px;
+            }
+
+            .user-card {
+                padding: 13px;
+                gap: 11px;
+            }
+
+            .user-avatar {
+                width: 46px;
+                height: 46px;
+                border-radius: 13px;
+            }
+
+            .user-name {
+                font-size: 14px;
+            }
+
+            .user-principal {
+                font-size: 14px;
+            }
+
+            .user-interest {
+                font-size: 12px;
+            }
+
+            .financial-grid {
+                gap: 10px;
+            }
+
+            .fin-card {
+                padding: 16px 10px;
+            }
+
+            .fin-value {
+                font-size: 20px;
+            }
+
+            .fin-label {
+                font-size: 11px;
+            }
+
+            .btn {
+                padding: 14px;
+                font-size: 14px;
+            }
+
+            .form-card {
+                padding: 16px;
+            }
+
+            .input-group input,
+            .input-group select {
+                padding: 13px;
+                font-size: 14px;
+            }
+
+            .nav {
+                padding: 11px 14px 26px;
+            }
+
+            .profile-hero-img {
+                width: 100px;
+                height: 100px;
+                border-radius: 28px;
+            }
+
+            .profile-name {
+                font-size: 20px;
+            }
+
+            .receipt-item {
+                padding: 11px 14px;
+            }
+
+            .receipt-amount {
+                font-size: 14px;
+            }
+
+            .receipt-date {
+                font-size: 12px;
+            }
+
+            .receipt-type {
+                font-size: 11px;
+            }
+
+            .info-row {
+                padding: 13px 14px;
+                font-size: 13px;
+            }
+
+            .receipt-header {
+                padding: 13px 14px;
+                font-size: 13px;
+            }
+
+            .detail-header {
+                padding-top: 12px;
+                margin-bottom: 16px;
+            }
+
+            .section-title {
+                font-size: 16px;
+            }
         }
 
         /* Bottom Sheet Modal */
         .bottom-sheet-overlay {
             position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            background: rgba(0,0,0,0.55);
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.55);
             backdrop-filter: blur(4px);
             z-index: 2000;
             display: flex;
@@ -860,8 +969,26 @@
             justify-content: center;
             animation: bsFadeIn 0.2s ease;
         }
-        @keyframes bsFadeIn { from { opacity: 0; } to { opacity: 1; } }
-        @keyframes bsSlideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
+
+        @keyframes bsFadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes bsSlideUp {
+            from {
+                transform: translateY(100%);
+            }
+
+            to {
+                transform: translateY(0);
+            }
+        }
 
         .bottom-sheet {
             background: var(--card);
@@ -869,12 +996,13 @@
             padding: 24px 20px 40px;
             width: 100%;
             max-width: 600px;
-            animation: bsSlideUp 0.35s cubic-bezier(0.16,1,0.3,1);
-            box-shadow: 0 -10px 40px rgba(0,0,0,0.15);
+            animation: bsSlideUp 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+            box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.15);
         }
 
         .bottom-sheet-handle {
-            width: 40px; height: 4px;
+            width: 40px;
+            height: 4px;
             background: #e2e8f0;
             border-radius: 10px;
             margin: 0 auto 20px;
@@ -928,9 +1056,23 @@
             box-shadow: 0 0 0 4px var(--primary-light);
         }
 
-        .bs-actions { display: flex; gap: 12px; margin-top: 6px; }
-        .bs-cancel { background: #f1f5f9; color: var(--text); flex: 1; }
-        .bs-confirm { background: linear-gradient(135deg, var(--primary), #059669); color: white; flex: 2; }
+        .bs-actions {
+            display: flex;
+            gap: 12px;
+            margin-top: 6px;
+        }
+
+        .bs-cancel {
+            background: #f1f5f9;
+            color: var(--text);
+            flex: 1;
+        }
+
+        .bs-confirm {
+            background: linear-gradient(135deg, var(--primary), #059669);
+            color: white;
+            flex: 2;
+        }
 
         .remarks-chip {
             display: inline-block;
@@ -1061,32 +1203,42 @@
                 <h2>Edit Customer</h2>
             </div>
             <div class="form-card">
-                <div class="form-header"><i class="ph-fill ph-user-circle-gear"></i><span>Edit Customer Profile</span></div>
+                <div class="form-header"><i class="ph-fill ph-user-circle-gear"></i><span>Edit Customer Profile</span>
+                </div>
                 <input type="hidden" id="editId">
                 <div class="input-group"><label>Full Name *</label><input type="text" id="editName"></div>
-                <div class="input-group"><label>Loan Principal (Rs.) *</label><input type="number" id="editAmount"></div>
+                <div class="input-group"><label>Loan Principal (Rs.) *</label><input type="number" id="editAmount">
+                </div>
                 <div style="display:flex;gap:15px">
-                    <div class="input-group" style="flex:1"><label>Interest Rate (%)</label><input type="number" id="editRate"></div>
-                    <div class="input-group" style="flex:1"><label>Start Date</label><input type="date" id="editSDate"></div>
+                    <div class="input-group" style="flex:1"><label>Interest Rate (%)</label><input type="number"
+                            id="editRate"></div>
+                    <div class="input-group" style="flex:1"><label>Start Date</label><input type="date" id="editSDate">
+                    </div>
                 </div>
                 <div class="input-group"><label>Mobile No.</label><input type="tel" id="editPhone"></div>
                 <div class="input-group"><label>Profile Photo URL</label><input type="url" id="editPImg"></div>
-                <div class="input-group"><label>Payment Mode</label><select id="editPMethod" onchange="toggleEditBank()">
+                <div class="input-group"><label>Payment Mode</label><select id="editPMethod"
+                        onchange="toggleEditBank()">
                         <option value="Offline">Offline / Cash</option>
                         <option value="Online">Online / Bank</option>
                     </select></div>
-                <div id="editBankInfo" style="display:none; background:#f8fafc; padding:15px; border-radius:var(--radius-md); margin-bottom:20px">
+                <div id="editBankInfo"
+                    style="display:none; background:#f8fafc; padding:15px; border-radius:var(--radius-md); margin-bottom:20px">
                     <div class="input-group"><label>Bank Name</label><input type="text" id="editBank"></div>
                     <div class="input-group"><label>Account Number</label><input type="text" id="editAcc"></div>
                     <div class="input-group"><label>Initial TxID</label><input type="text" id="editTxid"></div>
                 </div>
-                <div class="input-group"><label style="display:flex; justify-content:space-between"><span>KYC Documents</span><span onclick="addEditDocRow()" style="color:var(--primary);cursor:pointer">+ Add Doc</span></label>
+                <div class="input-group"><label style="display:flex; justify-content:space-between"><span>KYC
+                            Documents</span><span onclick="addEditDocRow()"
+                            style="color:var(--primary);cursor:pointer">+ Add Doc</span></label>
                     <div id="editDocList">
                         <!-- Dynamic Doc Rows -->
                     </div>
                 </div>
-                <div class="input-group"><label style="color:var(--danger);">Authorization PIN *</label><input type="password" id="editAdminPin" placeholder="Enter PIN to save changes"></div>
-                <button class="btn btn-primary" onclick="updateLoan()"><i class="ph-bold ph-floppy-disk"></i> Save Changes</button>
+                <div class="input-group"><label style="color:var(--danger);">Authorization PIN *</label><input
+                        type="password" id="editAdminPin" placeholder="Enter PIN to save changes"></div>
+                <button class="btn btn-primary" onclick="updateLoan()"><i class="ph-bold ph-floppy-disk"></i> Save
+                    Changes</button>
             </div>
         </div>
     </div>
@@ -1098,19 +1250,41 @@
                 <div class="back-btn" onclick="showPage('listPage')"><i class="ph ph-caret-left"></i></div>
                 <h2>Settings</h2>
             </div>
-            
+
             <div class="form-card" style="margin-bottom:20px">
-                <div style="display:flex; justify-content:space-between; align-items:center; cursor:pointer;" onclick="toggleMgmtList()">
+                <div style="display:flex; justify-content:space-between; align-items:center; cursor:pointer;"
+                    onclick="toggleMgmtList()">
                     <h4 style="margin-bottom:0"><i class="ph-fill ph-users-three"></i> User Management</h4>
                     <i class="ph ph-caret-down" id="mgmtCaret" style="transition:0.3s"></i>
                 </div>
                 <div id="mgmtContainer" style="display:none; margin-top:15px">
-                    <p style="font-size:13px; color:var(--text-muted); margin-bottom:15px;">Select a user to edit their details or remove them from the system.</p>
+                    <p style="font-size:13px; color:var(--text-muted); margin-bottom:15px;">Search and manage users.</p>
+                    <div style="position:relative; margin-bottom:15px;">
+                        <i class="ph ph-magnifying-glass" style="position:absolute; left:12px; top:50%; transform:translateY(-50%); color:var(--text-muted);"></i>
+                        <input type="text" id="mgmtSearch" placeholder="Search customer name or phone..." 
+                               style="width:100%; padding:10px 10px 10px 38px; border-radius:12px; border:1px solid #e2e8f0; font-size:14px; outline:none;"
+                               oninput="renderMgmtList()">
+                    </div>
                     <div class="mgmt-list" id="mgmtList">
                         <!-- Dynamic User List for Edit/Delete -->
                     </div>
                 </div>
             </div>
+            <div class="form-card" style="margin-bottom:20px">
+                <div style="display:flex; justify-content:space-between; align-items:center; cursor:pointer;" onclick="togglePushForm()">
+                    <h4 style="margin-bottom:0"><i class="ph-fill ph-paper-plane-tilt"></i> Push Announcement</h4>
+                    <i class="ph ph-caret-down" id="pushCaret" style="transition:0.3s"></i>
+                </div>
+                <div id="pushContainer" style="display:none; margin-top:15px">
+                    <p style="font-size:13px; color:var(--text-muted); margin-bottom:15px;">Send real-time alerts to all app devices.</p>
+                    <div class="input-group"><label>Target Audience</label><select id="pushTarget"><option value="all">All Users / Devices</option></select></div>
+                    <div class="input-group"><label>Announcement Title</label><input type="text" id="pushTitle" placeholder="e.g. New Update Available"></div>
+                    <div class="input-group"><label>Body Message</label><textarea id="pushBody" placeholder="e.g. Please check your latest interest rates..." style="width:100%; height:80px; padding:12px; border-radius:12px; border:1px solid #e2e8f0;"></textarea></div>
+                    <div class="input-group"><label>Notification Link (URL)</label><input type="url" id="pushUrl" placeholder="https://..."></div>
+                    <button class="btn btn-primary" onclick="sendPush()"><i class="ph-bold ph-paper-plane-tilt"></i> Send Announcement Now</button>
+                </div>
+            </div>
+
             <div class="form-card">
                 <h4 style="margin-bottom:20px"><i class="ph-fill ph-database"></i> Data Management</h4>
                 <div style="display:flex;gap:10px;margin-bottom:20px"><button class="btn btn-primary"
@@ -1140,15 +1314,13 @@
     </div>
 
     <nav class="nav">
-        <div class="nav-item nav-active" onclick="showPage('listPage', this)"><i
-                class="ph-fill ph-house-line"></i><span>Home</span></div>
+        <div class="nav-item nav-active" onclick="showPage('listPage', this)"><i class="ph-fill ph-house-line"></i><span>Home</span></div>
         <div style="position:relative;width:60px">
             <div class="fab-wrapper">
                 <div class="fab" onclick="showPage('addPage')"><i class="ph-bold ph-plus"></i></div>
             </div>
         </div>
-        <div class="nav-item" onclick="showPage('settingsPage', this)"><i
-                class="ph-fill ph-gear"></i><span>Settings</span></div>
+        <div class="nav-item" onclick="showPage('settingsPage', this)"><i class="ph-fill ph-gear"></i><span>Settings</span></div>
     </nav>
 
     <div id="toast"><span id="toastMsg">Success</span></div>
@@ -1177,8 +1349,17 @@
             playNotificationSound();
         });
 
+        // Register Service Worker for Notifications
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/firebase-messaging-sw.js')
+                    .then(reg => console.log('Service Worker Registered!', reg))
+                    .catch(err => console.log('Service Worker Registration Failed', err));
+            });
+        }
+
         const vapidKey = "BGx9UKNzYNtu-y3BbzzaQRGln6ftVB1gAMgE7kFbHsx9VN-EIa3HSbfGWBir8tEm22-5Rqe1jfRdNvfhTsgvo3k";
-        
+
         async function requestNotificationPermission() {
             try {
                 const permission = await Notification.requestPermission();
@@ -1188,11 +1369,11 @@
                 }
             } catch (err) { console.error('An error occurred while retrieving token. ', err); }
         }
-        
+
         function showBrowserNotification(title, body) {
             if (Notification.permission === 'granted') {
-                new Notification(title, { 
-                    body: body, 
+                new Notification(title, {
+                    body: body,
                     icon: 'https://ui-avatars.com/api/?name=K&background=059669&color=fff',
                     vibrate: [200, 100, 200]
                 });
@@ -1208,22 +1389,22 @@
                 // Advanced "Rising Arpeggio" - Longer and more attention-grabbing notification
                 const now = audioCtx.currentTime;
                 const tones = [523.25, 659.25, 783.99, 1046.50]; // C5, E5, G5, C6
-                
+
                 tones.forEach((freq, i) => {
                     const time = now + (i * 0.15); // Staggered start times
                     const osc = audioCtx.createOscillator();
                     const gain = audioCtx.createGain();
-                    
+
                     osc.type = 'sine';
                     osc.frequency.setValueAtTime(freq, time);
-                    
+
                     gain.gain.setValueAtTime(0, time);
                     gain.gain.linearRampToValueAtTime(0.3, time + 0.05);
                     gain.gain.exponentialRampToValueAtTime(0.01, time + 0.5);
-                    
+
                     osc.connect(gain);
                     gain.connect(audioCtx.destination);
-                    
+
                     osc.start(time);
                     osc.stop(time + 0.6);
                 });
@@ -1234,7 +1415,7 @@
                 audio.play().catch(err => console.error("Sound failed completely:", err));
             }
         }
-        
+
         // Resume AudioContext on any user interaction to satisfy autoplay policy
         document.body.addEventListener('click', () => {
             if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
@@ -1245,6 +1426,13 @@
 
         let loans = [];
         let deletedHistory = [];
+
+        // Helper to parse YYYY-MM-DD as local date
+        function getLocalDate(dateString) {
+            if (!dateString) return new Date();
+            const [y, m, d] = dateString.split('-').map(Number);
+            return new Date(y, m - 1, d, 0, 0, 0, 0);
+        }
 
         function formatCurrency(amount) {
             return new Intl.NumberFormat('en-IN', {
@@ -1307,8 +1495,25 @@
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active-page'));
             document.getElementById(id).classList.add('active-page');
             document.getElementById('mainHeader').style.display = (id === 'detailPage' || id === 'settingsPage' || id === 'addPage' || id === 'editPage') ? 'none' : 'block';
+            
+            // Handle nav items active state
+            if (el) {
+                document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('nav-active'));
+                el.classList.add('nav-active');
+            } else {
+                // Find nav item by id
+                document.querySelectorAll('.nav-item').forEach(n => {
+                    if (n.innerText.toLowerCase().includes(id.replace('Page','').toLowerCase())) {
+                        n.classList.add('nav-active');
+                    } else {
+                        n.classList.remove('nav-active');
+                    }
+                });
+            }
+
             if (id === 'listPage') renderList();
             if (id === 'settingsPage') {
+                document.getElementById('mgmtSearch').value = '';
                 renderDeletedHistory();
                 renderMgmtList();
                 document.getElementById('mgmtContainer').style.display = 'none';
@@ -1330,9 +1535,9 @@
 
         function toggleBank() { document.getElementById('bankInfo').style.display = document.getElementById('pMethod').value === 'Online' ? 'block' : 'none'; }
         function toggleEditBank() { document.getElementById('editBankInfo').style.display = document.getElementById('editPMethod').value === 'Online' ? 'block' : 'none'; }
-        
+
         document.getElementById('pMethod').addEventListener('change', toggleBank);
-        
+
         function addDocRow() {
             const div = document.createElement('div');
             div.style.display = "flex"; div.style.gap = "10px"; div.style.marginBottom = "10px";
@@ -1390,8 +1595,7 @@
 
         function calc(l) {
             if (l.status === 'Paid') return { days: 0, interest: l.finalInterest || 0 };
-            const start = new Date(l.currentCycleDate);
-            start.setHours(0, 0, 0, 0);
+            const start = getLocalDate(l.currentCycleDate || l.startDate);
             const today = new Date();
             today.setHours(0, 0, 0, 0);
             const days = Math.max(0, Math.floor((today - start) / (1000 * 3600 * 24)));
@@ -1431,11 +1635,16 @@
                 const c = calc(l);
                 return `<div class="user-card" onclick="viewDetail(${l.id})">
                 <img src="${l.pImg}" class="user-avatar" onerror="this.src='https://ui-avatars.com/api/?name=${encodeURIComponent(l.name)}&background=059669&color=fff'">
-                <div class="user-info"><div class="user-name">${escapeHtml(l.name)}</div><div class="status-badge ${l.status === 'Active' ? 'active' : 'paid'}">${l.status === 'Active' ? '● Active' : '✓ Paid'}</div><div style="font-size:11px;color:var(--text-muted);margin-top:2px">${maskPhone(l.phone)}</div></div>
+                <div class="user-info">
+                    <div class="user-name">${escapeHtml(l.name)}</div>
+                    <div class="status-badge ${l.status === 'Active' ? 'active' : 'paid'}">${l.status === 'Active' ? '● Active' : '✓ Paid'}</div>
+                    <div style="font-size:11px;color:var(--text-muted);margin-top:2px">${maskPhone(l.phone)}</div>
+                </div>
                 <div class="user-amounts"><div class="user-principal">Rs. ${formatCurrency(l.amount)}</div><div class="user-interest">+ Rs. ${formatCurrency(c.interest)}</div></div>
             </div>`;
             }).join('');
         }
+
 
         function escapeHtml(str) { return str?.replace(/[&<>]/g, function (m) { if (m === '&') return '&amp;'; if (m === '<') return '&lt;'; if (m === '>') return '&gt;'; return m; }); }
 
@@ -1465,7 +1674,7 @@
             document.getElementById('editBank').value = l.bank || '';
             document.getElementById('editAcc').value = l.acc || '';
             document.getElementById('editTxid').value = l.txid || '';
-            
+
             const docList = document.getElementById('editDocList');
             docList.innerHTML = '';
             if (l.docs && l.docs.length > 0) {
@@ -1473,7 +1682,7 @@
             } else {
                 addEditDocRow();
             }
-            
+
             toggleEditBank();
             document.getElementById('editAdminPin').value = '';
             showPage('editPage');
@@ -1500,6 +1709,7 @@
                 amount: amount,
                 rate: parseFloat(document.getElementById('editRate').value) || 12,
                 startDate: document.getElementById('editSDate').value,
+                currentCycleDate: document.getElementById('editSDate').value, // Sync cycle with start date on edit
                 phone: document.getElementById('editPhone').value,
                 pImg: document.getElementById('editPImg').value,
                 method: document.getElementById('editPMethod').value,
@@ -1517,11 +1727,18 @@
         function renderMgmtList() {
             const container = document.getElementById('mgmtList');
             if (!container) return;
-            if (loans.length === 0) {
-                container.innerHTML = '<div style="text-align:center; padding:20px; color:var(--text-muted);">No users to manage.</div>';
+            
+            const q = document.getElementById('mgmtSearch')?.value.toLowerCase() || '';
+            const filtered = loans.filter(l => 
+                l.name.toLowerCase().includes(q) || (l.phone && l.phone.includes(q))
+            );
+
+            if (filtered.length === 0) {
+                container.innerHTML = `<div style="text-align:center; padding:20px; color:var(--text-muted);">${q ? 'No matching users.' : 'No users to manage.'}</div>`;
                 return;
             }
-            container.innerHTML = loans.map(l => `
+            
+            container.innerHTML = filtered.map(l => `
                 <div class="mgmt-item">
                     <div class="mgmt-info">
                         <img src="${l.pImg}" class="mgmt-avatar" onerror="this.src='https://ui-avatars.com/api/?name=${encodeURIComponent(l.name)}&background=059669&color=fff'">
@@ -1786,24 +2003,106 @@
         }
 
         function checkAlerts() {
+            const todayStr = new Date().toISOString().split('T')[0];
             let triggeredCount = 0;
+            
             loans.forEach(l => {
-                if (l.status === 'Active' && calc(l).days >= 365) {
-                    triggeredCount++;
-                    // Trigger alert logic every time a data update happens IF it meets the 365 days criteria
-                    // but stagger them so they don't all pop at once
-                    setTimeout(() => { 
-                        const msg = `⚠️ URGENT: ${l.name}\nThe repayment date has arrived. Please collect principal or interest.`;
-                        showBrowserNotification("Repayment Required", msg);
-                        playNotificationSound();
-                        // Optional: only alert() once to prevent blocking the UI too much
-                        if (triggeredCount === 1) alert(msg); 
-                    }, triggeredCount * 800); 
+                const c = calc(l);
+                if (l.status === 'Active' && c.days >= 365) {
+                    // Check if alerted today
+                    const lastAlert = l.lastAlertDate || '';
+                    const alertCount = (lastAlert === todayStr) ? (l.alertCount || 0) : 0;
+
+                    if (alertCount < 4) {
+                        triggeredCount++;
+                        setTimeout(() => {
+                            const currentCount = alertCount + 1;
+                            const msg = `⚠️ 365 Days Reached [${currentCount}/4]: ${l.name}\nPlease collect money or interest.`;
+                            showBrowserNotification("Repayment Required", msg);
+                            playNotificationSound();
+                            if (triggeredCount === 1) alert(msg);
+                            
+                            // Update alert state in Firebase
+                            loansRef.child(l.id).update({
+                                lastAlertDate: todayStr,
+                                alertCount: currentCount
+                            });
+                        }, triggeredCount * 1200);
+                    }
                 }
             });
         }
 
-        loansRef.on('value', (snap) => { loans = snap.val() ? Object.values(snap.val()) : []; renderList(); updateDashboardStats(); checkAlerts(); });
+        const announcementsRef = db.ref('announcements');
+
+        function togglePushForm() {
+            const container = document.getElementById('pushContainer');
+            const caret = document.getElementById('pushCaret');
+            const isHidden = container.style.display === 'none';
+            container.style.display = isHidden ? 'block' : 'none';
+            caret.style.transform = isHidden ? 'rotate(180deg)' : 'rotate(0deg)';
+            
+            if (isHidden) {
+                // Populate individual targeting dropdown
+                const targetSelect = document.getElementById('pushTarget');
+                targetSelect.innerHTML = '<option value="all">All Users / Devices</option>';
+                loans.forEach(l => {
+                    targetSelect.innerHTML += `<option value="${l.id}">${l.name} (${maskPhone(l.phone)})</option>`;
+                });
+            }
+        }
+
+        async function sendPush() {
+            const title = document.getElementById('pushTitle').value.trim();
+            const body = document.getElementById('pushBody').value.trim();
+            const target = document.getElementById('pushTarget').value;
+            const link = document.getElementById('pushUrl').value.trim();
+
+            if (!title || !body) { showToast("Title and message required!", true); return; }
+
+            showPinDialog("Admin Authorization Required", async (pin) => {
+                if (await verifyPin(pin)) {
+                    await announcementsRef.push({
+                        title: title,
+                        body: body,
+                        target: target,
+                        link: link,
+                        sentAt: firebase.database.ServerValue.TIMESTAMP
+                    });
+                    showToast("Announcement Sent Successfully! 🚀");
+                    document.getElementById('pushTitle').value = '';
+                    document.getElementById('pushBody').value = '';
+                    document.getElementById('pushUrl').value = '';
+                } else showToast("Wrong PIN! Announcement cancelled.", true);
+            });
+        }
+
+        // Listen for new announcements
+        announcementsRef.limitToLast(1).on('child_added', (snap) => {
+            const data = snap.val();
+            const now = Date.now();
+            // Only alert if message is new (sent within the last 5 seconds)
+            if (data.sentAt && (now - data.sentAt < 5000)) {
+                // Individual targeting logic: only show if target matches or target is 'all'
+                if (data.target === 'all') {
+                    showBrowserNotification(`📣 ${data.title}`, data.body);
+                    playNotificationSound();
+                } else {
+                    // Logic would go here if we were storing local device IDs, but for now we'll show to admin
+                    // and allow simple user-based targeting if we implement a 'user profile' section
+                    showBrowserNotification(`📣 ${data.title}`, data.body);
+                    playNotificationSound();
+                }
+            }
+        });
+
+        loansRef.on('value', (snap) => { 
+            loans = snap.val() ? Object.values(snap.val()) : []; 
+            renderList(); 
+            updateDashboardStats(); 
+            checkAlerts(); 
+            if (document.getElementById('settingsPage').classList.contains('active-page')) renderMgmtList();
+        });
         deletedHistoryRef.on('value', (snap) => { deletedHistory = snap.val() ? Object.values(snap.val()) : []; renderDeletedHistory(); });
 
         document.getElementById('sDate').valueAsDate = new Date();
