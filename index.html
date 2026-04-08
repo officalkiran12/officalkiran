@@ -9,13 +9,14 @@
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap"
         rel="stylesheet">
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
-    
+
     <!-- PWA & Mobile Meta Tags -->
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="Kiran Loan">
     <link rel="apple-touch-icon" href="https://ui-avatars.com/api/?name=K&background=059669&color=fff&size=192">
-    <link rel="manifest" href='data:application/manifest+json,{"name":"Kiran Chettri Loan Manager","short_name":"LoanTrack","start_url":".","display":"standalone","background_color":"#f8fafc","theme_color":"#0f172a","icons":[{"src":"https://ui-avatars.com/api/?name=K&background=059669&color=fff&size=192","sizes":"192x192","type":"image/png"},{"src":"https://ui-avatars.com/api/?name=K&background=059669&color=fff&size=512","sizes":"512x512","type":"image/png"}]}'>
+    <link rel="manifest"
+        href='data:application/manifest+json,{"name":"Kiran Chettri Loan Manager","short_name":"LoanTrack","start_url":".","display":"standalone","background_color":"#f8fafc","theme_color":"#0f172a","icons":[{"src":"https://ui-avatars.com/api/?name=K&background=059669&color=fff&size=192","sizes":"192x192","type":"image/png"},{"src":"https://ui-avatars.com/api/?name=K&background=059669&color=fff&size=512","sizes":"512x512","type":"image/png"}]}'>
     <style>
         :root {
             --primary: #059669;
@@ -30,11 +31,13 @@
             --danger-light: #fee2e2;
             --success: #10b981;
             --warning: #f59e0b;
-            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-            --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
-            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1);
-            --radius-lg: 24px;
-            --radius-md: 16px;
+            --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.02), 0 1px 2px rgba(0, 0, 0, 0.04);
+            --shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.02);
+            --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.08), 0 10px 10px -5px rgba(0, 0, 0, 0.03);
+            --radius-xl: 32px;
+            --radius-lg: 28px;
+            --radius-md: 20px;
+            --sidebar-width: 280px;
         }
 
         * {
@@ -55,9 +58,16 @@
         }
 
         .container {
-            max-width: 600px;
+            max-width: 650px;
             margin: 0 auto;
             padding: 0 20px;
+            transition: max-width 0.3s ease;
+        }
+
+        @media (min-width: 1025px) {
+            .container {
+                max-width: 1200px;
+            }
         }
 
         .header {
@@ -124,12 +134,15 @@
         }
 
         .stat-card {
-            min-width: 200px;
-            padding: 20px;
-            border-radius: var(--radius-lg);
+            min-width: 165px;
+            padding: 22px;
+            border-radius: var(--radius-xl);
             background: var(--card);
             box-shadow: var(--shadow);
+            border: 1px solid rgba(0,0,0,0.03);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
+        .stat-card:active { transform: scale(0.96); }
 
         .stat-title {
             font-size: 13px;
@@ -276,8 +289,8 @@
 
         .user-interest {
             font-size: 13px;
-            font-weight: 700;
-            color: var(--danger);
+            font-weight: 800;
+            color: #ff0000;
             margin-top: 4px;
         }
 
@@ -299,6 +312,14 @@
 
         .input-group {
             margin-bottom: 20px;
+        }
+
+        @media (min-width: 1025px) {
+            .form-grid {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 20px;
+            }
         }
 
         .input-group label {
@@ -359,37 +380,66 @@
         }
 
         .nav {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            background: rgba(255, 255, 255, 0.9);
-            backdrop-filter: blur(20px);
-            display: flex;
-            justify-content: space-between;
-            padding: 15px 20px 30px;
-            border-top: 1px solid rgba(0, 0, 0, 0.05);
-            z-index: 100;
+            position: fixed; bottom: 0; left: 0; width: 100%;
+            background: rgba(255, 255, 255, 0.98); backdrop-filter: blur(25px);
+            display: flex; justify-content: space-around; padding: 12px 10px 45px;
+            box-shadow: 0 -8px 30px rgba(0, 0, 0, 0.08); z-index: 1000; border-top: 1px solid rgba(0,0,0,0.05);
         }
 
         .nav-item {
-            text-align: center;
-            color: var(--text-muted);
-            cursor: pointer;
+            display: flex; flex-direction: column; align-items: center; gap: 6px;
+            color: var(--text-muted); cursor: pointer; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative; width: 75px; text-decoration: none;
+        }
+
+        .nav-item i { 
+            font-size: 22px; 
+            padding: 6px 20px; 
+            border-radius: 20px; 
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .nav-item.nav-active i { 
+            background: #e6f6f0; 
+            color: var(--primary); 
+            transform: translateY(-4px);
+            box-shadow: 0 4px 10px rgba(5, 150, 105, 0.15);
+        }
+
+        .nav-item span { font-size: 10px; font-weight: 800; opacity: 0.8; letter-spacing: 0.5px; text-transform: uppercase; }
+        .nav-item.nav-active span { color: var(--primary); opacity: 1; }
+
+        /* Settings Style */
+        .settings-card {
+            background: var(--card);
+            border-radius: 24px;
+            padding: 8px;
+            margin-bottom: 20px;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid rgba(0,0,0,0.03);
+        }
+
+        .settings-item {
+            padding: 16px 20px;
             display: flex;
-            flex-direction: column;
             align-items: center;
-            gap: 4px;
-            width: 60px;
+            justify-content: space-between;
+            cursor: pointer;
+            transition: all 0.2s;
+            border-radius: 18px;
         }
 
-        .nav-item i {
-            font-size: 24px;
+        .settings-item:active { background: #f1f5f9; transform: scale(0.98); }
+        .settings-item-left { display: flex; align-items: center; gap: 16px; }
+        .settings-item-icon { 
+            width: 44px; height: 44px; border-radius: 14px; 
+            display: flex; align-items: center; justify-content: center; 
+            font-size: 20px; background: #f8fafc; color: var(--text);
         }
+        .settings-item-info h4 { margin: 0; font-size: 15px; font-weight: 800; color: var(--text); }
+        .settings-item-info p { margin: 2px 0 0; font-size: 11px; color: var(--text-muted); font-weight: 500; }
+        .settings-item-arrow { color: #cbd5e1; font-size: 18px; }
 
-        .nav-active {
-            color: var(--primary);
-        }
 
         .fab-wrapper {
             position: absolute;
@@ -954,6 +1004,12 @@
             }
         }
 
+        @media (max-width: 1024px) {
+            .sidebar { display: none !important; }
+            .app-shell { display: block !important; }
+            .main-content { margin: 0 !important; width: 100% !important; }
+        }
+
         /* Bottom Sheet Modal */
         .bottom-sheet-overlay {
             position: fixed;
@@ -980,350 +1036,590 @@
             }
         }
 
+        /* Flutter / Material 3 Design Extras */
+        .user-card { 
+            background: var(--card); 
+            border-radius: 28px; 
+            padding: 16px; 
+            margin-bottom: 16px; 
+            display: flex; 
+            align-items: center; 
+            gap: 16px; 
+            border: 1px solid rgba(0,0,0,0.03); 
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); 
+            cursor: pointer; 
+            box-shadow: var(--shadow-sm);
+        }
+        .user-card:active { transform: scale(0.97); background: #f1f5f9; }
+        
+        .user-avatar { width: 52px; height: 52px; border-radius: 16px; object-fit: cover; }
+        .user-name { font-weight: 800; font-size: 16px; color: var(--text); }
+        .user-principal { font-weight: 800; color: var(--text); font-size: 15px; }
+        .user-interest { color: var(--primary); font-weight: 700; font-size: 13px; margin-top: 2px; }
+        
         @keyframes bsSlideUp {
-            from {
-                transform: translateY(100%);
-            }
-
-            to {
-                transform: translateY(0);
-            }
+            from { transform: translateY(100%); }
+            to { transform: translateY(0); }
         }
 
-        .bottom-sheet {
-            background: var(--card);
-            border-radius: 28px 28px 0 0;
-            padding: 24px 20px 40px;
-            width: 100%;
-            max-width: 600px;
-            animation: bsSlideUp 0.35s cubic-bezier(0.16, 1, 0.3, 1);
-            box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.15);
+        .section-title { 
+            margin: 25px 0 15px; 
+            font-weight: 800; 
+            font-size: 18px; 
+            color: var(--text); 
+            display: flex; 
+            align-items: center; 
+            justify-content: space-between; 
         }
 
-        .bottom-sheet-handle {
-            width: 40px;
-            height: 4px;
-            background: #e2e8f0;
-            border-radius: 10px;
-            margin: 0 auto 20px;
-        }
-
-        .bottom-sheet h3 {
-            font-size: 20px;
-            font-weight: 800;
-            margin-bottom: 5px;
+        .add-customer-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            width: 42px;
+            height: 42px;
+            border-radius: 12px;
             display: flex;
             align-items: center;
-            gap: 8px;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 4px 12px rgba(5, 150, 105, 0.2);
+        }
+        .add-customer-btn:hover {
+            transform: scale(1.1);
+            background: #047857;
+        }
+        .add-customer-btn span { display: none; }
+        .add-customer-btn i { font-size: 20px; }
+
+        .sidebar-logo span {
+            color: var(--primary);
+            font-weight: 300;
         }
 
-        .balance-chip {
-            display: inline-block;
-            background: var(--primary-light);
-            color: var(--primary-dark);
-            font-weight: 700;
-            font-size: 13px;
-            padding: 5px 12px;
-            border-radius: 20px;
-            margin-bottom: 20px;
+        /* Transactions Portal Specific Styles */
+        .transaction-card {
+            background: var(--card);
+            border-radius: var(--radius-md);
+            padding: 16px;
+            margin-bottom: 12px;
+            border: 1px solid rgba(0,0,0,0.05);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            transition: all 0.2s ease;
         }
 
-        .bs-label {
+        .transaction-card:active {
+            transform: scale(0.98);
+            background: #f1f5f9;
+        }
+
+        .trans-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            flex-shrink: 0;
+        }
+
+        .trans-icon.principal { background: #ecfdf5; color: #10b981; }
+        .trans-icon.interest { background: #fffbeb; color: #f59e0b; }
+
+        .trans-info { flex: 1; min-width: 0; }
+        .trans-name { font-weight: 700; font-size: 15px; margin-bottom: 2px; }
+        .trans-meta { font-size: 11px; color: var(--text-muted); display: flex; align-items: center; gap: 4px; }
+
+        .trans-amount { text-align: right; }
+        .trans-value { font-weight: 800; font-size: 16px; }
+        .trans-type { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; margin-top: 2px; }
+
+        .date-divider {
             font-size: 12px;
             font-weight: 700;
             color: var(--text-muted);
-            margin-bottom: 6px;
-            display: block;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
+            margin: 20px 0 10px 5px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
 
-        .bs-input {
-            width: 100%;
+        .date-divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: rgba(0,0,0,0.05);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .stats-mini-card {
+            background: var(--card);
             padding: 15px;
             border-radius: var(--radius-md);
-            border: 1.5px solid #e2e8f0;
-            background: #f8fafc;
-            font-size: 16px;
-            font-weight: 600;
-            outline: none;
-            margin-bottom: 14px;
-            font-family: 'Outfit', sans-serif;
+            box-shadow: var(--shadow-sm);
         }
 
-        .bs-input:focus {
-            border-color: var(--primary);
-            box-shadow: 0 0 0 4px var(--primary-light);
-        }
+        .stats-mini-label { font-size: 11px; color: var(--text-muted); font-weight: 600; margin-bottom: 4px; }
+        .stats-mini-value { font-size: 18px; font-weight: 800; color: var(--text); }
 
-        .bs-actions {
+        /* Receipt Modal */
+        .receipt-modal-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.8);
+            backdrop-filter: blur(8px);
+            z-index: 3000;
             display: flex;
-            gap: 12px;
-            margin-top: 6px;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
         }
 
-        .bs-cancel {
-            background: #f1f5f9;
-            color: var(--text);
-            flex: 1;
+        .receipt-modal {
+            background: white;
+            width: 100%;
+            max-width: 400px;
+            border-radius: 28px;
+            overflow: hidden;
+            position: relative;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
         }
 
-        .bs-confirm {
-            background: linear-gradient(135deg, var(--primary), #059669);
+        .receipt-top {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
             color: white;
-            flex: 2;
+            padding: 40px 30px;
+            text-align: center;
+            position: relative;
         }
 
-        .remarks-chip {
-            display: inline-block;
-            background: #f0fdf4;
-            color: #065f46;
-            font-size: 11px;
-            font-weight: 600;
-            padding: 3px 10px;
-            border-radius: 20px;
-            margin-top: 4px;
-            border: 1px solid #bbf7d0;
+        .receipt-top::after {
+            content: '';
+            position: absolute;
+            bottom: -15px; left: 0; width: 100%; height: 30px;
+            background: white;
+            border-radius: 50% 50% 0 0;
         }
+
+        .receipt-body { padding: 30px; }
+        .receipt-row { display: flex; justify-content: space-between; margin-bottom: 15px; font-size: 14px; }
+        .receipt-label { color: var(--text-muted); font-weight: 500; }
+        .receipt-value { font-weight: 700; color: var(--text); }
+
+        .receipt-total {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 2px dashed #f1f5f9;
+            text-align: center;
+        }
+
+        .receipt-amount-big { font-size: 36px; font-weight: 800; color: var(--primary); margin-bottom: 5px; }
+
+        .receipt-footer {
+            padding: 20px;
+            background: #f8fafc;
+            display: flex;
+            gap: 10px;
+        }
+
     </style>
 </head>
 
 <body>
+    <div class="app-shell">
+        <div class="sidebar">
+            <div class="sidebar-logo">Kiran<span> Chettri</span></div>
+            <div class="side-nav-item side-nav-active" onclick="showPage('listPage', this)"><i
+                    class="ph-fill ph-house-line"></i><span>Home</span></div>
+            <div class="side-nav-item" onclick="showPage('addPage', this)"><i class="ph-fill ph-user-plus"></i><span>Add
+                    Customer</span></div>
+            <div class="side-nav-item" onclick="showPage('transactionsPage', this)"><i
+                    class="ph-fill ph-arrows-left-right"></i><span>Transactions</span></div>
+            <div class="side-nav-item" onclick="showPage('settingsPage', this)"><i
+                    class="ph-fill ph-gear"></i><span>Settings</span></div>
 
-    <div class="header" id="mainHeader">
-        <div class="header-content">
-            <div>
-                <div class="header-title">Kiran<span> Chettri</span></div>
-                <div class="header-date" id="topDate"></div>
-            </div>
-            <div style="width: 48px; height: 48px; border-radius: 50%; background: rgba(255,255,255,0.2); display: flex; align-items: center; justify-content: center; font-size: 24px;"
-                onclick="showToast('Notification center')">
-                <i class="ph ph-bell"></i>
+            <div
+                style="margin-top: auto; padding: 20px; text-align: center; font-size: 11px; color: #64748b; border-top: 1px solid rgba(255,255,255,0.05);">
+                Kiran Chettri v3.0 | Secure PC Edition
             </div>
         </div>
-    </div>
+        <div class="main-content">
 
-    <!-- List Page -->
-    <div id="listPage" class="page active-page">
-        <div class="container">
-            <div class="analytics-scroll" id="statsDashboard">
-                <div class="stat-card">
-                    <div class="stat-title"><i class="ph-fill ph-money"></i> Total Principal</div>
-                    <div class="stat-value">Rs. <span id="totPrin">0</span></div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-title"><i class="ph-fill ph-chart-line-up"></i> Accrued Interest</div>
-                    <div class="stat-value">Rs. <span id="totInt">0</span></div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-title"><i class="ph-fill ph-users"></i> Active Customers</div>
-                    <div class="stat-value"><span id="totCust">0</span></div>
-                </div>
-            </div>
-            <div class="search-container"><i class="ph ph-magnifying-glass search-icon"></i><input type="text"
-                    id="searchInput" class="search-input" placeholder="Search name, phone or document..."
-                    oninput="filterLoans()"></div>
-            <div class="section-title"><span>Customer List</span><span class="list-count" id="listBadge">0</span></div>
-            <div id="loanList"></div>
-            <div id="emptyList" class="empty-state" style="display:none;"><i class="ph ph-users empty-icon"
-                    style="font-size: 64px;"></i>
-                <div class="empty-text">No customers found.</div><button class="btn btn-primary"
-                    onclick="showPage('addPage')" style="width: auto; padding: 12px 24px; margin-top: 20px;">Add
-                    Customer</button>
-            </div>
-        </div>
-    </div>
 
-    <!-- Add Page -->
-    <div id="addPage" class="page">
-        <div class="container">
-            <div class="sub-header">
-                <div class="back-btn" onclick="showPage('listPage')"><i class="ph ph-caret-left"></i></div>
-                <h2>Register Customer</h2>
-            </div>
-            <div class="form-card">
-                <div class="form-header"><i class="ph-fill ph-user-plus"></i><span>Register Customer</span></div>
-                <div class="input-group"><label>Full Name *</label><input type="text" id="name"
-                        placeholder="E.g. Ramesh Thapa"></div>
-                <div class="input-group"><label>Loan Principal (Rs.) *</label><input type="number" id="amount"
-                        placeholder="50000"></div>
-                <div style="display:flex;gap:15px">
-                    <div class="input-group" style="flex:1"><label>Interest Rate (%)</label><input type="number"
-                            id="rate" value="12"></div>
-                    <div class="input-group" style="flex:1"><label>Start Date</label><input type="date" id="sDate">
+            <div class="header" id="mainHeader">
+                <div class="header-content">
+                    <div>
+                        <div class="header-title">Kiran<span> Chettri</span></div>
+                        <div class="header-date" id="topDate"></div>
                     </div>
-                </div>
-                <div class="input-group"><label>Mobile No.</label><input type="tel" id="phone" placeholder="98XXXXXXXX">
-                </div>
-                <div class="input-group"><label>Profile Photo URL</label><input type="url" id="pImg"
-                        placeholder="https://..."></div>
-                <div class="input-group"><label>Payment Mode</label><select id="pMethod">
-                        <option value="Offline">Offline / Cash</option>
-                        <option value="Online">Online / Bank</option>
-                    </select></div>
-                <div id="bankInfo"
-                    style="display:none; background:#f8fafc; padding:15px; border-radius:var(--radius-md); margin-bottom:20px">
-                    <div class="input-group"><label>Bank Name</label><input type="text" id="bank"></div>
-                    <div class="input-group"><label>Account Number</label><input type="text" id="acc"></div>
-                    <div class="input-group"><label>Initial TxID</label><input type="text" id="txid"></div>
-                </div>
-                <div class="input-group"><label style="display:flex; justify-content:space-between"><span>KYC
-                            Documents</span><span onclick="addDocRow()" style="color:var(--primary);cursor:pointer">+
-                            Add Doc</span></label>
-                    <div id="docList">
-                        <div style="display:flex;gap:10px;margin-bottom:10px"><input type="text"
-                                placeholder="Document Name" class="dName" style="flex:1"><input type="text"
-                                placeholder="URL" class="dUrl" style="flex:1.5"></div>
-                    </div>
-                </div>
-                <div class="input-group"><label style="color:var(--danger);">Authorization PIN *</label><input
-                        type="password" id="adminPin" placeholder="Enter admin PIN to register"></div>
-                <button class="btn btn-primary" onclick="saveLoan()"><i class="ph-bold ph-check"></i> Register
-                    User</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Detail Page -->
-    <div id="detailPage" class="page">
-        <div class="container">
-            <div class="sub-header">
-                <div class="back-btn" onclick="showPage('listPage')"><i class="ph ph-caret-left"></i></div>
-                <h2>Customer Detail</h2>
-            </div>
-            <div id="loanDetail"></div>
-        </div>
-    </div>
-
-    <!-- Edit Page -->
-    <div id="editPage" class="page">
-        <div class="container">
-            <div class="sub-header">
-                <div class="back-btn" onclick="showPage('settingsPage')"><i class="ph ph-caret-left"></i></div>
-                <h2>Edit Customer</h2>
-            </div>
-            <div class="form-card">
-                <div class="form-header"><i class="ph-fill ph-user-circle-gear"></i><span>Edit Customer Profile</span>
-                </div>
-                <input type="hidden" id="editId">
-                <div class="input-group"><label>Full Name *</label><input type="text" id="editName"></div>
-                <div class="input-group"><label>Loan Principal (Rs.) *</label><input type="number" id="editAmount">
-                </div>
-                <div style="display:flex;gap:15px">
-                    <div class="input-group" style="flex:1"><label>Interest Rate (%)</label><input type="number"
-                            id="editRate"></div>
-                    <div class="input-group" style="flex:1"><label>Start Date</label><input type="date" id="editSDate">
-                    </div>
-                </div>
-                <div class="input-group"><label>Mobile No.</label><input type="tel" id="editPhone"></div>
-                <div class="input-group"><label>Profile Photo URL</label><input type="url" id="editPImg"></div>
-                <div class="input-group"><label>Payment Mode</label><select id="editPMethod"
-                        onchange="toggleEditBank()">
-                        <option value="Offline">Offline / Cash</option>
-                        <option value="Online">Online / Bank</option>
-                    </select></div>
-                <div id="editBankInfo"
-                    style="display:none; background:#f8fafc; padding:15px; border-radius:var(--radius-md); margin-bottom:20px">
-                    <div class="input-group"><label>Bank Name</label><input type="text" id="editBank"></div>
-                    <div class="input-group"><label>Account Number</label><input type="text" id="editAcc"></div>
-                    <div class="input-group"><label>Initial TxID</label><input type="text" id="editTxid"></div>
-                </div>
-                <div class="input-group"><label style="display:flex; justify-content:space-between"><span>KYC
-                            Documents</span><span onclick="addEditDocRow()"
-                            style="color:var(--primary);cursor:pointer">+ Add Doc</span></label>
-                    <div id="editDocList">
-                        <!-- Dynamic Doc Rows -->
-                    </div>
-                </div>
-                <div class="input-group"><label style="color:var(--danger);">Authorization PIN *</label><input
-                        type="password" id="editAdminPin" placeholder="Enter PIN to save changes"></div>
-                <button class="btn btn-primary" onclick="updateLoan()"><i class="ph-bold ph-floppy-disk"></i> Save
-                    Changes</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Settings Page -->
-    <div id="settingsPage" class="page">
-        <div class="container">
-            <div class="sub-header">
-                <div class="back-btn" onclick="showPage('listPage')"><i class="ph ph-caret-left"></i></div>
-                <h2>Settings</h2>
-            </div>
-
-            <div class="form-card" style="margin-bottom:20px">
-                <div style="display:flex; justify-content:space-between; align-items:center; cursor:pointer;"
-                    onclick="toggleMgmtList()">
-                    <h4 style="margin-bottom:0"><i class="ph-fill ph-users-three"></i> User Management</h4>
-                    <i class="ph ph-caret-down" id="mgmtCaret" style="transition:0.3s"></i>
-                </div>
-                <div id="mgmtContainer" style="display:none; margin-top:15px">
-                    <p style="font-size:13px; color:var(--text-muted); margin-bottom:15px;">Search and manage users.</p>
-                    <div style="position:relative; margin-bottom:15px;">
-                        <i class="ph ph-magnifying-glass" style="position:absolute; left:12px; top:50%; transform:translateY(-50%); color:var(--text-muted);"></i>
-                        <input type="text" id="mgmtSearch" placeholder="Search customer name or phone..." 
-                               style="width:100%; padding:10px 10px 10px 38px; border-radius:12px; border:1px solid #e2e8f0; font-size:14px; outline:none;"
-                               oninput="renderMgmtList()">
-                    </div>
-                    <div class="mgmt-list" id="mgmtList">
-                        <!-- Dynamic User List for Edit/Delete -->
+                    <div style="width: 48px; height: 48px; border-radius: 50%; background: rgba(255,255,255,0.2); display: flex; align-items: center; justify-content: center; font-size: 24px;"
+                        onclick="showToast('Notification center')">
+                        <i class="ph ph-bell"></i>
                     </div>
                 </div>
             </div>
-            <div class="form-card" style="margin-bottom:20px">
-                <div style="display:flex; justify-content:space-between; align-items:center; cursor:pointer;" onclick="togglePushForm()">
-                    <h4 style="margin-bottom:0"><i class="ph-fill ph-paper-plane-tilt"></i> Push Announcement</h4>
-                    <i class="ph ph-caret-down" id="pushCaret" style="transition:0.3s"></i>
-                </div>
-                <div id="pushContainer" style="display:none; margin-top:15px">
-                    <p style="font-size:13px; color:var(--text-muted); margin-bottom:15px;">Send real-time alerts to all app devices.</p>
-                    <div class="input-group"><label>Target Audience</label><select id="pushTarget"><option value="all">All Users / Devices</option></select></div>
-                    <div class="input-group"><label>Announcement Title</label><input type="text" id="pushTitle" placeholder="e.g. New Update Available"></div>
-                    <div class="input-group"><label>Body Message</label><textarea id="pushBody" placeholder="e.g. Please check your latest interest rates..." style="width:100%; height:80px; padding:12px; border-radius:12px; border:1px solid #e2e8f0;"></textarea></div>
-                    <div class="input-group"><label>Notification Link (URL)</label><input type="url" id="pushUrl" placeholder="https://..."></div>
-                    <button class="btn btn-primary" onclick="sendPush()"><i class="ph-bold ph-paper-plane-tilt"></i> Send Announcement Now</button>
+
+            <!-- List Page -->
+            <div id="listPage" class="page active-page">
+                <div class="container">
+                    <div class="analytics-scroll" id="statsDashboard">
+                        <div class="stat-card">
+                            <div class="stat-title"><i class="ph-fill ph-money"></i> Total Principal</div>
+                            <div class="stat-value">Rs. <span id="totPrin">0</span></div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-title"><i class="ph-fill ph-chart-line-up"></i> Accrued Interest</div>
+                            <div class="stat-value">Rs. <span id="totInt">0</span></div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-title"><i class="ph-fill ph-users"></i> Active Customers</div>
+                            <div class="stat-value"><span id="totCust">0</span></div>
+                        </div>
+                    </div>
+                    <div class="search-container"><i class="ph ph-magnifying-glass search-icon"></i><input type="text"
+                            id="searchInput" class="search-input" placeholder="Search name, phone or document..."
+                            oninput="filterLoans()"></div>
+                    <div class="section-title">
+                        <span>Customer List</span>
+                        <div style="display:flex; align-items:center; gap:10px;">
+                            <span class="list-count" id="listBadge">0</span>
+                        </div>
+                    </div>
+                    <div id="loanList"></div>
+                    <div id="emptyList" class="empty-state" style="display:none;"><i class="ph ph-users empty-icon"
+                            style="font-size: 64px;"></i>
+                        <div class="empty-text">No customers found.</div><button class="btn btn-primary"
+                            onclick="showPage('addPage')" style="width: auto; padding: 12px 24px; margin-top: 20px;">Add
+                            Customer</button>
+                    </div>
                 </div>
             </div>
 
-            <div class="form-card">
-                <h4 style="margin-bottom:20px"><i class="ph-fill ph-database"></i> Data Management</h4>
-                <div style="display:flex;gap:10px;margin-bottom:20px"><button class="btn btn-primary"
-                        onclick="exportData()" style="flex:1"><i class="ph-bold ph-export"></i> Export</button>
-                    <div style="flex:1;position:relative"><button class="btn btn-primary"
-                            style="width:100%;background:var(--secondary)"><i class="ph-bold ph-download"></i>
-                            Import</button><input type="file" onchange="importData(event)" accept=".json"
-                            style="position:absolute;top:0;left:0;width:100%;height:100%;opacity:0;cursor:pointer">
+            <!-- Add Page -->
+            <div id="addPage" class="page">
+                <div class="container">
+                    <div class="header" style="background:none; border:none; padding:0; height:auto; margin-bottom:30px; position:static;">
+                        <div style="display:flex; align-items:center; gap:15px;">
+                            <div class="back-btn" onclick="window.history.back()"><i class="ph-bold ph-caret-left"></i></div>
+                            <div>
+                                <h2 style="font-weight:800; color:var(--text); font-size:22px; margin:0;">Register Customer</h2>
+                                <p style="font-size:12px; color:var(--text-muted); margin:5px 0 0;">Create a new loan profile</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-card">
+                        <div class="form-header"><i class="ph-fill ph-user-plus"></i><span>Register Customer</span>
+                        </div>
+                        <div class="form-grid">
+                            <div class="input-group"><label>Full Name *</label><input type="text" id="name"
+                                    placeholder="E.g. Ramesh Thapa"></div>
+                            <div class="input-group"><label>Address</label><input type="text" id="address"
+                                    placeholder="E.g. Butwal, Nepal"></div>
+                        </div>
+                        <div class="form-grid">
+                            <div class="input-group"><label>Loan Principal (Rs.) *</label><input type="number"
+                                    id="amount" placeholder="50000"></div>
+                            <div class="input-group"><label>Interest Rate (%)</label><input type="number" id="rate"
+                                    value="12"></div>
+                        </div>
+                        <div class="form-grid">
+                            <div class="input-group"><label>Start Date</label><input type="date" id="sDate"></div>
+                            <div class="input-group"><label>Mobile No.</label><input type="tel" id="phone"
+                                    placeholder="98XXXXXXXX">
+                            </div>
+                        </div>
+                        <div class="form-grid">
+                            <div class="input-group"><label>Profile Photo URL</label><input type="url" id="pImg"
+                                    placeholder="https://..."></div>
+                            <div class="input-group"><label>Payment Mode</label><select id="pMethod">
+                                <option value="Offline">Offline / Cash</option>
+                                <option value="Online">Online / Bank</option>
+                            </select></div>
+                        </div>
+
+                        <div id="bankInfo"
+                            style="display:none; background:#f8fafc; padding:15px; border-radius:var(--radius-md); margin-bottom:20px">
+                            <div class="input-group"><label>Bank Name</label><input type="text" id="bank"></div>
+                            <div class="input-group"><label>Account Number</label><input type="text" id="acc"></div>
+                            <div class="input-group"><label>Initial TxID</label><input type="text" id="txid"></div>
+                        </div>
+                        <div class="input-group"><label style="display:flex; justify-content:space-between"><span>KYC
+                                    Documents</span><span onclick="addDocRow()"
+                                    style="color:var(--primary);cursor:pointer">+
+                                    Add Doc</span></label>
+                            <div id="docList">
+                                <div style="display:flex;gap:10px;margin-bottom:10px"><input type="text"
+                                        placeholder="Document Name" class="dName" style="flex:1"><input type="text"
+                                        placeholder="URL" class="dUrl" style="flex:1.5"></div>
+                            </div>
+                        </div>
+                        <div class="input-group"><label style="color:var(--danger);">Authorization PIN *</label><input
+                                type="password" id="adminPin" placeholder="Enter admin PIN to register"></div>
+                        <button class="btn btn-primary" onclick="saveLoan()"><i class="ph-bold ph-check"></i> Register
+                            User</button>
                     </div>
                 </div>
-                <button class="btn btn-danger-outline" onclick="openDeleteHistoryPanel()"><i
-                        class="ph-bold ph-clock-counter-clockwise"></i> Deletion History</button>
-                <button class="btn btn-danger-outline" onclick="promptClearAllData()" style="margin-top:15px"><i
-                        class="ph-bold ph-trash"></i> Delete All Data (PIN Required)</button>
             </div>
-            <div id="historyPanel" style="display:none; margin-top:20px" class="form-card">
-                <h4><i class="ph-fill ph-trash"></i> Deleted Records History</h4>
-                <div id="deleteHistoryList" style="max-height:300px;overflow-y:auto;margin-top:15px"></div><button
-                    class="btn btn-primary" onclick="sendHistoryEmail()" style="margin-top:15px;background:#059669"><i
-                        class="ph-bold ph-envelope"></i> Email History to Admin</button><button class="btn"
-                    onclick="document.getElementById('historyPanel').style.display='none'"
-                    style="margin-top:10px;background:#e2e8f0">Close</button>
+
+            <!-- Transactions Page -->
+
+
+            <!-- Transactions Page -->
+            <div id="transactionsPage" class="page">
+                <div class="container">
+                    <div class="sub-header">
+                        <div class="back-btn" onclick="window.history.back()"><i class="ph ph-caret-left"></i></div>
+                        <h2>Payment Portal</h2>
+                    </div>
+
+                    <div class="stats-grid">
+                        <div class="stats-mini-card">
+                            <div class="stats-mini-label">TOTAL PENDING</div>
+                            <div class="stats-mini-value" id="transPendingCount">0</div>
+                        </div>
+                        <div class="stats-mini-card">
+                            <div class="stats-mini-label">TOTAL VERIFIED</div>
+                            <div class="stats-mini-value" id="transVerifiedCount">0</div>
+                        </div>
+                    </div>
+
+                    <div class="form-card" style="margin-bottom:15px; border-radius: 24px;">
+                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px">
+                            <h4 style="margin-bottom:0; font-weight: 800;"><i class="ph-fill ph-activity"></i> Global Payments</h4>
+                            <span id="paymentCountBadge" class="badge-receipt" style="background: var(--text); color: white;">0</span>
+                        </div>
+                        <div style="position:relative; margin-bottom:15px;">
+                            <i class="ph ph-magnifying-glass" style="position:absolute; left:14px; top:50%; transform:translateY(-50%); color:var(--text-muted); font-size: 18px;"></i>
+                            <input type="text" id="paySearch" placeholder="Search name, date or type..." 
+                                   style="width:100%; padding:14px 14px 14px 44px; border-radius:18px; border:1.5px solid #f1f5f9; font-size:14px; outline:none; background: #f8fafc;"
+                                   oninput="renderTransactions()">
+                        </div>
+                        <div id="globalPaymentList"></div>
+                    </div>
+                </div>
             </div>
-            <div style="text-align:center;color:var(--text-muted);font-size:12px;margin-top:30px">Kiran Chettri v3.0 |
-                Secure Firebase</div>
-        </div>
-    </div>
+
+            <!-- Detail Page -->
+            <div id="detailPage" class="page">
+                <div class="container">
+                    <div class="sub-header">
+                        <div class="back-btn" onclick="window.history.back()"><i class="ph ph-caret-left"></i></div>
+                        <h2>Customer Detail</h2>
+                    </div>
+                    <div id="loanDetail"></div>
+                </div>
+            </div>
+
+            <!-- Edit Page -->
+            <div id="editPage" class="page">
+                <div class="container">
+                    <div class="sub-header">
+                        <div class="back-btn" onclick="window.history.back()"><i class="ph ph-caret-left"></i></div>
+                        <h2>Edit Customer</h2>
+                    </div>
+                    <div class="form-card">
+                        <div class="form-header"><i class="ph-fill ph-user-circle-gear"></i><span>Edit Customer
+                                Profile</span>
+                        </div>
+                        <input type="hidden" id="editId">
+                        <div class="form-grid">
+                            <div class="input-group"><label>Full Name *</label><input type="text" id="editName"></div>
+                            <div class="input-group"><label>Address</label><input type="text" id="editAddress" placeholder="E.g. Kathmandu, Nepal"></div>
+                        </div>
+                        <div class="form-grid">
+                            <div class="input-group"><label>Loan Principal (Rs.) *</label><input type="number"
+                                    id="editAmount">
+                            </div>
+                            <div class="input-group"><label>Interest Rate (%)</label><input type="number" id="editRate">
+                            </div>
+                        </div>
+                        <div class="form-grid">
+                            <div class="input-group"><label>Start Date</label><input type="date" id="editSDate"></div>
+                            <div class="input-group"><label>Mobile No.</label><input type="tel" id="editPhone"></div>
+                        </div>
+                        <div class="form-grid">
+                            <div class="input-group"><label>Profile Photo URL</label><input type="url" id="editPImg"></div>
+                            <div class="input-group"><label>Payment Mode</label><select id="editPMethod"
+                                onchange="toggleEditBank()">
+                                <option value="Offline">Offline / Cash</option>
+                                <option value="Online">Online / Bank</option>
+                            </select></div>
+                        </div>
+
+                        <div id="editBankInfo"
+                            style="display:none; background:#f8fafc; padding:15px; border-radius:var(--radius-md); margin-bottom:20px">
+                            <div class="input-group"><label>Bank Name</label><input type="text" id="editBank"></div>
+                            <div class="input-group"><label>Account Number</label><input type="text" id="editAcc"></div>
+                            <div class="input-group"><label>Initial TxID</label><input type="text" id="editTxid"></div>
+                        </div>
+                        <div class="input-group"><label style="display:flex; justify-content:space-between"><span>KYC
+                                    Documents</span><span onclick="addEditDocRow()"
+                                    style="color:var(--primary);cursor:pointer">+ Add Doc</span></label>
+                            <div id="editDocList">
+                                <!-- Dynamic Doc Rows -->
+                            </div>
+                        </div>
+                        <div class="input-group"><label style="color:var(--danger);">Authorization PIN *</label><input
+                                type="password" id="editAdminPin" placeholder="Enter PIN to save changes"></div>
+                        <button class="btn btn-primary" onclick="updateLoan()"><i class="ph-bold ph-floppy-disk"></i>
+                            Save
+                            Changes</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Settings Page -->
+            <div id="settingsPage" class="page">
+                <div class="container">
+                    <div class="sub-header">
+                        <div class="back-btn" onclick="showPage('listPage')"><i class="ph ph-caret-left"></i></div>
+                        <h2>Settings</h2>
+                    </div>
+
+                    <div class="settings-card">
+                        <!-- User Management -->
+                        <div class="settings-item" onclick="toggleMgmtList()">
+                            <div class="settings-item-left">
+                                <div class="settings-item-icon"><i class="ph-fill ph-users-three"></i></div>
+                                <div class="settings-item-info">
+                                    <h4>User Management</h4>
+                                    <p>Edit or remove customer profiles</p>
+                                </div>
+                            </div>
+                            <i class="ph ph-caret-down settings-item-arrow" id="mgmtCaret"></i>
+                        </div>
+                        <div id="mgmtContainer" style="display:none; padding:15px; border-top:1px solid #f1f5f9;">
+                            <div style="position:relative; margin-bottom:15px;">
+                                <i class="ph ph-magnifying-glass" style="position:absolute; left:12px; top:50%; transform:translateY(-50%); color:var(--text-muted);"></i>
+                                <input type="text" id="mgmtSearch" placeholder="Search customer..." style="width:100%; padding:10px 10px 10px 38px; border-radius:12px; border:1px solid #e2e8f0; font-size:14px; outline:none;" oninput="renderMgmtList()">
+                            </div>
+                            <div class="mgmt-list" id="mgmtList"></div>
+                        </div>
+
+                        <!-- Payment Portal -->
+                        <div class="settings-item" onclick="showPage('transactionsPage')">
+                            <div class="settings-item-left">
+                                <div class="settings-item-icon" style="background:#eef2ff; color:#4f46e5;"><i class="ph-fill ph-arrows-left-right"></i></div>
+                                <div class="settings-item-info">
+                                    <h4>Payment Portal</h4>
+                                    <p>Verify payments & view history</p>
+                                </div>
+                            </div>
+                            <i class="ph ph-caret-right settings-item-arrow"></i>
+                        </div>
+
+                        <!-- QR Settings -->
+                        <div class="settings-item" onclick="toggleQrSection()">
+                            <div class="settings-item-left">
+                                <div class="settings-item-icon" style="background:#fff7ed; color:#ea580c;"><i class="ph-fill ph-qr-code"></i></div>
+                                <div class="settings-item-info">
+                                    <h4>Payment Methods</h4>
+                                    <p>Update bank & wallet QR codes</p>
+                                </div>
+                            </div>
+                            <i class="ph ph-caret-down settings-item-arrow" id="qrCaret"></i>
+                        </div>
+                        <div id="qrContainer" style="display:none; padding:15px; border-top:1px solid #f1f5f9;">
+                             <div class="input-group"><label>Bank QR URL</label><input type="url" id="bankQrUrl" placeholder="https://..."></div>
+                             <div class="input-group"><label>Wallet QR URL</label><input type="url" id="walletQrUrl" placeholder="https://..."></div>
+                             <div class="input-group"><label>Bank Details</label><textarea id="bankDetailsText" placeholder="Account details..." style="width:100%; height:60px; padding:10px; border-radius:12px; border:1px solid #e2e8f0; resize:none;"></textarea></div>
+                             <button class="btn btn-primary" onclick="saveQrSettings()">Save Changes</button>
+                             <div id="qrPreviewArea" style="display:none; margin-top:15px;">
+                                <div style="display:flex; gap:10px;">
+                                    <div style="flex:1; text-align:center;">
+                                        <div style="font-size:11px; font-weight:700; margin-bottom:8px; color:var(--text-muted)">Bank QR</div>
+                                        <img id="bankQrPreview" src="" style="width:100%; border-radius:12px; border:1px solid #e2e8f0;" onerror="this.style.display='none'">
+                                    </div>
+                                    <div style="flex:1; text-align:center;">
+                                        <div style="font-size:11px; font-weight:700; margin-bottom:8px; color:var(--text-muted)">Wallet QR</div>
+                                        <img id="walletQrPreview" src="" style="width:100%; border-radius:122px; border:1px solid #e2e8f0;" onerror="this.style.display='none'">
+                                    </div>
+                                </div>
+                             </div>
+                        </div>
+
+                        <!-- Push Announcements -->
+                        <div class="settings-item" onclick="togglePushForm()">
+                            <div class="settings-item-left">
+                                <div class="settings-item-icon" style="background:#f0fdf4; color:#16a34a;"><i class="ph-fill ph-paper-plane-tilt"></i></div>
+                                <div class="settings-item-info">
+                                    <h4>Push Announcements</h4>
+                                    <p>Send alerts to all user devices</p>
+                                </div>
+                            </div>
+                            <i class="ph ph-caret-down settings-item-arrow" id="pushCaret"></i>
+                        </div>
+                        <div id="pushContainer" style="display:none; padding:15px; border-top:1px solid #f1f5f9;">
+                            <div class="input-group"><label>Announcement Title</label><input type="text" id="pushTitle" placeholder="E.g. Monthly Notice"></div>
+                            <div class="input-group">
+                                <label>Target Recipient</label>
+                                <select id="pushTarget" style="width:100%; padding:10px; border-radius:12px; border:1px solid #e2e8f0; font-size:14px; outline:none; background:white;"></select>
+                            </div>
+                            <div class="input-group"><label>Message Body *</label><textarea id="pushBody" style="width:100%; height:80px; padding:10px; border-radius:12px; border:1px solid #e2e8f0;" placeholder="Enter message details..."></textarea></div>
+                            <div class="input-group"><label>Link URL (Optional)</label><input type="url" id="pushUrl" placeholder="https://..."></div>
+                            <button class="btn btn-primary" onclick="sendPush()">Send Now</button>
+                            
+                            <div id="announcementHistory" style="margin-top:25px; border-top:1px solid #f1f5f9; padding-top:20px">
+                                <div style="font-weight:800; font-size:14px; margin-bottom:12px; display:flex; justify-content:space-between; align-items:center;">
+                                    <span>Sent Announcements</span>
+                                    <span class="badge-receipt" id="announcementCount">0</span>
+                                </div>
+                                <div id="announcementList" style="max-height:300px; overflow-y:auto; font-size:12px;"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="settings-card">
+                        <div class="settings-item" style="cursor:default;">
+                            <div class="settings-item-left">
+                                <div class="settings-item-icon"><i class="ph-fill ph-database"></i></div>
+                                <div class="settings-item-info">
+                                    <h4>Data Management</h4>
+                                    <p>Export or clear application data</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div style="padding:0 20px 20px;">
+                            <div style="display:flex; gap:10px; margin-bottom:12px;">
+                                <button class="btn btn-primary" onclick="exportData()" style="flex:1; padding:10px; font-size:12px;"><i class="ph ph-export"></i> Export</button>
+                                <div style="flex:1; position:relative;">
+                                    <button class="btn btn-secondary" style="width:100%; padding:10px; font-size:12px;"><i class="ph ph-download"></i> Import</button>
+                                    <input type="file" onchange="importData(event)" accept=".json" style="position:absolute; top:0; left:0; width:100%; height:100%; opacity:0; cursor:pointer;">
+                                </div>
+                            </div>
+                            <button class="btn btn-danger-outline" onclick="promptClearAllData()" style="width:100%; margin:0; padding:10px; font-size:12px; border-width:1.5px;"><i class="ph ph-trash"></i> Delete All Data</button>
+                        </div>
+                    </div>
+                    <div style="text-align:center;color:var(--text-muted);font-size:12px;margin-top:30px">Kiran Chettri
+                        v3.0 |
+                        Secure Firebase</div>
+                </div>
+            </div>
+        </div> <!-- End of main-content -->
+    </div> <!-- End of app-shell -->
 
     <nav class="nav">
         <div class="nav-item nav-active" onclick="showPage('listPage', this)"><i class="ph-fill ph-house-line"></i><span>Home</span></div>
-        <div style="position:relative;width:60px">
-            <div class="fab-wrapper">
-                <div class="fab" onclick="showPage('addPage')"><i class="ph-bold ph-plus"></i></div>
-            </div>
-        </div>
+        <div class="nav-item" onclick="showPage('addPage', this)"><i class="ph-fill ph-user-plus"></i><span>REGISTER</span></div>
+        <div class="nav-item" onclick="showPage('transactionsPage', this)"><i class="ph-fill ph-arrows-left-right"></i><span>Payment</span></div>
         <div class="nav-item" onclick="showPage('settingsPage', this)"><i class="ph-fill ph-gear"></i><span>Settings</span></div>
     </nav>
 
+
     <div id="toast"><span id="toastMsg">Success</span></div>
+
+    <!-- Transaction Receipt Modal -->
+    <div id="receiptContainer"></div>
 
     <script src="https://www.gstatic.com/firebasejs/10.9.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.9.0/firebase-database-compat.js"></script>
@@ -1491,35 +1787,57 @@
             setTimeout(() => toast.classList.remove('show'), 3000);
         }
 
-        function showPage(id, el) {
+        function showPage(id, el, isBack = false) {
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active-page'));
-            document.getElementById(id).classList.add('active-page');
+            const pageEl = document.getElementById(id);
+            if (pageEl) pageEl.classList.add('active-page');
             document.getElementById('mainHeader').style.display = (id === 'detailPage' || id === 'settingsPage' || id === 'addPage' || id === 'editPage') ? 'none' : 'block';
-            
-            // Handle nav items active state
-            if (el) {
-                document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('nav-active'));
-                el.classList.add('nav-active');
-            } else {
-                // Find nav item by id
-                document.querySelectorAll('.nav-item').forEach(n => {
-                    if (n.innerText.toLowerCase().includes(id.replace('Page','').toLowerCase())) {
-                        n.classList.add('nav-active');
-                    } else {
-                        n.classList.remove('nav-active');
-                    }
-                });
+
+            if (!isBack) {
+                history.pushState({ pageId: id }, "", "");
             }
 
+            // Handle nav items active state (Mobile & Desktop)
+            let targetLabel = id.replace('Page', '').toLowerCase();
+            if (id === 'transactionsPage') targetLabel = 'payment';
+            if (id === 'addPage') targetLabel = 'register';
+            if (id === 'listPage') targetLabel = 'home';
+
+            // Update Mobile Nav
+            document.querySelectorAll('.nav-item').forEach(n => {
+                const label = n.innerText.toLowerCase();
+                if (label.includes(targetLabel)) n.classList.add('nav-active');
+                else n.classList.remove('nav-active');
+            });
+
+            // Update Desktop Sidebar
+            document.querySelectorAll('.side-nav-item').forEach(n => {
+                const label = n.innerText.toLowerCase();
+                if (label.includes(targetLabel) || (targetLabel === 'list' && label.includes('home'))) n.classList.add('side-nav-active');
+                else n.classList.remove('side-nav-active');
+            });
+
             if (id === 'listPage') renderList();
+            if (id === 'transactionsPage') renderTransactions();
             if (id === 'settingsPage') {
                 document.getElementById('mgmtSearch').value = '';
-                renderDeletedHistory();
                 renderMgmtList();
+                renderAnnouncementHistory();
                 document.getElementById('mgmtContainer').style.display = 'none';
                 document.getElementById('mgmtCaret').style.transform = 'rotate(0deg)';
+                loadQrSettings();
             }
         }
+
+
+
+        window.onpopstate = function(event) {
+            if (event.state && event.state.pageId) {
+                showPage(event.state.pageId, null, true);
+            } else {
+                showPage('listPage', null, true);
+            }
+        };
 
         function toggleMgmtList() {
             const cont = document.getElementById('mgmtContainer');
@@ -1531,6 +1849,286 @@
                 cont.style.display = 'none';
                 caret.style.transform = 'rotate(0deg)';
             }
+        }
+
+        function toggleQrSection() {
+            const cont = document.getElementById('qrContainer');
+            const caret = document.getElementById('qrCaret');
+            if (cont.style.display === 'none') {
+                showPinDialog("Authorization Required - Payment Methods", async (pin) => {
+                    if (await verifyPin(pin)) {
+                        cont.style.display = 'block';
+                        caret.style.transform = 'rotate(180deg)';
+                        loadQrSettings();
+                    } else showToast("Wrong PIN! Access denied.", true);
+                });
+            } else {
+                cont.style.display = 'none';
+                caret.style.transform = 'rotate(0deg)';
+            }
+        }
+
+        function togglePushForm() {
+            const cont = document.getElementById('pushContainer');
+            const caret = document.getElementById('pushCaret');
+            if (cont.style.display === 'none') {
+                showPinDialog("Authorization Required - Announcements", async (pin) => {
+                    if (await verifyPin(pin)) {
+                        cont.style.display = 'block';
+                        caret.style.transform = 'rotate(180deg)';
+                        
+                        // Populate target dropdown
+                        const targetSelect = document.getElementById('pushTarget');
+                        targetSelect.innerHTML = '<option value="all">All Users / Devices</option>';
+                        loans.forEach(l => {
+                            targetSelect.innerHTML += `<option value="${escapeHtml(l.name)}">${escapeHtml(l.name)}</option>`;
+                        });
+
+                        renderAnnouncementHistory();
+                    } else showToast("Wrong PIN! Access denied.", true);
+                });
+            } else {
+                cont.style.display = 'none';
+                caret.style.transform = 'rotate(0deg)';
+            }
+        }
+
+        async function saveQrSettings() {
+            const bankQrInput = document.getElementById('bankQrUrl');
+            const walletQrInput = document.getElementById('walletQrUrl');
+            const bankDetailsInput = document.getElementById('bankDetailsText');
+            
+            const bankQr = bankQrInput.value.trim();
+            const walletQr = walletQrInput.value.trim();
+            const bankDetails = bankDetailsInput.value.trim();
+
+            showPinDialog("Authorization Required - Save QR Settings", async (pin) => {
+                if (await verifyPin(pin)) {
+                    await db.ref('settings/paymentMethods').set({ bankQr, walletQr, bankDetails });
+                    showToast('✅ QR Settings saved!');
+                    loadQrSettings();
+                } else {
+                    showToast('❌ Wrong PIN! Changes not saved.', true);
+                }
+            });
+        }
+
+        function loadQrSettings() {
+            db.ref('settings/paymentMethods').once('value').then(snap => {
+                if (!snap.exists()) return;
+                const data = snap.val();
+                document.getElementById('bankQrUrl').value = data.bankQr || '';
+                document.getElementById('walletQrUrl').value = data.walletQr || '';
+                document.getElementById('bankDetailsText').value = data.bankDetails || '';
+                if (data.bankQr || data.walletQr) {
+                    document.getElementById('qrPreviewArea').style.display = 'block';
+                    if (data.bankQr) { document.getElementById('bankQrPreview').src = data.bankQr; document.getElementById('bankQrPreview').style.display = 'block'; }
+                    if (data.walletQr) { document.getElementById('walletQrPreview').src = data.walletQr; document.getElementById('walletQrPreview').style.display = 'block'; }
+                }
+            });
+        }
+
+        function renderTransactions() {
+            const query = (document.getElementById('paySearch')?.value || '').toLowerCase();
+            const allPayments = [];
+
+            loans.forEach(l => {
+                (l.paidHistory || []).forEach((h, idx) => {
+                    allPayments.push({
+                        ...h,
+                        loanId: l.id,
+                        customerName: l.name,
+                        customerImg: l.pImg,
+                        idx: idx
+                    });
+                });
+            });
+
+            // Sort newest first
+            allPayments.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+            const filtered = query
+                ? allPayments.filter(p => p.customerName.toLowerCase().includes(query) || p.date.includes(query) || p.type.toLowerCase().includes(query))
+                : allPayments;
+
+            // Update Mini Stats
+            const pendingReqs = (paymentRequests || []).filter(r => r.status === 'Pending').length;
+            document.getElementById('transPendingCount').textContent = pendingReqs;
+            document.getElementById('transVerifiedCount').textContent = filtered.length;
+            document.getElementById('paymentCountBadge').textContent = filtered.length;
+
+            const container = document.getElementById('globalPaymentList');
+            if (!container) return;
+
+            if (!filtered.length && !pendingReqs) {
+                container.innerHTML = `<div class="empty-state" style="padding:40px; text-align:center">
+                    <i class="ph ph-receipt" style="font-size:48px; color:var(--text-muted); opacity:0.2;"></i>
+                    <div style="color:var(--text-muted); margin-top:15px; font-weight:500;">No transactions found.</div>
+                </div>`;
+                return;
+            }
+
+            let html = '';
+
+            // Render Pending Requests First (Premium Alert Style)
+            if (paymentRequests) {
+                const pendings = paymentRequests.filter(r => r.status === 'Pending').sort((a,b) => b.timestamp - a.timestamp);
+                if (pendings.length > 0) {
+                    html += `<div class="date-divider">Awaiting Verification</div>`;
+                    pendings.forEach(r => {
+                        html += `
+                        <div style="padding:16px; background: white; border-radius:28px; margin-bottom:16px; box-shadow: 0 4px 12px rgba(0,0,0,0.04); border: 1px solid #f1f5f9; position:relative; overflow:hidden;">
+                            <div style="position:absolute; top:0; left:0; width:4px; height:100%; background:#f59e0b;"></div>
+                            <div style="display:flex; gap:16px; align-items:flex-start;">
+                                ${r.proofUrl ? `
+                                <div onclick="showProofLightbox('${r.proofUrl}', '${escapeHtml(r.customerName)}')" style="flex-shrink:0; cursor:pointer; position:relative;">
+                                    <img src="${r.proofUrl}" style="width:70px; height:70px; border-radius:16px; object-fit:cover; border:1px solid #e2e8f0;">
+                                    <div style="position:absolute; bottom:-5px; right:-5px; background:white; width:22px; height:22px; border-radius:50%; display:flex; align-items:center; justify-content:center; box-shadow:0 2px 4px rgba(0,0,0,0.1); border:1px solid #f1f5f9;">
+                                        <i class="ph-bold ph-magnifying-glass" style="font-size:10px; color:var(--primary);"></i>
+                                    </div>
+                                </div>` : `
+                                <div style="width:70px; height:70px; border-radius:16px; background:#f8fafc; display:flex; align-items:center; justify-content:center; color:var(--text-muted); border:1px dashed #ced4da;">
+                                    <i class="ph ph-image-slash" style="font-size:24px;"></i>
+                                </div>`}
+                                <div style="flex:1; min-width:0;">
+                                    <div style="font-weight:800; font-size:15px; color:var(--text);">${escapeHtml(r.customerName)}</div>
+                                    <div style="font-size:11px; color:#b45309; font-weight:700; text-transform:uppercase; letter-spacing:0.5px; margin-top:2px;">${r.type} Verification</div>
+                                    <div style="font-size:11px; color:var(--text-muted); margin-top:5px; display:flex; align-items:center; gap:4px;">
+                                        <i class="ph ph-calendar"></i> ${new Date(r.timestamp).toLocaleDateString()} 
+                                        <i class="ph ph-clock" style="margin-left:8px;"></i> ${new Date(r.timestamp).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div style="margin-top:15px; padding-top:15px; border-top:1px dashed #e2e8f0; display:flex; align-items:center; justify-content:space-between;">
+                                <div>
+                                    <div style="font-size:11px; color:var(--text-muted);">Amount Requested</div>
+                                    <div style="font-weight:800; color:#d97706; font-size:18px;">Rs. ${formatCurrency(r.amount)}</div>
+                                </div>
+                                <div style="display:flex; gap:8px;">
+                                    <button onclick="rejectRequest('${r.key}')" style="background:#fef2f2; color:var(--danger); border:none; padding:8px 16px; border-radius:14px; font-size:12px; font-weight:800; cursor:pointer;">Decline</button>
+                                    <button onclick="approveRequest('${r.key}')" style="background:var(--primary); color:white; border:none; padding:8px 16px; border-radius:14px; font-size:12px; font-weight:800; cursor:pointer; box-shadow:0 4px 10px rgba(5,150,105,0.2);">Approve</button>
+                                </div>
+                            </div>
+                        </div>`;
+                    });
+                }
+            }
+
+            // Group transactions by date
+            let lastDate = '';
+            filtered.forEach(p => {
+                const displayDate = p.date === new Date().toISOString().split('T')[0] ? 'Today' : p.date;
+                if (displayDate !== lastDate) {
+                    html += `<div class="date-divider">${displayDate}</div>`;
+                    lastDate = displayDate;
+                }
+
+                const isInterest = p.type === 'Interest';
+                html += `
+                <div class="transaction-card" onclick="showTransactionReceipt(${p.idx}, ${p.loanId})">
+                    <div class="trans-icon ${isInterest ? 'interest' : 'principal'}">
+                        <i class="ph-fill ${isInterest ? 'ph-hand-coins' : 'ph-wallet'}"></i>
+                    </div>
+                    <div class="trans-info">
+                        <div class="trans-name">${escapeHtml(p.customerName)}</div>
+                        <div class="trans-meta">
+                            <span style="color: ${isInterest ? '#f59e0b' : '#10b981'}">${p.type}</span> 
+                            • <i class="ph ph-clock"></i> Verified
+                        </div>
+                    </div>
+                    <div class="trans-amount" style="display:flex; align-items:center; gap:12px;">
+                        <div style="text-align:right;">
+                            <div class="trans-value" style="color: ${isInterest ? '#f59e0b' : '#10b981'}">Rs. ${formatCurrency(p.amt)}</div>
+                            <div class="trans-type">${p.method || 'Offline'}</div>
+                        </div>
+                        <button onclick="deleteConfirmedPayment(${p.loanId}, ${p.idx})" style="width:32px; height:32px; border-radius:10px; border:none; background:#fef2f2; color:var(--danger); display:flex; align-items:center; justify-content:center; cursor:pointer;">
+                            <i class="ph-bold ph-trash"></i>
+                        </button>
+                    </div>
+                </div>`;
+            });
+
+            container.innerHTML = html;
+        }
+
+        function showProofLightbox(url, name) {
+            const overlay = document.createElement('div');
+            overlay.className = 'receipt-modal-overlay';
+            overlay.innerHTML = `
+            <div class="receipt-modal" style="max-width: 90%; width: 450px;">
+                <div style="padding: 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #f1f5f9;">
+                    <div style="font-weight: 800; font-size: 16px;">Payment Proof: ${name}</div>
+                    <div onclick="this.closest('.receipt-modal-overlay').remove()" style="cursor:pointer; width:32px; height:32px; border-radius:50%; background:#f1f5f9; display:flex; align-items:center; justify-content:center;"><i class="ph ph-x"></i></div>
+                </div>
+                <div style="padding: 15px; text-align: center; background: #f8fafc;">
+                    <img src="${url}" style="max-width: 100%; border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); border: 2px solid white;">
+                </div>
+                <div style="padding: 20px; text-align: center;">
+                    <button class="btn btn-primary" style="width: 100%;" onclick="window.open('${url}', '_blank')"><i class="ph ph-download-simple"></i> Download Full Image</button>
+                </div>
+            </div>`;
+            document.body.appendChild(overlay);
+            overlay.onclick = (e) => { if (e.target === overlay) overlay.remove(); };
+        }
+
+        function showTransactionReceipt(histIdx, loanId) {
+            const l = loans.find(x => x.id === loanId);
+            if (!l) return;
+            const h = l.paidHistory[histIdx];
+            if (!h) return;
+
+            const modal = document.createElement('div');
+            modal.className = 'receipt-modal-overlay';
+            modal.innerHTML = `
+            <div class="receipt-modal">
+                <div class="receipt-top">
+                    <div style="font-size:12px; opacity:0.7; font-weight:600; text-transform:uppercase; letter-spacing:1px; margin-bottom:10px;">Payment Successful</div>
+                    <div class="receipt-amount-big">Rs. ${formatCurrency(h.amt)}</div>
+                    <div style="background:var(--success); color:white; display:inline-flex; align-items:center; gap:5px; padding:5px 15px; border-radius:20px; font-size:11px; font-weight:700;">
+                        <i class="ph-bold ph-check-circle"></i> VERIFIED RECEIPT
+                    </div>
+                </div>
+                <div class="receipt-body">
+                    ${h.receiptImg || (l.paidHistory[histIdx].receiptImg) ? `
+                    <div style="margin-bottom:20px; text-align:center;">
+                        <img src="${h.receiptImg || l.paidHistory[histIdx].receiptImg}" style="width:100%; max-height:200px; object-fit:contain; border-radius:12px; border:1px solid #f1f5f9; cursor:pointer;" onclick="window.open(this.src, '_blank')">
+                        <div style="font-size:10px; color:var(--text-muted); margin-top:5px;"><i class="ph ph-magnifying-glass-plus"></i> Click to enlarge</div>
+                    </div>` : ''}
+                    <div class="receipt-row">
+                        <div class="receipt-label">Customer Name</div>
+                        <div class="receipt-value">${escapeHtml(l.name)}</div>
+                    </div>
+                    <div class="receipt-row">
+                        <div class="receipt-label">Transaction Type</div>
+                        <div class="receipt-value">${h.type} Payment</div>
+                    </div>
+                    <div class="receipt-row">
+                        <div class="receipt-label">Payment Date</div>
+                        <div class="receipt-value">${h.date}</div>
+                    </div>
+                    ${h.from ? `
+                    <div class="receipt-row">
+                        <div class="receipt-label">Billing Cycle</div>
+                        <div class="receipt-value" style="font-size:12px;">${h.from} to ${h.to || h.date}</div>
+                    </div>` : ''}
+                    <div class="receipt-row">
+                        <div class="receipt-label">Reference ID</div>
+                        <div class="receipt-value" style="font-family:monospace; font-size:12px;">TXN-${loanId.toString().slice(-4)}-${histIdx}</div>
+                    </div>
+                    <div style="margin-top:20px; padding:15px; background:#f8fafc; border-radius:15px; border:1px solid #f1f5f9;">
+                        <div style="font-size:11px; color:var(--text-muted); font-weight:600; margin-bottom:5px;">NOTES</div>
+                        <div style="font-size:13px; font-weight:500;">${h.remarks || 'Electronic receipt for ' + h.type + ' payment.'}</div>
+                    </div>
+                </div>
+                <div class="receipt-footer">
+                    <button class="btn btn-secondary" style="flex:1" onclick="this.closest('.receipt-modal-overlay').remove()"><i class="ph ph-x"></i> Close</button>
+                    <button class="btn btn-primary" style="flex:1" onclick="window.print()"><i class="ph ph-printer"></i> Print</button>
+                    <button class="btn btn-primary" style="flex:1; background:#25D366" onclick="window.open('https://wa.me/${l.phone?.replace(/[^0-9]/g, '')}?text=Receipt%20for%20Rs.%20${h.amt}.%20Thank%20you%20for%20your%20payment!', '_blank')"><i class="ph ph-whatsapp-logo"></i> Share</button>
+                </div>
+            </div>`;
+            document.body.appendChild(modal);
+            modal.onclick = (e) => { if (e.target === modal) modal.remove(); };
         }
 
         function toggleBank() { document.getElementById('bankInfo').style.display = document.getElementById('pMethod').value === 'Online' ? 'block' : 'none'; }
@@ -1554,6 +2152,7 @@
 
         async function saveLoan() {
             const name = document.getElementById('name').value.trim();
+            const address = document.getElementById('address').value.trim();
             const amount = parseFloat(document.getElementById('amount').value);
             const pin = document.getElementById('adminPin').value;
             if (!name || !amount) { showToast("Please fill Name and Amount", true); return; }
@@ -1570,6 +2169,7 @@
             const newLoan = {
                 id: Date.now(),
                 name: name,
+                address: address,
                 amount: amount,
                 rate: parseFloat(document.getElementById('rate').value) || 12,
                 startDate: document.getElementById('sDate').value,
@@ -1588,6 +2188,7 @@
             await loansRef.child(newLoan.id).set(newLoan);
             showToast("Customer registered successfully!");
             document.getElementById('name').value = '';
+            document.getElementById('address').value = '';
             document.getElementById('amount').value = '';
             document.getElementById('adminPin').value = '';
             showPage('listPage');
@@ -1610,6 +2211,9 @@
             document.getElementById('totInt').innerText = formatCurrency(ti);
             document.getElementById('totCust').innerText = ac;
         }
+
+
+
 
         function filterLoans() { renderList(document.getElementById('searchInput').value.toLowerCase()); }
 
@@ -1665,6 +2269,7 @@
             if (!l) return;
             document.getElementById('editId').value = l.id;
             document.getElementById('editName').value = l.name;
+            document.getElementById('editAddress').value = l.address || '';
             document.getElementById('editAmount').value = l.amount;
             document.getElementById('editRate').value = l.rate;
             document.getElementById('editSDate').value = l.startDate;
@@ -1706,6 +2311,7 @@
 
             const updates = {
                 name: name,
+                address: document.getElementById('editAddress').value.trim(),
                 amount: amount,
                 rate: parseFloat(document.getElementById('editRate').value) || 12,
                 startDate: document.getElementById('editSDate').value,
@@ -1727,9 +2333,9 @@
         function renderMgmtList() {
             const container = document.getElementById('mgmtList');
             if (!container) return;
-            
+
             const q = document.getElementById('mgmtSearch')?.value.toLowerCase() || '';
-            const filtered = loans.filter(l => 
+            const filtered = loans.filter(l =>
                 l.name.toLowerCase().includes(q) || (l.phone && l.phone.includes(q))
             );
 
@@ -1737,7 +2343,7 @@
                 container.innerHTML = `<div style="text-align:center; padding:20px; color:var(--text-muted);">${q ? 'No matching users.' : 'No users to manage.'}</div>`;
                 return;
             }
-            
+
             container.innerHTML = filtered.map(l => `
                 <div class="mgmt-item">
                     <div class="mgmt-info">
@@ -1771,13 +2377,39 @@
             if (!l) return;
             const c = calc(l);
             if (c.interest <= 0) { showToast("No interest accrued yet.", true); return; }
-            if (confirm(`Confirm receipt of Rs. ${formatCurrency(c.interest)} for Interest Payment?`)) {
-                const today = new Date().toISOString().split('T')[0];
-                const newHistory = [...(l.paidHistory || []), { type: 'Interest', date: today, amt: c.interest, from: l.currentCycleDate, to: today }];
-                await loansRef.child(l.id).update({ paidHistory: newHistory, currentCycleDate: today, finalInterest: 0 });
+
+            // Use bottom sheet for receipt URL capture
+            const overlay = document.createElement('div');
+            overlay.className = 'bottom-sheet-overlay';
+            const today = new Date().toISOString().split('T')[0];
+            overlay.innerHTML = `
+            <div class="bottom-sheet">
+                <div class="bottom-sheet-handle"></div>
+                <h3><i class="ph-fill ph-hand-coins" style="color:var(--danger)"></i> Interest Payment</h3>
+                <div class="balance-chip" style="background:#fff3e0; color:#f59e0b;">Interest Due: Rs. ${formatCurrency(c.interest)}</div>
+                <label class="bs-label">Received Date *</label>
+                <input type="date" id="bsIntDate" class="bs-input" value="${today}">
+                <label class="bs-label">Receipt / Payment Photo URL (Optional)</label>
+                <input type="url" id="bsIntReceipt" class="bs-input" placeholder="https://... (photo link of payment proof)">
+                <div class="bs-actions">
+                    <button class="btn bs-cancel" id="bsIntCancel">Cancel</button>
+                    <button class="btn bs-confirm" id="bsIntConfirm"><i class="ph-bold ph-check"></i> Confirm Rs. ${formatCurrency(c.interest)}</button>
+                </div>
+            </div>`;
+            document.body.appendChild(overlay);
+            overlay.querySelector('#bsIntCancel').onclick = () => overlay.remove();
+            overlay.onclick = (e) => { if (e.target === overlay) overlay.remove(); };
+            overlay.querySelector('#bsIntConfirm').onclick = async () => {
+                const recDate = overlay.querySelector('#bsIntDate').value || today;
+                const receiptImg = overlay.querySelector('#bsIntReceipt').value.trim();
+                overlay.remove();
+                const histEntry = { type: 'Interest', date: recDate, amt: c.interest, from: l.currentCycleDate, to: recDate };
+                if (receiptImg) histEntry.receiptImg = receiptImg;
+                const newHistory = [...(l.paidHistory || []), histEntry];
+                await loansRef.child(l.id).update({ paidHistory: newHistory, currentCycleDate: recDate, finalInterest: 0 });
                 showToast("Interest payment recorded!");
                 viewDetail(id);
-            }
+            };
         }
 
         function payPrincipal(id) {
@@ -1803,6 +2435,9 @@
                 <label class="bs-label">Remarks (Optional)</label>
                 <input type="text" id="bsRemarks" class="bs-input" placeholder="e.g. Cash received, Bank transfer...">
 
+                <label class="bs-label">Receipt / Payment Photo URL (Optional)</label>
+                <input type="url" id="bsReceipt" class="bs-input" placeholder="https://... (link to payment screenshot)">
+
                 <div class="bs-actions">
                     <button class="btn bs-cancel" id="bsCancelBtn">Cancel</button>
                     <button class="btn bs-confirm" id="bsConfirmBtn"><i class="ph-bold ph-check"></i> Confirm</button>
@@ -1818,11 +2453,13 @@
                 let amt = parseFloat(overlay.querySelector('#bsAmt').value);
                 const recDate = overlay.querySelector('#bsDate').value || today;
                 const remarks = overlay.querySelector('#bsRemarks').value.trim();
+                const receiptImg = overlay.querySelector('#bsReceipt').value.trim();
                 if (!amt || isNaN(amt) || amt <= 0) { showToast('Please enter a valid amount', true); return; }
                 if (amt > l.amount) { showToast('Cannot exceed principal balance!', true); return; }
                 overlay.remove();
                 const histEntry = { type: 'Principal', date: recDate, amt: amt };
                 if (remarks) histEntry.remarks = remarks;
+                if (receiptImg) histEntry.receiptImg = receiptImg;
                 const newHistory = [...(l.paidHistory || []), histEntry];
                 const newAmount = l.amount - amt;
                 let newStatus = l.status, finalInt = l.finalInterest;
@@ -1921,6 +2558,7 @@
             <div class="info-card">
                 <div class="info-card-title">📄 KYC Details</div>
                 <div class="info-row"><span>Mobile</span><span><a href="tel:${l.phone}" style="color:var(--primary)">${l.phone || 'N/A'}</a></span></div>
+                <div class="info-row"><span>Address</span><span>${l.address || 'N/A'}</span></div>
                 <div class="info-row"><span>Start Date</span><span>${l.startDate}</span></div>
                 <div class="info-row"><span>Days Elapsed</span><span><strong>${c.days} days</strong></span></div>
                 <div class="info-row"><span>Interest Rate</span><span>${l.rate}% p.a.</span></div>
@@ -2005,7 +2643,7 @@
         function checkAlerts() {
             const todayStr = new Date().toISOString().split('T')[0];
             let triggeredCount = 0;
-            
+
             loans.forEach(l => {
                 const c = calc(l);
                 if (l.status === 'Active' && c.days >= 365) {
@@ -2021,7 +2659,7 @@
                             showBrowserNotification("Repayment Required", msg);
                             playNotificationSound();
                             if (triggeredCount === 1) alert(msg);
-                            
+
                             // Update alert state in Firebase
                             loansRef.child(l.id).update({
                                 lastAlertDate: todayStr,
@@ -2035,28 +2673,78 @@
 
         const announcementsRef = db.ref('announcements');
 
+        function renderAnnouncementHistory() {
+            const container = document.getElementById('announcementList');
+            const countBadge = document.getElementById('announcementCount');
+            
+            announcementsRef.limitToLast(10).once('value', snap => {
+                const data = snap.val();
+                if (!data) {
+                    container.innerHTML = '<div class="empty-state" style="padding:20px; font-size:12px;">No announcements sent yet.</div>';
+                    countBadge.textContent = '0';
+                    return;
+                }
+                
+                const entries = Object.entries(data).reverse();
+                countBadge.textContent = entries.length;
+                
+                container.innerHTML = entries.map(([key, item]) => `
+                    <div style="padding:12px; border-bottom:1px solid #f1f5f9; position:relative;">
+                        <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+                            <div style="font-weight:700; font-size:13px; color:var(--text);">${escapeHtml(item.title)}</div>
+                            <div style="font-size:9px; background:#f1f5f9; padding:2px 6px; border-radius:4px; color:var(--text-muted); font-weight:700;">TO: ${item.target === 'all' ? 'ALL' : escapeHtml(item.target)}</div>
+                        </div>
+                        <div style="font-size:11px; color:var(--text-muted); margin-top:3px; line-height:1.4;">${escapeHtml(item.body)}</div>
+                        <div style="font-size:10px; color:var(--text-muted); margin-top:5px; display:flex; justify-content:space-between; align-items:center;">
+                            <span>${new Date(item.timestamp).toLocaleString()}</span>
+                            <span onclick="deleteAnnouncement('${key}')" style="color:var(--danger); cursor:pointer; font-weight:700;"><i class="ph ph-trash"></i> DELETE</span>
+                        </div>
+                    </div>
+                `).join('');
+            });
+        }
+
+        async function deleteAnnouncement(key) {
+            showPinDialog("Authorization Required - Delete Notice", async (pin) => {
+                if (await verifyPin(pin)) {
+                    if (confirm("Remove this announcement permanently?")) {
+                        await announcementsRef.child(key).remove();
+                        showToast("Announcement removed.");
+                        renderAnnouncementHistory();
+                    }
+                } else {
+                    showToast("❌ Wrong PIN! Deletion denied.", true);
+                }
+            });
+        }
+
         function togglePushForm() {
             const container = document.getElementById('pushContainer');
             const caret = document.getElementById('pushCaret');
             const isHidden = container.style.display === 'none';
             container.style.display = isHidden ? 'block' : 'none';
             caret.style.transform = isHidden ? 'rotate(180deg)' : 'rotate(0deg)';
-            
+
             if (isHidden) {
                 // Populate individual targeting dropdown
                 const targetSelect = document.getElementById('pushTarget');
-                targetSelect.innerHTML = '<option value="all">All Users / Devices</option>';
+                targetSelect.innerHTML = '<option value="All Users / Devices">All Users / Devices</option>';
                 loans.forEach(l => {
-                    targetSelect.innerHTML += `<option value="${l.id}">${l.name} (${maskPhone(l.phone)})</option>`;
+                    targetSelect.innerHTML += `<option value="${escapeHtml(l.name)}">${escapeHtml(l.name)} (${l.phone || 'N/A'})</option>`;
                 });
             }
         }
 
         async function sendPush() {
-            const title = document.getElementById('pushTitle').value.trim();
-            const body = document.getElementById('pushBody').value.trim();
-            const target = document.getElementById('pushTarget').value;
-            const link = document.getElementById('pushUrl').value.trim();
+            const titleInput = document.getElementById('pushTitle');
+            const bodyInput = document.getElementById('pushBody');
+            const linkInput = document.getElementById('pushUrl');
+            const targetSelect = document.getElementById('pushTarget');
+            
+            const title = titleInput.value.trim();
+            const body = bodyInput.value.trim();
+            const link = linkInput.value.trim();
+            const target = targetSelect.value;
 
             if (!title || !body) { showToast("Title and message required!", true); return; }
 
@@ -2067,12 +2755,13 @@
                         body: body,
                         target: target,
                         link: link,
-                        sentAt: firebase.database.ServerValue.TIMESTAMP
+                        timestamp: firebase.database.ServerValue.TIMESTAMP
                     });
                     showToast("Announcement Sent Successfully! 🚀");
-                    document.getElementById('pushTitle').value = '';
-                    document.getElementById('pushBody').value = '';
-                    document.getElementById('pushUrl').value = '';
+                    titleInput.value = '';
+                    bodyInput.value = '';
+                    linkInput.value = '';
+                    renderAnnouncementHistory();
                 } else showToast("Wrong PIN! Announcement cancelled.", true);
             });
         }
@@ -2080,29 +2769,86 @@
         // Listen for new announcements
         announcementsRef.limitToLast(1).on('child_added', (snap) => {
             const data = snap.val();
+            if (!data) return;
             const now = Date.now();
-            // Only alert if message is new (sent within the last 5 seconds)
-            if (data.sentAt && (now - data.sentAt < 5000)) {
-                // Individual targeting logic: only show if target matches or target is 'all'
-                if (data.target === 'all') {
-                    showBrowserNotification(`📣 ${data.title}`, data.body);
-                    playNotificationSound();
-                } else {
-                    // Logic would go here if we were storing local device IDs, but for now we'll show to admin
-                    // and allow simple user-based targeting if we implement a 'user profile' section
-                    showBrowserNotification(`📣 ${data.title}`, data.body);
-                    playNotificationSound();
-                }
+            // Only alert if message is new (sent within the last 10 seconds)
+            if (data.timestamp && (now - data.timestamp < 10000)) {
+                showBrowserNotification(`📣 ${data.title}`, data.body);
+                playNotificationSound();
             }
         });
 
-        loansRef.on('value', (snap) => { 
-            loans = snap.val() ? Object.values(snap.val()) : []; 
-            renderList(); 
-            updateDashboardStats(); 
-            checkAlerts(); 
+        loansRef.on('value', (snap) => {
+            loans = snap.val() ? Object.values(snap.val()) : [];
+            renderList();
+            updateDashboardStats();
+            checkAlerts();
             if (document.getElementById('settingsPage').classList.contains('active-page')) renderMgmtList();
+            if (document.getElementById('transactionsPage').classList.contains('active-page')) renderTransactions();
         });
+
+        function deleteConfirmedPayment(loanId, idx) {
+            showPinDialog("Delete Transaction Record", async (pin) => {
+                if (await verifyPin(pin)) {
+                    if (confirm("Are you sure? This will remove the payment from the customer's history. Balance/Interest will NOT be automatically reverted.")) {
+                        const l = loans.find(x => x.id === loanId);
+                        if (!l) return;
+                        const newHistory = [...l.paidHistory];
+                        newHistory.splice(idx, 1);
+                        await loansRef.child(loanId).update({ paidHistory: newHistory });
+                        showToast("Transaction removed successfully.");
+                    }
+                } else showToast("Wrong PIN!", true);
+            });
+        }
+
+        function rejectRequest(reqKey) {
+            if (confirm("Are you sure you want to reject this payment request?")) {
+                db.ref('payment_requests').child(reqKey).update({ status: 'Rejected' });
+                showToast("Payment Rejected.");
+            }
+        }
+
+        async function approveRequest(reqKey) {
+            const req = paymentRequests.find(r => r.key === reqKey);
+            if (!req) return;
+            const l = loans.find(x => x.id === req.customerId);
+            if (!l) { showToast("Customer not found! Maybe deleted?", true); return; }
+
+            if (!confirm(`Approve Rs. ${req.amount} for ${req.type} from ${req.customerName}?`)) return;
+
+            const recDate = new Date().toISOString().split('T')[0];
+            const histEntry = { type: req.type, date: recDate, amt: req.amount, remarks: req.note || 'User Panel Submission' };
+            if (req.proofUrl) histEntry.receiptImg = req.proofUrl;
+
+            const newHistory = [...(l.paidHistory || []), histEntry];
+            let updates = { paidHistory: newHistory };
+
+            if (req.type === 'Interest') {
+                histEntry.from = l.currentCycleDate;
+                histEntry.to = recDate;
+                updates.currentCycleDate = recDate;
+                updates.finalInterest = 0;
+            } else {
+                const newAmount = Math.max(0, l.amount - req.amount);
+                let newStatus = l.status, finalInt = l.finalInterest;
+                if (newAmount <= 0) { newStatus = 'Paid'; finalInt = calc(l).interest; }
+                updates.amount = newAmount;
+                updates.status = newStatus;
+                updates.finalInterest = finalInt;
+            }
+
+            await loansRef.child(l.id).update(updates);
+            await db.ref('payment_requests').child(reqKey).update({ status: 'Approved' });
+            showToast("Payment Approved & Updated!");
+        }
+
+        let paymentRequests = [];
+        db.ref('payment_requests').on('value', snap => {
+            paymentRequests = snap.val() ? Object.keys(snap.val()).map(k => ({...snap.val()[k], key: k})) : [];
+            if (document.getElementById('transactionsPage').classList.contains('active-page')) renderTransactions();
+        });
+
         deletedHistoryRef.on('value', (snap) => { deletedHistory = snap.val() ? Object.values(snap.val()) : []; renderDeletedHistory(); });
 
         document.getElementById('sDate').valueAsDate = new Date();
