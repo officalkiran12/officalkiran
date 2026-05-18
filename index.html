@@ -1027,13 +1027,102 @@
         }
 
         @keyframes bsFadeIn {
-            from {
-                opacity: 0;
-            }
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
 
-            to {
-                opacity: 1;
-            }
+        .bottom-sheet {
+            background: #ffffff;
+            width: 100%;
+            max-width: 500px;
+            border-radius: 32px 32px 0 0;
+            padding: 24px;
+            box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.1);
+            animation: bsSlideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+            max-height: 85vh;
+            overflow-y: auto;
+            padding-bottom: calc(24px + env(safe-area-inset-bottom));
+        }
+
+        .bottom-sheet-handle {
+            width: 48px;
+            height: 5px;
+            background: #e2e8f0;
+            border-radius: 10px;
+            margin: 0 auto 20px;
+        }
+
+        .bottom-sheet h3 {
+            font-size: 22px;
+            font-weight: 800;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--text);
+        }
+
+        .balance-chip {
+            display: inline-block;
+            background: #f0fdf4;
+            color: var(--success);
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 700;
+            margin-bottom: 24px;
+            border: 1px solid #bbf7d0;
+        }
+
+        .bs-label {
+            display: block;
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+        }
+
+        .bs-input {
+            width: 100%;
+            padding: 16px;
+            border-radius: 16px;
+            border: 1.5px solid #e2e8f0;
+            background: #f8fafc;
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            outline: none;
+            transition: all 0.2s;
+        }
+
+        .bs-input:focus {
+            border-color: var(--primary);
+            background: #ffffff;
+            box-shadow: 0 0 0 4px var(--primary-light);
+        }
+
+        .bs-actions {
+            display: flex;
+            gap: 12px;
+            margin-top: 10px;
+            margin-bottom: 10px;
+        }
+
+        .bs-cancel {
+            background: #f1f5f9;
+            color: var(--text);
+            flex: 1;
+            font-weight: 700;
+            border-radius: 16px;
+            border: none;
+        }
+
+        .bs-confirm {
+            flex: 2;
+            border-radius: 16px;
+            border: none;
+            box-shadow: 0 8px 20px rgba(5, 150, 105, 0.25);
         }
 
         /* Flutter / Material 3 Design Extras */
@@ -1190,7 +1279,8 @@
             width: 100%;
             max-width: 400px;
             border-radius: 28px;
-            overflow: hidden;
+            overflow-y: auto;
+            max-height: 90vh;
             position: relative;
             box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
         }
@@ -1230,6 +1320,14 @@
             background: #f8fafc;
             display: flex;
             gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        @media (max-width: 480px) {
+            .receipt-footer {
+                flex-direction: column;
+                gap: 8px;
+            }
         }
 
     </style>
@@ -1237,22 +1335,7 @@
 
 <body>
     <div class="app-shell">
-        <div class="sidebar">
-            <div class="sidebar-logo">Kiran<span> Chettri</span></div>
-            <div class="side-nav-item side-nav-active" onclick="showPage('listPage', this)"><i
-                    class="ph-fill ph-house-line"></i><span>Home</span></div>
-            <div class="side-nav-item" onclick="showPage('addPage', this)"><i class="ph-fill ph-user-plus"></i><span>Add
-                    Customer</span></div>
-            <div class="side-nav-item" onclick="showPage('transactionsPage', this)"><i
-                    class="ph-fill ph-arrows-left-right"></i><span>Transactions</span></div>
-            <div class="side-nav-item" onclick="showPage('settingsPage', this)"><i
-                    class="ph-fill ph-gear"></i><span>Settings</span></div>
 
-            <div
-                style="margin-top: auto; padding: 20px; text-align: center; font-size: 11px; color: #64748b; border-top: 1px solid rgba(255,255,255,0.05);">
-                Kiran Chettri v3.0 | Secure PC Edition
-            </div>
-        </div>
         <div class="main-content">
 
 
@@ -1262,13 +1345,8 @@
                         <div class="header-title">Kiran<span> Chettri</span></div>
                         <div class="header-date" id="topDate"></div>
                     </div>
-                    <div style="width: 48px; height: 48px; border-radius: 50%; background: rgba(255,255,255,0.2); display: flex; align-items: center; justify-content: center; font-size: 24px;"
-                        onclick="showToast('Notification center')">
-                        <i class="ph ph-bell"></i>
-                    </div>
                 </div>
             </div>
-
             <!-- List Page -->
             <div id="listPage" class="page active-page">
                 <div class="container">
@@ -1339,6 +1417,14 @@
                             </div>
                         </div>
                         <div class="form-grid">
+                            <div class="input-group"><label>Email Address</label><input type="email" id="email"
+                                    placeholder="E.g. customer@example.com"></div>
+                            <div class="input-group" style="display:flex; align-items:center; gap:10px; margin-top:28px;">
+                                <input type="checkbox" id="stopInterest" style="width:20px; height:20px; cursor:pointer;">
+                                <label for="stopInterest" style="font-weight:700; cursor:pointer; margin-bottom:0; font-size: 13px;">Stop / Freeze Interest</label>
+                            </div>
+                        </div>
+                        <div class="form-grid">
                             <div class="input-group"><label>Profile Photo URL</label><input type="url" id="pImg"
                                     placeholder="https://..."></div>
                             <div class="input-group"><label>Payment Mode</label><select id="pMethod">
@@ -1398,6 +1484,10 @@
                             <h4 style="margin-bottom:0; font-weight: 800;"><i class="ph-fill ph-activity"></i> Global Payments</h4>
                             <span id="paymentCountBadge" class="badge-receipt" style="background: var(--text); color: white;">0</span>
                         </div>
+                        <div style="display:flex; gap:10px; margin-bottom:15px;">
+                            <input type="date" id="filterStartDate" class="bs-input" style="margin-bottom:0; flex:1; padding: 12px; border-radius: 12px; background: #f8fafc;" onchange="renderTransactions()" placeholder="Start Date">
+                            <input type="date" id="filterEndDate" class="bs-input" style="margin-bottom:0; flex:1; padding: 12px; border-radius: 12px; background: #f8fafc;" onchange="renderTransactions()" placeholder="End Date">
+                        </div>
                         <div style="position:relative; margin-bottom:15px;">
                             <i class="ph ph-magnifying-glass" style="position:absolute; left:14px; top:50%; transform:translateY(-50%); color:var(--text-muted); font-size: 18px;"></i>
                             <input type="text" id="paySearch" placeholder="Search name, date or type..." 
@@ -1406,6 +1496,17 @@
                         </div>
                         <div id="globalPaymentList"></div>
                     </div>
+                </div>
+            </div>
+
+            <!-- Full Transaction Detail Page -->
+            <div id="transDetailPage" class="page">
+                <div class="container">
+                    <div class="sub-header">
+                        <div class="back-btn" onclick="showPage('transactionsPage')"><i class="ph ph-caret-left"></i></div>
+                        <h2>Transaction Details</h2>
+                    </div>
+                    <div id="transDetailContent" style="padding-bottom: 30px;"></div>
                 </div>
             </div>
 
@@ -1448,6 +1549,14 @@
                             <div class="input-group"><label>Mobile No.</label><input type="tel" id="editPhone"></div>
                         </div>
                         <div class="form-grid">
+                            <div class="input-group"><label>Email Address</label><input type="email" id="editEmail"
+                                    placeholder="E.g. customer@example.com"></div>
+                            <div class="input-group" style="display:flex; align-items:center; gap:10px; margin-top:28px;">
+                                <input type="checkbox" id="editStopInterest" style="width:20px; height:20px; cursor:pointer;">
+                                <label for="editStopInterest" style="font-weight:700; cursor:pointer; margin-bottom:0; font-size: 13px;">Stop / Freeze Interest</label>
+                            </div>
+                        </div>
+                        <div class="form-grid">
                             <div class="input-group"><label>Profile Photo URL</label><input type="url" id="editPImg"></div>
                             <div class="input-group"><label>Payment Mode</label><select id="editPMethod"
                                 onchange="toggleEditBank()">
@@ -1474,6 +1583,24 @@
                         <button class="btn btn-primary" onclick="updateLoan()"><i class="ph-bold ph-floppy-disk"></i>
                             Save
                             Changes</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Paid Customers Page -->
+            <div id="paidPage" class="page">
+                <div class="container">
+                    <div class="sub-header">
+                        <div class="back-btn" onclick="window.history.back()"><i class="ph ph-caret-left"></i></div>
+                        <h2>Paid Customers</h2>
+                    </div>
+                    <div class="search-container"><i class="ph ph-magnifying-glass search-icon"></i><input type="text"
+                            id="paidSearchInput" class="search-input" placeholder="Search name, phone..."
+                            oninput="renderPaidList()"></div>
+                    <div id="paidListContainer"></div>
+                    <div id="emptyPaidList" class="empty-state" style="display:none;"><i class="ph ph-users empty-icon"
+                            style="font-size: 64px;"></i>
+                        <div class="empty-text">No paid customers found.</div>
                     </div>
                 </div>
             </div>
@@ -1513,6 +1640,18 @@
                                 <div class="settings-item-info">
                                     <h4>Payment Portal</h4>
                                     <p>Verify payments & view history</p>
+                                </div>
+                            </div>
+                            <i class="ph ph-caret-right settings-item-arrow"></i>
+                        </div>
+
+                        <!-- Paid Customers -->
+                        <div class="settings-item" onclick="showPage('paidPage')">
+                            <div class="settings-item-left">
+                                <div class="settings-item-icon" style="background:#e0f2fe; color:#0284c7;"><i class="ph-fill ph-check-circle"></i></div>
+                                <div class="settings-item-info">
+                                    <h4>Paid Customers</h4>
+                                    <p>View all completed loans</p>
                                 </div>
                             </div>
                             <i class="ph ph-caret-right settings-item-arrow"></i>
@@ -1629,6 +1768,7 @@
         const firebaseConfig = {
             apiKey: "AIzaSyByO6FVTicPpMdlc__c_5jF49XpIS6fX3Y",
             authDomain: "kian-chettri.firebaseapp.com",
+            databaseURL: "https://kian-chettri-default-rtdb.firebaseio.com",
             projectId: "kian-chettri",
             storageBucket: "kian-chettri.firebasestorage.app",
             messagingSenderId: "497527309169",
@@ -1791,10 +1931,10 @@
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active-page'));
             const pageEl = document.getElementById(id);
             if (pageEl) pageEl.classList.add('active-page');
-            document.getElementById('mainHeader').style.display = (id === 'detailPage' || id === 'settingsPage' || id === 'addPage' || id === 'editPage') ? 'none' : 'block';
+            document.getElementById('mainHeader').style.display = (id === 'detailPage' || id === 'transDetailPage' || id === 'settingsPage' || id === 'addPage' || id === 'editPage' || id === 'paidPage') ? 'none' : 'block';
 
             if (!isBack) {
-                history.pushState({ pageId: id }, "", "");
+                history.pushState({ pageId: id }, "", "#" + id);
             }
 
             // Handle nav items active state (Mobile & Desktop)
@@ -1819,6 +1959,7 @@
 
             if (id === 'listPage') renderList();
             if (id === 'transactionsPage') renderTransactions();
+            if (id === 'paidPage') renderPaidList();
             if (id === 'settingsPage') {
                 document.getElementById('mgmtSearch').value = '';
                 renderMgmtList();
@@ -1832,6 +1973,13 @@
 
 
         window.onpopstate = function(event) {
+            const openModal = document.querySelector('.bottom-sheet-overlay, .receipt-modal-overlay, .pin-dialog-overlay');
+            if (openModal) {
+                openModal.remove();
+                const currentId = document.querySelector('.active-page')?.id || 'listPage';
+                history.pushState({ pageId: currentId }, "", "#" + currentId);
+                return;
+            }
             if (event.state && event.state.pageId) {
                 showPage(event.state.pageId, null, true);
             } else {
@@ -1930,6 +2078,8 @@
 
         function renderTransactions() {
             const query = (document.getElementById('paySearch')?.value || '').toLowerCase();
+            const filterStartDate = document.getElementById('filterStartDate')?.value;
+            const filterEndDate = document.getElementById('filterEndDate')?.value;
             const allPayments = [];
 
             loans.forEach(l => {
@@ -1945,11 +2095,23 @@
             });
 
             // Sort newest first
-            allPayments.sort((a, b) => new Date(b.date) - new Date(a.date));
+            allPayments.sort((a, b) => {
+                const timeA = a.timestamp || new Date(a.date).getTime();
+                const timeB = b.timestamp || new Date(b.date).getTime();
+                return timeB - timeA;
+            });
 
-            const filtered = query
-                ? allPayments.filter(p => p.customerName.toLowerCase().includes(query) || p.date.includes(query) || p.type.toLowerCase().includes(query))
-                : allPayments;
+            let filtered = allPayments;
+            
+            if (filterStartDate) {
+                filtered = filtered.filter(p => p.date >= filterStartDate);
+            }
+            if (filterEndDate) {
+                filtered = filtered.filter(p => p.date <= filterEndDate);
+            }
+            if (query) {
+                filtered = filtered.filter(p => p.customerName.toLowerCase().includes(query) || p.date.includes(query) || p.type.toLowerCase().includes(query));
+            }
 
             // Update Mini Stats
             const pendingReqs = (paymentRequests || []).filter(r => r.status === 'Pending').length;
@@ -2026,7 +2188,7 @@
 
                 const isInterest = p.type === 'Interest';
                 html += `
-                <div class="transaction-card" onclick="showTransactionReceipt(${p.idx}, ${p.loanId})">
+                <div class="transaction-card" onclick="showTransactionDetailFull(${p.idx}, ${p.loanId})">
                     <div class="trans-icon ${isInterest ? 'interest' : 'principal'}">
                         <i class="ph-fill ${isInterest ? 'ph-hand-coins' : 'ph-wallet'}"></i>
                     </div>
@@ -2034,7 +2196,7 @@
                         <div class="trans-name">${escapeHtml(p.customerName)}</div>
                         <div class="trans-meta">
                             <span style="color: ${isInterest ? '#f59e0b' : '#10b981'}">${p.type}</span> 
-                            • <i class="ph ph-clock"></i> Verified
+                            • <i class="ph ph-clock"></i> ${p.timestamp ? new Date(p.timestamp).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) : 'Verified'}
                         </div>
                     </div>
                     <div class="trans-amount" style="display:flex; align-items:center; gap:12px;">
@@ -2089,47 +2251,90 @@
                         <i class="ph-bold ph-check-circle"></i> VERIFIED RECEIPT
                     </div>
                 </div>
-                <div class="receipt-body">
-                    ${h.receiptImg || (l.paidHistory[histIdx].receiptImg) ? `
-                    <div style="margin-bottom:20px; text-align:center;">
-                        <img src="${h.receiptImg || l.paidHistory[histIdx].receiptImg}" style="width:100%; max-height:200px; object-fit:contain; border-radius:12px; border:1px solid #f1f5f9; cursor:pointer;" onclick="window.open(this.src, '_blank')">
-                        <div style="font-size:10px; color:var(--text-muted); margin-top:5px;"><i class="ph ph-magnifying-glass-plus"></i> Click to enlarge</div>
-                    </div>` : ''}
                     <div class="receipt-row">
-                        <div class="receipt-label">Customer Name</div>
-                        <div class="receipt-value">${escapeHtml(l.name)}</div>
+                        <div>Transaction Date</div>
+                        <div style="font-weight:700;">${h.date}</div>
                     </div>
-                    <div class="receipt-row">
-                        <div class="receipt-label">Transaction Type</div>
-                        <div class="receipt-value">${h.type} Payment</div>
-                    </div>
-                    <div class="receipt-row">
-                        <div class="receipt-label">Payment Date</div>
-                        <div class="receipt-value">${h.date}</div>
-                    </div>
-                    ${h.from ? `
-                    <div class="receipt-row">
-                        <div class="receipt-label">Billing Cycle</div>
-                        <div class="receipt-value" style="font-size:12px;">${h.from} to ${h.to || h.date}</div>
-                    </div>` : ''}
-                    <div class="receipt-row">
-                        <div class="receipt-label">Reference ID</div>
-                        <div class="receipt-value" style="font-family:monospace; font-size:12px;">TXN-${loanId.toString().slice(-4)}-${histIdx}</div>
-                    </div>
-                    <div style="margin-top:20px; padding:15px; background:#f8fafc; border-radius:15px; border:1px solid #f1f5f9;">
-                        <div style="font-size:11px; color:var(--text-muted); font-weight:600; margin-bottom:5px;">NOTES</div>
-                        <div style="font-size:13px; font-weight:500;">${h.remarks || 'Electronic receipt for ' + h.type + ' payment.'}</div>
-                    </div>
-                </div>
-                <div class="receipt-footer">
-                    <button class="btn btn-secondary" style="flex:1" onclick="this.closest('.receipt-modal-overlay').remove()"><i class="ph ph-x"></i> Close</button>
-                    <button class="btn btn-primary" style="flex:1" onclick="window.print()"><i class="ph ph-printer"></i> Print</button>
-                    <button class="btn btn-primary" style="flex:1; background:#25D366" onclick="window.open('https://wa.me/${l.phone?.replace(/[^0-9]/g, '')}?text=Receipt%20for%20Rs.%20${h.amt}.%20Thank%20you%20for%20your%20payment!', '_blank')"><i class="ph ph-whatsapp-logo"></i> Share</button>
                 </div>
             </div>`;
             document.body.appendChild(modal);
-            modal.onclick = (e) => { if (e.target === modal) modal.remove(); };
+            modal.onclick = (e) => { if(e.target === modal) modal.remove(); };
         }
+
+        function showTransactionDetailFull(histIdx, loanId) {
+            const l = loans.find(x => x.id === loanId);
+            if (!l) return;
+            const h = l.paidHistory[histIdx];
+            if (!h) return;
+
+            const isInterest = h.type === 'Interest';
+            const timeString = h.timestamp ? new Date(h.timestamp).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) : 'N/A';
+            const dateObj = new Date(h.timestamp || h.date);
+
+            let html = `
+            <div style="background: white; border-radius: 24px; padding: 24px; box-shadow: 0 10px 30px rgba(0,0,0,0.03); border: 1px solid #f1f5f9; text-align: center; margin-bottom: 20px;">
+                <div style="width: 70px; height: 70px; border-radius: 50%; background: ${isInterest ? '#fffbeb' : '#ecfdf5'}; color: ${isInterest ? '#f59e0b' : '#10b981'}; display: flex; align-items: center; justify-content: center; font-size: 32px; margin: 0 auto 15px auto;">
+                    <i class="ph-fill ${isInterest ? 'ph-hand-coins' : 'ph-wallet'}"></i>
+                </div>
+                <div style="font-size: 14px; color: var(--text-muted); font-weight: 600; text-transform: uppercase; letter-spacing: 1px;">Payment Amount</div>
+                <div style="font-size: 36px; font-weight: 900; color: var(--text); margin: 5px 0;">Rs. ${formatCurrency(h.amt)}</div>
+                <div style="display: inline-flex; align-items: center; gap: 6px; background: #ecfdf5; color: #10b981; padding: 6px 14px; border-radius: 20px; font-size: 12px; font-weight: 800; margin-top: 5px;">
+                    <i class="ph-bold ph-check-circle"></i> TRANSACTION SUCCESSFUL
+                </div>
+            </div>
+
+            <div style="background: white; border-radius: 24px; padding: 24px; box-shadow: 0 10px 30px rgba(0,0,0,0.03); border: 1px solid #f1f5f9; margin-bottom: 20px;">
+                <h4 style="font-size: 16px; font-weight: 800; margin-bottom: 20px; color: var(--text); border-bottom: 1px solid #f1f5f9; padding-bottom: 10px;">Payment Details</h4>
+                
+                <div style="display: flex; justify-content: space-between; margin-bottom: 16px;">
+                    <span style="color: var(--text-muted); font-size: 14px;">Customer Name</span>
+                    <span style="font-weight: 700; color: var(--text); font-size: 14px;">${escapeHtml(l.name)}</span>
+                </div>
+                <div style="display: flex; justify-content: space-between; margin-bottom: 16px;">
+                    <span style="color: var(--text-muted); font-size: 14px;">Transaction Type</span>
+                    <span style="font-weight: 700; color: ${isInterest ? '#f59e0b' : '#10b981'}; font-size: 14px;">${h.type} Payment</span>
+                </div>
+                <div style="display: flex; justify-content: space-between; margin-bottom: 16px;">
+                    <span style="color: var(--text-muted); font-size: 14px;">Date</span>
+                    <span style="font-weight: 700; color: var(--text); font-size: 14px;">${h.date}</span>
+                </div>
+                <div style="display: flex; justify-content: space-between; margin-bottom: 16px;">
+                    <span style="color: var(--text-muted); font-size: 14px;">Time</span>
+                    <span style="font-weight: 700; color: var(--text); font-size: 14px;">${timeString}</span>
+                </div>
+                <div style="display: flex; justify-content: space-between; margin-bottom: 16px;">
+                    <span style="color: var(--text-muted); font-size: 14px;">Payment Method</span>
+                    <span style="font-weight: 700; color: var(--text); font-size: 14px;">${h.method || l.method || 'Offline (Cash)'}</span>
+                </div>
+                ${h.remarks ? `
+                <div style="display: flex; justify-content: space-between; margin-bottom: 16px;">
+                    <span style="color: var(--text-muted); font-size: 14px;">Remarks</span>
+                    <span style="font-weight: 600; color: var(--text); font-size: 14px; text-align: right; max-width: 60%;">${escapeHtml(h.remarks)}</span>
+                </div>` : ''}
+            </div>`;
+
+            if (h.receiptImg || (l.paidHistory[histIdx] && l.paidHistory[histIdx].receiptImg)) {
+                const imgUrl = h.receiptImg || l.paidHistory[histIdx].receiptImg;
+                html += `
+                <div style="background: white; border-radius: 24px; padding: 24px; box-shadow: 0 10px 30px rgba(0,0,0,0.03); border: 1px solid #f1f5f9; margin-bottom: 20px;">
+                    <h4 style="font-size: 16px; font-weight: 800; margin-bottom: 15px; color: var(--text);">Attached Proof</h4>
+                    <div style="text-align: center; background: #f8fafc; border-radius: 16px; padding: 10px; border: 1px dashed #cbd5e1;">
+                        <img src="${imgUrl}" style="max-width: 100%; max-height: 300px; border-radius: 12px; cursor: pointer; object-fit: contain;" onclick="window.open(this.src, '_blank')">
+                        <div style="font-size: 11px; color: var(--text-muted); margin-top: 10px;"><i class="ph ph-magnifying-glass-plus"></i> Tap image to view full screen</div>
+                    </div>
+                </div>`;
+            }
+
+            // Remove button at bottom
+            html += `
+            <button onclick="deleteConfirmedPayment(${loanId}, ${histIdx}); showPage('transactionsPage');" style="width: 100%; background: #fef2f2; color: var(--danger); border: 1px solid #fecaca; padding: 16px; border-radius: 18px; font-size: 15px; font-weight: 800; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px;">
+                <i class="ph-bold ph-trash"></i> Delete Transaction Record
+            </button>`;
+
+            document.getElementById('transDetailContent').innerHTML = html;
+            showPage('transDetailPage');
+        }
+
 
         function toggleBank() { document.getElementById('bankInfo').style.display = document.getElementById('pMethod').value === 'Online' ? 'block' : 'none'; }
         function toggleEditBank() { document.getElementById('editBankInfo').style.display = document.getElementById('editPMethod').value === 'Online' ? 'block' : 'none'; }
@@ -2171,10 +2376,12 @@
                 name: name,
                 address: address,
                 amount: amount,
-                rate: parseFloat(document.getElementById('rate').value) || 12,
+                rate: isNaN(parseFloat(document.getElementById('rate').value)) ? 12 : parseFloat(document.getElementById('rate').value),
                 startDate: document.getElementById('sDate').value,
                 currentCycleDate: document.getElementById('sDate').value,
                 phone: document.getElementById('phone').value,
+                email: document.getElementById('email').value.trim() || '',
+                interestStopped: document.getElementById('stopInterest').checked || false,
                 pImg: document.getElementById('pImg').value || `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=059669&color=fff&bold=true`,
                 method: document.getElementById('pMethod').value,
                 bank: document.getElementById('bank').value,
@@ -2190,6 +2397,9 @@
             document.getElementById('name').value = '';
             document.getElementById('address').value = '';
             document.getElementById('amount').value = '';
+            document.getElementById('phone').value = '';
+            document.getElementById('email').value = '';
+            document.getElementById('stopInterest').checked = false;
             document.getElementById('adminPin').value = '';
             showPage('listPage');
         }
@@ -2199,7 +2409,8 @@
             const start = getLocalDate(l.currentCycleDate || l.startDate);
             const today = new Date();
             today.setHours(0, 0, 0, 0);
-            const days = Math.max(0, Math.floor((today - start) / (1000 * 3600 * 24)));
+            const days = Math.max(0, Math.round((today - start) / (1000 * 3600 * 24)));
+            if (l.interestStopped) return { days, interest: 0 };
             const interest = (l.amount * l.rate * days) / 36500;
             return { days, interest: Math.max(0, interest) };
         }
@@ -2220,6 +2431,7 @@
         function renderList(query = '') {
             updateDashboardStats();
             let filtered = loans.filter(l => {
+                if (l.status === 'Paid') return false; // Hide Paid customers from Home Page
                 const matchName = l.name.toLowerCase().includes(query);
                 const matchPhone = l.phone && l.phone.includes(query);
                 const matchDoc = l.docs && l.docs.some(d => d.n.toLowerCase().includes(query));
@@ -2250,6 +2462,36 @@
         }
 
 
+        function renderPaidList() {
+            let paidCustomers = loans.filter(l => l.status === 'Paid');
+            
+            const q = document.getElementById('paidSearchInput')?.value.toLowerCase() || '';
+            let filtered = paidCustomers.filter(l => {
+                const matchName = l.name.toLowerCase().includes(q);
+                const matchPhone = l.phone && l.phone.includes(q);
+                return matchName || matchPhone;
+            });
+
+            const container = document.getElementById('paidListContainer');
+            if (filtered.length === 0) { 
+                container.innerHTML = ''; 
+                document.getElementById('emptyPaidList').style.display = 'block'; 
+                return; 
+            }
+            document.getElementById('emptyPaidList').style.display = 'none';
+            container.innerHTML = filtered.map(l => {
+                return `<div class="user-card" onclick="viewDetail(${l.id})">
+                <img src="${l.pImg}" class="user-avatar" onerror="this.src='https://ui-avatars.com/api/?name=${encodeURIComponent(l.name)}&background=059669&color=fff'">
+                <div class="user-info">
+                    <div class="user-name">${escapeHtml(l.name)}</div>
+                    <div class="status-badge paid">✓ Paid</div>
+                    <div style="font-size:11px;color:var(--text-muted);margin-top:2px">${maskPhone(l.phone)}</div>
+                </div>
+                <div class="user-amounts"><div class="user-principal">Rs. ${formatCurrency(l.amount)}</div><div class="user-interest">+ Rs. ${formatCurrency(l.finalInterest || 0)}</div></div>
+            </div>`;
+            }).join('');
+        }
+
         function escapeHtml(str) { return str?.replace(/[&<>]/g, function (m) { if (m === '&') return '&amp;'; if (m === '<') return '&lt;'; if (m === '>') return '&gt;'; return m; }); }
 
         async function deleteLoanWithHistory(id, pin) {
@@ -2274,6 +2516,8 @@
             document.getElementById('editRate').value = l.rate;
             document.getElementById('editSDate').value = l.startDate;
             document.getElementById('editPhone').value = l.phone || '';
+            document.getElementById('editEmail').value = l.email || '';
+            document.getElementById('editStopInterest').checked = l.interestStopped || false;
             document.getElementById('editPImg').value = l.pImg || '';
             document.getElementById('editPMethod').value = l.method || 'Offline';
             document.getElementById('editBank').value = l.bank || '';
@@ -2313,15 +2557,16 @@
                 name: name,
                 address: document.getElementById('editAddress').value.trim(),
                 amount: amount,
-                rate: parseFloat(document.getElementById('editRate').value) || 12,
+                rate: isNaN(parseFloat(document.getElementById('editRate').value)) ? 12 : parseFloat(document.getElementById('editRate').value),
                 startDate: document.getElementById('editSDate').value,
-                currentCycleDate: document.getElementById('editSDate').value, // Sync cycle with start date on edit
                 phone: document.getElementById('editPhone').value,
+                email: document.getElementById('editEmail').value.trim() || '',
+                interestStopped: document.getElementById('editStopInterest').checked || false,
                 pImg: document.getElementById('editPImg').value,
                 method: document.getElementById('editPMethod').value,
                 bank: document.getElementById('editBank').value,
                 acc: document.getElementById('editAcc').value,
-                txid: document.getElementById('editTxid').value,
+                txid: document.getElementById('txid').value,
                 docs: docs
             };
 
@@ -2402,13 +2647,17 @@
             overlay.querySelector('#bsIntConfirm').onclick = async () => {
                 const recDate = overlay.querySelector('#bsIntDate').value || today;
                 const receiptImg = overlay.querySelector('#bsIntReceipt').value.trim();
-                overlay.remove();
-                const histEntry = { type: 'Interest', date: recDate, amt: c.interest, from: l.currentCycleDate, to: recDate };
-                if (receiptImg) histEntry.receiptImg = receiptImg;
-                const newHistory = [...(l.paidHistory || []), histEntry];
-                await loansRef.child(l.id).update({ paidHistory: newHistory, currentCycleDate: recDate, finalInterest: 0 });
-                showToast("Interest payment recorded!");
-                viewDetail(id);
+                showPinDialog("Authorization Required for Interest Payment", async (pin) => {
+                    if (await verifyPin(pin)) {
+                        overlay.remove();
+                        const histEntry = { type: 'Interest', date: recDate, timestamp: Date.now(), amt: c.interest, from: l.currentCycleDate, to: recDate };
+                        if (receiptImg) histEntry.receiptImg = receiptImg;
+                        const newHistory = [...(l.paidHistory || []), histEntry];
+                        await loansRef.child(l.id).update({ paidHistory: newHistory, currentCycleDate: recDate, finalInterest: 0 });
+                        showToast("Interest payment recorded!");
+                        viewDetail(id);
+                    } else showToast("❌ Wrong PIN!", true);
+                });
             };
         }
 
@@ -2456,17 +2705,21 @@
                 const receiptImg = overlay.querySelector('#bsReceipt').value.trim();
                 if (!amt || isNaN(amt) || amt <= 0) { showToast('Please enter a valid amount', true); return; }
                 if (amt > l.amount) { showToast('Cannot exceed principal balance!', true); return; }
-                overlay.remove();
-                const histEntry = { type: 'Principal', date: recDate, amt: amt };
-                if (remarks) histEntry.remarks = remarks;
-                if (receiptImg) histEntry.receiptImg = receiptImg;
-                const newHistory = [...(l.paidHistory || []), histEntry];
-                const newAmount = l.amount - amt;
-                let newStatus = l.status, finalInt = l.finalInterest;
-                if (newAmount <= 0) { newStatus = 'Paid'; finalInt = calc(l).interest; }
-                await loansRef.child(l.id).update({ amount: newAmount, paidHistory: newHistory, status: newStatus, finalInterest: finalInt });
-                showToast(newAmount <= 0 ? '✅ Loan fully paid off!' : `Principal reduced by Rs. ${formatCurrency(amt)}`);
-                viewDetail(id);
+                showPinDialog("Authorization Required for Principal Payment", async (pin) => {
+                    if (await verifyPin(pin)) {
+                        overlay.remove();
+                        const histEntry = { type: 'Principal', date: recDate, timestamp: Date.now(), amt: amt };
+                        if (remarks) histEntry.remarks = remarks;
+                        if (receiptImg) histEntry.receiptImg = receiptImg;
+                        const newHistory = [...(l.paidHistory || []), histEntry];
+                        const newAmount = l.amount - amt;
+                        let newStatus = l.status, finalInt = l.finalInterest;
+                        if (newAmount <= 0) { newStatus = 'Paid'; finalInt = calc(l).interest; }
+                        await loansRef.child(l.id).update({ amount: newAmount, paidHistory: newHistory, status: newStatus, finalInterest: finalInt });
+                        showToast(newAmount <= 0 ? '✅ Loan fully paid off!' : `Principal reduced by Rs. ${formatCurrency(amt)}`);
+                        viewDetail(id);
+                    } else showToast("❌ Wrong PIN!", true);
+                });
             };
         }
 
@@ -2517,9 +2770,12 @@
                 <button class="btn btn-primary" style="flex:1" onclick="payPrincipal(${l.id})"><i class="ph-bold ph-wallet"></i> Pay Principal</button>
                 <button class="btn btn-primary" style="flex:1;background:var(--danger)" onclick="payInterest(${l.id})"><i class="ph-bold ph-hand-coins"></i> Pay Interest</button>
             </div>
-            <div style="display:flex;gap:10px;margin-bottom:25px">
+            <div style="display:flex;gap:10px;margin-bottom:12px">
                 <button class="btn btn-secondary" style="flex:1;background:#25D366" onclick="window.open('https://wa.me/${l.phone?.replace(/[^0-9]/g, '')}?text=Dear%20${encodeURIComponent(l.name)},%20your%20loan%20interest%20is%20Rs.%20${c.interest.toFixed(2)}.%20Please%20contact%20Kiran%20Chettri', '_blank')"><i class="ph-bold ph-whatsapp-logo"></i> WhatsApp</button>
                 <button class="btn btn-secondary" style="flex:1" onclick="updateStatus(${l.id}, 'Paid', ${c.interest})"><i class="ph-bold ph-lock-key"></i> Mark Paid</button>
+            </div>
+            <div style="display:flex;gap:10px;margin-bottom:25px">
+                <button class="btn btn-secondary" style="flex:1;background:var(--warning);color:white;border:none;" onclick="toggleFreeze(${l.id})"><i class="ph-bold ${l.interestStopped ? 'ph-play' : 'ph-pause'}"></i> ${l.interestStopped ? 'Unfreeze' : 'Freeze'} Interest</button>
             </div>` : `<button class="btn btn-primary" style="margin-bottom:25px" onclick="updateStatus(${l.id}, 'Active', 0)"><i class="ph-bold ph-play"></i> Resume Active</button>`}
 
             <!-- Interest Receipt History -->
@@ -2558,10 +2814,12 @@
             <div class="info-card">
                 <div class="info-card-title">📄 KYC Details</div>
                 <div class="info-row"><span>Mobile</span><span><a href="tel:${l.phone}" style="color:var(--primary)">${l.phone || 'N/A'}</a></span></div>
+                <div class="info-row"><span>Email</span><span>${l.email ? `<a href="mailto:${l.email}" style="color:var(--primary)">${l.email}</a>` : 'N/A'}</span></div>
                 <div class="info-row"><span>Address</span><span>${l.address || 'N/A'}</span></div>
                 <div class="info-row"><span>Start Date</span><span>${l.startDate}</span></div>
                 <div class="info-row"><span>Days Elapsed</span><span><strong>${c.days} days</strong></span></div>
                 <div class="info-row"><span>Interest Rate</span><span>${l.rate}% p.a.</span></div>
+                <div class="info-row"><span>Interest Accumulation</span><span>${l.interestStopped ? '<strong style="color:var(--danger)">Stopped / Frozen</strong>' : '<strong style="color:var(--success)">Active / Accumulating</strong>'}</span></div>
                 <div class="info-row"><span>Payment Mode</span><span>${l.method}</span></div>
                 ${l.method === 'Online' ? `
                     <div class="info-row"><span>Bank Name</span><span>${l.bank || 'N/A'}</span></div>
@@ -2575,6 +2833,19 @@
             <button class="btn btn-danger-outline" onclick="del(${l.id})"><i class="ph-bold ph-trash"></i> Delete Customer (PIN Required)</button>
             <div style="height:30px"></div>`;
             showPage('detailPage');
+        }
+
+        async function toggleFreeze(id) {
+            const l = loans.find(x => x.id === id);
+            if (!l) return;
+            const newState = !l.interestStopped;
+            showPinDialog(`Authorization Required to ${newState ? 'Freeze' : 'Unfreeze'} Interest`, async (pin) => {
+                if (await verifyPin(pin)) {
+                    await loansRef.child(id).update({ interestStopped: newState });
+                    showToast(`Interest ${newState ? 'Frozen' : 'Unfrozen'} Successfully!`);
+                    viewDetail(id);
+                } else showToast("❌ Wrong PIN!", true);
+            });
         }
 
         function openDeleteHistoryPanel() {
@@ -2778,6 +3049,43 @@
             }
         });
 
+        let syncTimeout = null;
+        function syncToGoogleSheets(data) {
+            clearTimeout(syncTimeout);
+            syncTimeout = setTimeout(async () => {
+                // Pre-calculate days elapsed and accrued interest in JavaScript before syncing
+                const enrichedData = data.map(l => {
+                    const c = calc(l);
+                    return {
+                        ...l,
+                        accruedInterest: c.interest,
+                        daysElapsed: c.days
+                    };
+                });
+                
+                showToast(`🔄 Syncing ${enrichedData.length} customer(s) to Google Sheets...`);
+                try {
+                    const url = "https://script.google.com/macros/s/AKfycbxHJ3ELpdcbBLewlN44cEra0aejIRhvYiqfy9km2xSCehyK2jNEvVmaM_E41_cHSrDI9Q/exec";
+
+                    // Use URLSearchParams to send data as application/x-www-form-urlencoded
+                    // This ensures maximum compatibility with Google Apps Script CORS redirects
+                    const params = new URLSearchParams();
+                    params.append('data', JSON.stringify({ action: "sync", data: enrichedData }));
+
+                    await fetch(url, {
+                        method: 'POST',
+                        mode: 'no-cors',
+                        body: params
+                    });
+                    console.log("Live Sync to Google Sheets complete.");
+                    showToast("✅ Live data successfully synced to Google Sheets!");
+                } catch(e) {
+                    console.error("Google Sheets Sync Error:", e);
+                    showToast("❌ Google Sheets sync failed! Check console.", true);
+                }
+            }, 3000); // Debounce to prevent spamming the endpoint
+        }
+
         loansRef.on('value', (snap) => {
             loans = snap.val() ? Object.values(snap.val()) : [];
             renderList();
@@ -2785,6 +3093,11 @@
             checkAlerts();
             if (document.getElementById('settingsPage').classList.contains('active-page')) renderMgmtList();
             if (document.getElementById('transactionsPage').classList.contains('active-page')) renderTransactions();
+            
+            // Trigger Live Sync to Google Sheets (Disabled as requested)
+            if (loans.length > 0) {
+                // syncToGoogleSheets(loans); 
+            }
         });
 
         function deleteConfirmedPayment(loanId, idx) {
@@ -2818,7 +3131,7 @@
             if (!confirm(`Approve Rs. ${req.amount} for ${req.type} from ${req.customerName}?`)) return;
 
             const recDate = new Date().toISOString().split('T')[0];
-            const histEntry = { type: req.type, date: recDate, amt: req.amount, remarks: req.note || 'User Panel Submission' };
+            const histEntry = { type: req.type, date: recDate, timestamp: Date.now(), amt: req.amount, remarks: req.note || 'User Panel Submission' };
             if (req.proofUrl) histEntry.receiptImg = req.proofUrl;
 
             const newHistory = [...(l.paidHistory || []), histEntry];
@@ -2855,7 +3168,493 @@
         document.getElementById('topDate').innerText = new Date().toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
         toggleBank();
         renderList();
-        requestNotificationPermission();
+        history.replaceState({ pageId: 'listPage' }, "", "#listPage");
+    </script>
+    <!-- Google Apps Script Backup (Do not run in browser) -->
+    <script type="text/plain" id="google-apps-script-backup">
+/**
+ * KIRAN CHETTRI | LOAN MANAGEMENT SYSTEM - GOOGLE APPS SCRIPT
+ * -----------------------------------------------------------
+ * This script runs inside Google Sheets and handles BIDIRECTIONAL synchronization
+ * directly with your Firebase Realtime Database.
+ * 
+ * Features:
+ *  1. Download (Firebase -> Google Sheet) with complete calculations, styling, and color coding.
+ *  2. Upload (Google Sheet -> Firebase) allowing you to add, edit, or update loans directly from the sheet.
+ *  3. Deployment (doGet / doPost) to trigger instant sync when pinged by your web app.
+ *  4. Automated hourly background triggers.
+ */
+
+// =========================================================================
+// CONFIGURATION: Set your Firebase database details here
+// =========================================================================
+const FIREBASE_DB_URL = "https://kian-chettri-default-rtdb.firebaseio.com/"; // Default Realtime Database URL
+const FIREBASE_SECRET = ""; // Optional: Add database secret if authentication is required
+
+/**
+ * Custom Menu: Setup when Google Sheet is opened.
+ */
+function onOpen() {
+  var ui = SpreadsheetApp.getUi();
+  ui.createMenu('🔄 Firebase Loan Sync')
+    .addItem('⚡ Sync Firebase ➡️ Sheet (Download)', 'syncFromFirebase')
+    .addItem('📤 Sync Sheet ➡️ Firebase (Upload)', 'syncSheetToFirebase')
+    .addSeparator()
+    .addItem('⏰ Enable Auto-Sync (Every Hour)', 'setupHourlyTrigger')
+    .addItem('🛑 Disable Auto-Sync', 'removeTriggers')
+    .addToUi();
+}
+
+/**
+ * Web App Deploy GET / POST endpoints.
+ * When pinged, the script pulls fresh data from Firebase and syncs it.
+ */
+function doGet(e) {
+  return handleRequest(e);
+}
+
+function doPost(e) {
+  return handleRequest(e);
+}
+
+function handleRequest(e) {
+  try {
+    var count = syncFromFirebaseSilent();
+    return ContentService.createTextOutput(JSON.stringify({ 
+      status: "success", 
+      message: "Bidirectional database sync complete directly from Firebase", 
+      recordsSynced: count 
+    })).setMimeType(ContentService.MimeType.JSON);
+  } catch (error) {
+    return ContentService.createTextOutput(JSON.stringify({ 
+      status: "error", 
+      message: error.toString() 
+    })).setMimeType(ContentService.MimeType.JSON);
+  }
+}
+
+/**
+ * 1. DOWNLOAD FUNCTION: Firebase -> Google Sheet (With UI Alert)
+ */
+function syncFromFirebase() {
+  try {
+    var count = syncFromFirebaseSilent();
+    SpreadsheetApp.getUi().alert(
+      "✅ Firebase Sync Complete!", 
+      "Successfully downloaded " + count + " loan records from Firebase directly to this Google Sheet with active interest calculations.", 
+      SpreadsheetApp.getUi().ButtonSet.OK
+    );
+    return count;
+  } catch (error) {
+    SpreadsheetApp.getUi().alert("❌ Download Sync Failed", error.toString(), SpreadsheetApp.getUi().ButtonSet.OK);
+    throw error;
+  }
+}
+
+/**
+ * Silent version of the download function to run on background triggers or web API.
+ */
+function syncFromFirebaseSilent() {
+  var sheet = getActiveSpreadsheetOrById().getSheets()[0];
+  
+  // Fetch from Firebase
+  var url = FIREBASE_DB_URL + "loans.json" + (FIREBASE_SECRET ? "?auth=" + FIREBASE_SECRET : "");
+  var response;
+  try {
+    response = UrlFetchApp.fetch(url, { "muteHttpExceptions": true });
+  } catch (e) {
+    throw new Error("Could not connect to Firebase database. Check your FIREBASE_DB_URL.");
+  }
+  
+  if (response.getResponseCode() !== 200) {
+    throw new Error("Firebase error (Status " + response.getResponseCode() + "): " + response.getContentText());
+  }
+  
+  var dataList = JSON.parse(response.getContentText());
+  if (!dataList) {
+    sheet.clear();
+    sheet.getRange("A1").setValue("ℹ️ Firebase database is empty or could not be loaded.");
+    return 0;
+  }
+  
+  // Headers Definition (Column 16 holds the Customer ID which is hidden)
+  var headers = [
+    "Customer Name", 
+    "Status", 
+    "Principal Balance (Rs.)", 
+    "Interest Rate (%)", 
+    "Days Elapsed",
+    "Accrued Interest (Rs.)", 
+    "Phone No.", 
+    "Email Address",
+    "Address", 
+    "Start Date", 
+    "Last Interest Cycle", 
+    "Interest Accumulation",
+    "Payment Mode",
+    "Bank Details / Acc", 
+    "KYC Documents",
+    "Customer ID" // Column 16 - Crucial tracking ID used for bidirectional updates
+  ];
+  
+  sheet.clear(); // Clear existing content & formatting
+  
+  // Write Headers
+  var headerRange = sheet.getRange(1, 1, 1, headers.length);
+  sheet.appendRow(headers);
+  
+  // Style Headers beautifully (Emerald Theme)
+  headerRange.setBackground("#059669")
+             .setFontColor("#ffffff")
+             .setFontWeight("bold")
+             .setFontSize(11)
+             .setHorizontalAlignment("center")
+             .setVerticalAlignment("middle");
+  sheet.setRowHeight(1, 32);
+  
+  var rows = [];
+  var keys = Object.keys(dataList);
+  
+  for (var i = 0; i < keys.length; i++) {
+    var l = dataList[keys[i]];
+    if (!l) continue;
+    
+    // Perform real-time interest/days calculation (identical to Client Logic)
+    var calculation = calcInterest(l);
+    
+    // Parse KYC documents list
+    var docLinks = "";
+    if (l.docs) {
+      var linksArr = [];
+      try {
+        var docsObj = typeof l.docs === 'string' ? JSON.parse(l.docs) : l.docs;
+        var docKeys = Object.keys(docsObj);
+        for (var j = 0; j < docKeys.length; j++) {
+          var d = docsObj[docKeys[j]];
+          if (d && d.n) {
+            linksArr.push(d.n + ": " + (d.u || "#"));
+          }
+        }
+      } catch(docErr) {}
+      docLinks = linksArr.join(", ");
+    }
+    
+    var bankDetails = l.method === "Online" ? ((l.bank || "N/A") + " - A/C: " + (l.acc || "N/A")) : "Offline (Cash)";
+    
+    rows.push([
+      l.name || "N/A",
+      l.status || "Active",
+      l.amount || 0,
+      l.rate || 0,
+      calculation.days,
+      calculation.interest,
+      l.phone || "N/A",
+      l.email || "N/A",
+      l.address || "N/A",
+      l.startDate || "",
+      l.currentCycleDate || "",
+      l.interestStopped ? "Stopped" : "Accumulating",
+      l.method || "Offline",
+      bankDetails,
+      docLinks || "None",
+      l.id || "None"
+    ]);
+  }
+  
+  if (rows.length > 0) {
+    var dataRange = sheet.getRange(2, 1, rows.length, headers.length);
+    dataRange.setValues(rows);
+    
+    dataRange.setFontSize(10)
+             .setVerticalAlignment("middle");
+    
+    // Row by Row Formatting (Zebra lines, Color pills)
+    for (var k = 0; k < rows.length; k++) {
+      var rowNum = k + 2;
+      sheet.setRowHeight(rowNum, 26);
+      
+      var rowRange = sheet.getRange(rowNum, 1, 1, headers.length);
+      
+      // Alternating row background colors
+      if (k % 2 === 1) {
+        rowRange.setBackground("#f9fafb");
+      } else {
+        rowRange.setBackground("#ffffff");
+      }
+      
+      // Color-coding "Status" column (Column 2)
+      var statusCell = sheet.getRange(rowNum, 2);
+      var status = rows[k][1];
+      if (status === "Paid") {
+        statusCell.setBackground("#d1fae5")
+                  .setFontColor("#065f46")
+                  .setFontWeight("bold")
+                  .setHorizontalAlignment("center");
+      } else {
+        statusCell.setBackground("#fef3c7")
+                  .setFontColor("#92400e")
+                  .setFontWeight("bold")
+                  .setHorizontalAlignment("center");
+      }
+      
+      // Color-coding "Interest Accumulation" status (Column 12)
+      var stoppedCell = sheet.getRange(rowNum, 12);
+      var stoppedVal = rows[k][11];
+      if (stoppedVal === "Stopped") {
+        stoppedCell.setBackground("#fecaca")
+                   .setFontColor("#991b1b")
+                   .setFontWeight("bold")
+                   .setHorizontalAlignment("center");
+      } else {
+        stoppedCell.setBackground("#d1fae5")
+                   .setFontColor("#065f46")
+                   .setFontWeight("bold")
+                   .setHorizontalAlignment("center");
+      }
+    }
+    
+    // Formatting currency & numeric values
+    sheet.getRange(2, 3, rows.length, 1).setNumberFormat("Rs. #,##0.00"); // Principal
+    sheet.getRange(2, 6, rows.length, 1).setNumberFormat("Rs. #,##0.00"); // Accrued Interest
+    sheet.getRange(2, 4, rows.length, 1).setNumberFormat("0.0'%'");      // Interest Rate
+    
+    // Apply elegant thin borders
+    dataRange.setBorder(true, true, true, true, true, true, "#e5e7eb", SpreadsheetApp.BorderStyle.SOLID);
+  }
+  
+  // Resize columns to fit data beautifully
+  sheet.autoResizeColumns(1, headers.length);
+  
+  // HIDE Column 16 (Customer ID) to keep the sheet visually pristine, while keeping the data fully readable by script.
+  sheet.hideColumns(16);
+  
+  return rows.length;
+}
+
+/**
+ * 2. UPLOAD FUNCTION: Google Sheet -> Firebase Realtime Database
+ */
+function syncSheetToFirebase() {
+  var sheet = getActiveSpreadsheetOrById().getSheets()[0];
+  var lastRow = sheet.getLastRow();
+  if (lastRow < 2) {
+    SpreadsheetApp.getUi().alert("No Data Found", "There are no loan records to sync to Firebase.", SpreadsheetApp.getUi().ButtonSet.OK);
+    return;
+  }
+  
+  // Fetch active database to preserve non-sheet fields (like paidHistory and finalInterest, pImg)
+  var dbUrl = FIREBASE_DB_URL + "loans.json" + (FIREBASE_SECRET ? "?auth=" + FIREBASE_SECRET : "");
+  var dbResponse = UrlFetchApp.fetch(dbUrl, { "muteHttpExceptions": true });
+  var firebaseData = JSON.parse(dbResponse.getContentText()) || {};
+  
+  // Read all rows
+  var range = sheet.getRange(2, 1, lastRow - 1, 16);
+  var values = range.getValues();
+  var updatedCount = 0;
+  
+  for (var i = 0; i < values.length; i++) {
+    var row = values[i];
+    var name = row[0];
+    var status = row[1];
+    var amount = parseFloat(row[2]) || 0;
+    var rate = parseFloat(row[3]) || 0;
+    var phone = row[6] ? row[6].toString() : "";
+    var email = row[7] || "";
+    var address = row[8] || "";
+    var startDate = formatDate(row[9]);
+    var currentCycleDate = formatDate(row[10]);
+    var interestStopped = row[11] === "Stopped" ? true : false;
+    var method = row[12] || "Offline";
+    var bankDetailsRaw = row[13] || "";
+    var docsRaw = row[14] || "";
+    var customerId = row[15] ? row[15].toString() : "";
+    
+    // Ignore completely empty rows
+    if (!name || name === "N/A" || name === "") continue;
+    
+    // Generate a unique ID if a brand new customer is added inside the sheet manually
+    if (!customerId || customerId === "None" || customerId === "N/A" || customerId === "") {
+      customerId = (Date.now() + i).toString();
+    }
+    
+    // Retrieve existing Firebase records to avoid overwriting payment history or profile photo
+    var existingRecord = firebaseData[customerId] || {};
+    
+    // Parse Bank details: E.g., "Citizens Bank - A/C: 1092837" -> Bank: Citizens Bank, Acc: 1092837
+    var bank = existingRecord.bank || "";
+    var acc = existingRecord.acc || "";
+    if (method === "Online" && bankDetailsRaw && bankDetailsRaw !== "Offline (Cash)") {
+      var parts = bankDetailsRaw.split(" - A/C: ");
+      if (parts.length > 0) bank = parts[0] || "";
+      if (parts.length > 1) acc = parts[1] || "";
+    }
+    
+    // Parse KYC Document links: E.g., "Citizenship: url1, Land: url2" -> [{n: "Citizenship", u: "url1"}, ...]
+    var docs = [];
+    if (docsRaw && docsRaw !== "None" && docsRaw !== "") {
+      var docParts = docsRaw.split(", ");
+      for (var j = 0; j < docParts.length; j++) {
+        var part = docParts[j];
+        var colonIdx = part.indexOf(": ");
+        if (colonIdx !== -1) {
+          var dName = part.substring(0, colonIdx).trim();
+          var dUrl = part.substring(colonIdx + 2).trim();
+          docs.push({ n: dName, u: dUrl });
+        }
+      }
+    } else {
+      docs = existingRecord.docs || [];
+    }
+    
+    var updatedRecord = {
+      id: parseInt(customerId) || Date.now(),
+      name: name,
+      status: status || "Active",
+      amount: amount,
+      rate: rate,
+      phone: phone,
+      email: email,
+      address: address,
+      startDate: startDate || new Date().toISOString().split('T')[0],
+      currentCycleDate: currentCycleDate || startDate || new Date().toISOString().split('T')[0],
+      interestStopped: interestStopped,
+      method: method,
+      bank: bank,
+      acc: acc,
+      pImg: existingRecord.pImg || "https://ui-avatars.com/api/?name=" + encodeURIComponent(name) + "&background=059669&color=fff",
+      docs: docs,
+      paidHistory: existingRecord.paidHistory || [],
+      finalInterest: existingRecord.finalInterest || 0
+    };
+    
+    // Send PUT request to Firebase REST API to upload/update this record
+    var recordUrl = FIREBASE_DB_URL + "loans/" + customerId + ".json" + (FIREBASE_SECRET ? "?auth=" + FIREBASE_SECRET : "");
+    var options = {
+      method: 'put',
+      contentType: 'application/json',
+      payload: JSON.stringify(updatedRecord),
+      muteHttpExceptions: true
+    };
+    
+    var uploadResponse = UrlFetchApp.fetch(recordUrl, options);
+    if (uploadResponse.getResponseCode() === 200) {
+      updatedCount++;
+    }
+  }
+  
+  // Refresh calculations and formats locally to keep Google Sheet in 100% sync
+  syncFromFirebaseSilent();
+  
+  SpreadsheetApp.getUi().alert(
+    "📤 Upload Complete!", 
+    "Successfully synchronized Sheet to Firebase. Updated/Added " + updatedCount + " record(s) in your Firebase database.", 
+      SpreadsheetApp.getUi().ButtonSet.OK
+  );
+}
+
+/**
+ * -------------------------------------------------------------------------
+ * HELPER FUNCTIONS
+ * -------------------------------------------------------------------------
+ */
+
+/**
+ * Format cell date value to a YYYY-MM-DD string safely.
+ */
+function formatDate(dateVal) {
+  if (!dateVal) return "";
+  if (dateVal instanceof Date) {
+    var year = dateVal.getFullYear();
+    var month = ("0" + (dateVal.getMonth() + 1)).slice(-2);
+    var day = ("0" + dateVal.getDate()).slice(-2);
+    return year + "-" + month + "-" + day;
+  }
+  return dateVal.toString();
+}
+
+/**
+ * Parse YYYY-MM-DD local date correctly.
+ */
+function getLocalDate(dateString) {
+  if (!dateString) return new Date();
+  var parts = dateString.split('-');
+  if (parts.length < 3) return new Date();
+  var y = parseInt(parts[0], 10);
+  var m = parseInt(parts[1], 10);
+  var d = parseInt(parts[2], 10);
+  
+  var date = new Date();
+  date.setFullYear(y, m - 1, d);
+  date.setHours(0, 0, 0, 0);
+  return date;
+}
+
+/**
+ * Exact replica of javascript interest computation
+ */
+function calcInterest(l) {
+  if (l.status === 'Paid') {
+    return { days: 0, interest: l.finalInterest || 0 };
+  }
+  
+  var start = getLocalDate(l.currentCycleDate || l.startDate);
+  var today = new Date();
+  today.setHours(0, 0, 0, 0);
+  
+  var timeDiff = today.getTime() - start.getTime();
+  var days = Math.max(0, Math.round(timeDiff / (1000 * 3600 * 24)));
+  
+  if (l.interestStopped) {
+    return { days: days, interest: 0 };
+  }
+  
+  var amount = parseFloat(l.amount) || 0;
+  var rate = parseFloat(l.rate) || 0;
+  var interest = (amount * rate * days) / 36500;
+  
+  return { days: days, interest: Math.max(0, interest) };
+}
+
+/**
+ * Enable Hourly Automated Background sync.
+ */
+function setupHourlyTrigger() {
+  removeTriggers();
+  ScriptApp.newTrigger('syncFromFirebaseSilent')
+           .timeBased()
+           .everyHours(1)
+           .create();
+           
+  SpreadsheetApp.getUi().alert("⏰ Auto-Sync Activated!", "Google Sheet is now configured to automatically pull new loan entries from Firebase in the background every single hour.", SpreadsheetApp.getUi().ButtonSet.OK);
+}
+
+/**
+ * Clean all existing triggers.
+ */
+function removeTriggers() {
+  var allTriggers = ScriptApp.getProjectTriggers();
+  for (var i = 0; i < allTriggers.length; i++) {
+    ScriptApp.deleteTrigger(allTriggers[i]);
+  }
+  
+  try {
+    SpreadsheetApp.getUi().alert("🛑 Auto-Sync Disabled!", "All automated background triggers have been removed. You can still sync manually anytime.", SpreadsheetApp.getUi().ButtonSet.OK);
+  } catch(e) {}
+}
+
+/**
+ * Helper to get active spreadsheet or fallback to explicit ID (handles both Bound and Standalone scripts).
+ */
+function getActiveSpreadsheetOrById() {
+  var ss;
+  try {
+    ss = SpreadsheetApp.getActiveSpreadsheet();
+  } catch(e) {}
+  if (!ss) {
+    ss = SpreadsheetApp.openById("16nCwvvd8cs3Mvvuuoy57goNelD-3kmwufkIQ0FF5_DU");
+  }
+  return ss;
+}
     </script>
 </body>
 
